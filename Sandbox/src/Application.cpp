@@ -1,10 +1,10 @@
 
-namespace HWE
+namespace Basalt
 {
 	__declspec(dllimport) void Print();
 }
 
 int main()
 {
-	HWE::Print();
+	Basalt::Print();
 }
