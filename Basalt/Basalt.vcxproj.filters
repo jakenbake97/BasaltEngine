@@ -27,9 +27,15 @@
     <ClInclude Include="src\Basalt\EntryPoint.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\Basalt\Log.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Basalt\Application.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Basalt\Log.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
