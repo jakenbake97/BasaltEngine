@@ -33,8 +33,9 @@ namespace Basalt
 	};
 }
 
+// If non-distribution build
 template <typename T>
-constexpr void BAS_LOG(Basalt::ELogger logger, Basalt::ELogSeverity severity, const T& message)
+constexpr void BE_LOG(const Basalt::ELogger logger, const Basalt::ELogSeverity severity, const T& message)
 {
 	std::shared_ptr<spdlog::logger> log;
 	if (logger == Basalt::ELogger::Core)
@@ -62,3 +63,7 @@ constexpr void BAS_LOG(Basalt::ELogger logger, Basalt::ELogSeverity severity, co
 		break;
 	}
 }
+
+// If distribution build
+// template <typename T>
+// constexpr void BE_LOG(const Basalt::ELogger logger, const Basalt::ELogSeverity severity, const T& message) {};

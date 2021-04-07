@@ -1,7 +1,7 @@
 #pragma once
 
-#ifdef BAS_PLATFORM_WINDOWS
-	#ifdef BAS_BUILD_DLL
+#ifdef BE_PLATFORM_WINDOWS
+	#ifdef BE_BUILD_DLL
 		#define BASALT_API __declspec(dllexport)
 	#else
 		#define BASALT_API __declspec(dllimport)
