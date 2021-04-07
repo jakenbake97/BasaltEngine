@@ -9,7 +9,7 @@ namespace Basalt
 	class BASALT_API Log
 	{
 	public:
-		static void Init();
+		static void Init(const std::string& clientName);
 
 		inline static std::shared_ptr<spdlog::logger>& GetCoreLogger() { return coreLogger; }
 		inline static std::shared_ptr<spdlog::logger>& GetClientLogger() { return clientLogger; }

@@ -6,7 +6,7 @@ namespace Basalt
 	std::shared_ptr<spdlog::logger> Log::coreLogger;
 	std::shared_ptr<spdlog::logger> Log::clientLogger;
 	
-	void Log::Init()
+	void Log::Init(const std::string& clientName)
 	{
 		// %^ starts color range
 		// %T prints the time
@@ -18,7 +18,7 @@ namespace Basalt
 		coreLogger = spdlog::stdout_color_mt("BASALT");
 		coreLogger->set_level(spdlog::level::trace);
 		
-		clientLogger = spdlog::stdout_color_mt("APP");
+		clientLogger = spdlog::stdout_color_mt(clientName);
 		clientLogger->set_level(spdlog::level::trace);
 	}
 }

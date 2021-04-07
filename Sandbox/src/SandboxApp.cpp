@@ -3,14 +3,11 @@
 class Sandbox : public Basalt::Application
 {
 public:
-	Sandbox()
+	Sandbox(): Application("SANDBOX")
 	{
 	}
 
-	~Sandbox()
-	{
-		
-	}
+	~Sandbox() override = default;
 };
 
 Basalt::Application* Basalt::CreateApplication()
