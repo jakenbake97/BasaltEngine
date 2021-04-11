@@ -8,6 +8,9 @@ namespace Basalt
 	
 	void Log::Init(const std::string& clientName)
 	{
+		// Setup console for winMain
+		AllocConsole();
+		
 		// %^ starts color range
 		// %T prints the time
 		// %n prints the name of the logger

@@ -11,8 +11,8 @@ namespace Basalt
 	public:
 		static void Init(const std::string& clientName);
 
-		inline static std::shared_ptr<spdlog::logger>& GetCoreLogger() { return coreLogger; }
-		inline static std::shared_ptr<spdlog::logger>& GetClientLogger() { return clientLogger; }
+		static std::shared_ptr<spdlog::logger>& GetCoreLogger() { return coreLogger; }
+		static std::shared_ptr<spdlog::logger>& GetClientLogger() { return clientLogger; }
 	private:
 		static std::shared_ptr<spdlog::logger> coreLogger;
 		static std::shared_ptr<spdlog::logger> clientLogger;
@@ -33,6 +33,8 @@ namespace Basalt
 	};
 }
 
+
+#ifndef BE_DIST
 // If non-distribution build
 template <typename T>
 constexpr void BE_LOG(const Basalt::ELogger logger, const Basalt::ELogSeverity severity, const T& message)
@@ -63,7 +65,10 @@ constexpr void BE_LOG(const Basalt::ELogger logger, const Basalt::ELogSeverity s
 		break;
 	}
 }
+#endif
 
+#ifdef BE_DIST
 // If distribution build
-// template <typename T>
-// constexpr void BE_LOG(const Basalt::ELogger logger, const Basalt::ELogSeverity severity, const T& message) {};
+ template <typename T>
+ constexpr void BE_LOG(const Basalt::ELogger logger, const Basalt::ELogSeverity severity, const T& message) {};
+#endif
