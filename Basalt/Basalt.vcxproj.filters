@@ -4,6 +4,9 @@
     <Filter Include="Basalt">
       <UniqueIdentifier>{BC81EFA8-A823-1A7F-91DE-2DD37D1FA1CF}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Basalt\Utility">
+      <UniqueIdentifier>{FF3BAF6D-EB09-A373-D49D-139AC00A7FD8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Basalt.h" />
@@ -18,6 +21,9 @@
     </ClInclude>
     <ClInclude Include="src\Basalt\Log.h">
       <Filter>Basalt</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Basalt\Utility\String.h">
+      <Filter>Basalt\Utility</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

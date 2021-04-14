@@ -1,5 +1,8 @@
 #pragma once
+
 #include <Windows.h>
+
+#include "Utility/String.h"
 
 #ifdef BE_PLATFORM_WINDOWS
 
@@ -11,7 +14,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	// Initialize the logger
 	Basalt::Log::Init(app->GetAppName());
 	
-	const auto windowName = L"Basalt Engine";
+	const Basalt::String className(L"Basalt Engine");
 
 	BE_LOG(Basalt::ELogger::Core, Basalt::ELogSeverity::Trace, "Initialized Trace");
 	BE_LOG(Basalt::ELogger::Core, Basalt::ELogSeverity::Info, "Initialized Info");
@@ -35,15 +38,17 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	wc.hCursor = nullptr;
 	wc.hbrBackground = nullptr;
 	wc.lpszMenuName = nullptr;
-	wc.lpszClassName = windowName;
+	wc.lpszClassName = className.CStr();
 	wc.hIconSm = nullptr;
 
 	RegisterClassEx(&wc);
-
+	
 	// Create window instance
-	const HWND wndHandle = CreateWindowEx(0, windowName, L"Basalt Engine - Window",
+	const Basalt::String windowName = className + L" - " + app->GetAppName();
+	
+	HWND wndHandle = CreateWindowEx(0, className.CStr(), windowName.CStr(),
 	                                      WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU,
-	                                      200, 200, 1600, 900,
+	                                      500, 200, 1600, 900,
 	                                      nullptr, nullptr, hInstance, nullptr);
 
 	ShowWindow(wndHandle, SW_SHOW);

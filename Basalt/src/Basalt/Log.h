@@ -3,19 +3,20 @@
 #include <memory>
 #include "Core.h"
 #include "spdlog/spdlog.h"
+#include "Utility/String.h"
 
 namespace Basalt
 {
 	class BASALT_API Log
 	{
+	private:
+		static std::shared_ptr<spdlog::logger> coreLogger;
+		static std::shared_ptr<spdlog::logger> clientLogger;	
 	public:
-		static void Init(const std::string& clientName);
+		static void Init(const class String& clientName);
 
 		static std::shared_ptr<spdlog::logger>& GetCoreLogger() { return coreLogger; }
 		static std::shared_ptr<spdlog::logger>& GetClientLogger() { return clientLogger; }
-	private:
-		static std::shared_ptr<spdlog::logger> coreLogger;
-		static std::shared_ptr<spdlog::logger> clientLogger;
 	};
 
 	enum class ELogger

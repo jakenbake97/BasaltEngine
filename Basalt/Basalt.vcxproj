@@ -149,6 +149,7 @@
     <ClInclude Include="src\Basalt\Core.h" />
     <ClInclude Include="src\Basalt\EntryPoint.h" />
     <ClInclude Include="src\Basalt\Log.h" />
+    <ClInclude Include="src\Basalt\Utility\String.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Basalt\Application.cpp" />

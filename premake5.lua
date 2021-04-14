@@ -60,7 +60,7 @@ project "Basalt"
 
 project "Sandbox"
 	location "Sandbox"
-	kind "ConsoleApp"
+	kind "WindowedApp"
 	language "C++"
 
 	targetdir("bin/" .. outputDir .. "/%{prj.name}")

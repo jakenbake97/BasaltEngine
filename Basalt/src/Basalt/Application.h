@@ -1,21 +1,20 @@
 #pragma once
 
-#include <string>
-
 #include "Core.h"
+#include "Utility/String.h"
 
 namespace Basalt
 {
 	class BASALT_API Application
 	{
+	private:
+		String applicationName;	
 	public:
-		Application(std::string name);
+		Application(String name);
 		virtual ~Application();
 
 		void Run();
-		std::string GetAppName() const;
-	private:
-		std::string applicationName;
+		String GetAppName() const;
 	};
 
 	extern Application* CreateApplication();

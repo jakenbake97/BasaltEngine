@@ -3,7 +3,7 @@
 namespace Basalt
 {
 
-	Application::Application(std::string name)
+	Application::Application(String name)
 		: applicationName(std::move(name))
 	{
 	}
@@ -15,7 +15,7 @@ namespace Basalt
 		while (true);
 	}
 
-	std::string Application::GetAppName() const
+	String Application::GetAppName() const
 	{
 		return applicationName;
 	}

@@ -1,12 +1,13 @@
 #include "Log.h"
 #include "spdlog/sinks/stdout_color_sinks.h"
+#include "Utility/String.h"
 
 namespace Basalt
 {
 	std::shared_ptr<spdlog::logger> Log::coreLogger;
 	std::shared_ptr<spdlog::logger> Log::clientLogger;
 	
-	void Log::Init(const std::string& clientName)
+	void Log::Init(const String& clientName)
 	{
 		// Setup console for winMain
 		AllocConsole();
@@ -20,8 +21,10 @@ namespace Basalt
 
 		coreLogger = spdlog::stdout_color_mt("BASALT");
 		coreLogger->set_level(spdlog::level::trace);
+
+		std::wstring test(L"SANDBOX");
 		
-		clientLogger = spdlog::stdout_color_mt(clientName);
+		clientLogger = spdlog::stdout_color_mt(clientName.Narrow());
 		clientLogger->set_level(spdlog::level::trace);
 	}
 }
