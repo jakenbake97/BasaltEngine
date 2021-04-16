@@ -24,7 +24,26 @@ LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		}
 		break;
 	case WM_KEYUP:
-		SetWindowText(hWnd, L"No key pressed");
+		if (wParam == 'F')
+		{
+			SetWindowText(hWnd, L"Key Released");
+		}
+		break;
+	case WM_CHAR:
+		{
+			static Basalt::String title{};
+			title.PushBack((char)wParam);
+			SetWindowText(hWnd, title.CStr());
+		}
+		break;
+	case WM_LBUTTONDOWN:
+		{
+			POINTS pt = MAKEPOINTS(lParam);
+			std::ostringstream oss;
+			oss << "(" << pt.x << "," << pt.y << ")";
+			Basalt::String outString{ oss.str() };
+			SetWindowText(hWnd, outString.CStr());
+		}
 		break;
 	}
 	

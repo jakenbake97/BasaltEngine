@@ -64,6 +64,18 @@ namespace Basalt
 			return narrow;
 		}
 
+		void PushBack(char character)
+		{
+			wchar_t wideChar;
+			mbtowc(&wideChar, &character, 1);
+
+			data.push_back(wideChar);
+		}
+		void PushBack(wchar_t character)
+		{
+			data.push_back(character);
+		}
+
 	private:
 		static std::wstring Wide(const std::string& inString)
 		{
