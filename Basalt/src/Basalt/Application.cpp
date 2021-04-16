@@ -10,9 +10,24 @@ namespace Basalt
 
 	Application::~Application() = default;
 
-	void Application::Run()
+	int Application::Run()
 	{
-		while (true);
+		MSG msg;
+		BOOL gResult;
+		while ((gResult = GetMessage(&msg, nullptr, 0, 0)) > 0)
+		{
+			TranslateMessage(&msg);
+			DispatchMessage(&msg);
+		}
+
+		if (gResult == -1)
+		{
+			return EXIT_FAILURE;
+		}
+		else
+		{
+			return msg.wParam;
+		}
 	}
 
 	String Application::GetAppName() const

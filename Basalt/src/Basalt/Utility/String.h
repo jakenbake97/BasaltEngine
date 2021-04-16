@@ -1,10 +1,11 @@
 #pragma once
 #include <string>
 #include <Windows.h>
+#include "../Core.h"
 
 namespace Basalt
 {
-	class String
+	class BASALT_API String
 	{
 	private:
 		std::wstring data;

@@ -13,7 +13,7 @@ namespace Basalt
 		Application(String name);
 		virtual ~Application();
 
-		void Run();
+		int Run();
 		String GetAppName() const;
 	};
 

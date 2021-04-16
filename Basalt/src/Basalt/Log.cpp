@@ -4,8 +4,8 @@
 
 namespace Basalt
 {
-	std::shared_ptr<spdlog::logger> Log::coreLogger;
-	std::shared_ptr<spdlog::logger> Log::clientLogger;
+	BASALT_API std::shared_ptr<spdlog::logger> Log::coreLogger;
+	BASALT_API std::shared_ptr<spdlog::logger> Log::clientLogger;
 	
 	void Log::Init(const String& clientName)
 	{

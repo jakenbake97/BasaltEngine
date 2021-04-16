@@ -150,10 +150,12 @@
     <ClInclude Include="src\Basalt\EntryPoint.h" />
     <ClInclude Include="src\Basalt\Log.h" />
     <ClInclude Include="src\Basalt\Utility\String.h" />
+    <ClInclude Include="src\Basalt\Platform\WindowsMessageMap.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Basalt\Application.cpp" />
     <ClCompile Include="src\Basalt\Log.cpp" />
+    <ClCompile Include="src\Basalt\Platform\WindowsMessageMap.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
