@@ -25,7 +25,9 @@
     <ClInclude Include="src\Basalt\Utility\String.h">
       <Filter>Basalt\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="src\Basalt\Platform\WindowsMessageMap.h" />
+    <ClInclude Include="src\Platform\WindowsMessageMap.h" />
+    <ClInclude Include="src\Platform\WindowsIncludes.h" />
+    <ClInclude Include="src\Platform\Window.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Basalt\Application.cpp">
@@ -34,6 +36,7 @@
     <ClCompile Include="src\Basalt\Log.cpp">
       <Filter>Basalt</Filter>
     </ClCompile>
-    <ClCompile Include="src\Basalt\Platform\WindowsMessageMap.cpp" />
+    <ClCompile Include="src\Platform\WindowsMessageMap.cpp" />
+    <ClCompile Include="src\Platform\Window.cpp" />
   </ItemGroup>
 </Project>

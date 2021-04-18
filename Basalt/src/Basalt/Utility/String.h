@@ -1,6 +1,7 @@
 #pragma once
+
+#include "../../Platform/WindowsIncludes.h"
 #include <string>
-#include <Windows.h>
 #include "../Core.h"
 
 namespace Basalt

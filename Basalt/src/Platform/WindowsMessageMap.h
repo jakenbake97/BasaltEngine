@@ -1,8 +1,13 @@
+/*
+ * Included from the WindowsMessageMap debug class in the Chili Direct3D Engine
+ * https://github.com/planetchili/hw3d
+ */
+
 #pragma once
 
+#include "WindowsIncludes.h"
 #include <unordered_map>
-#include <Windows.h>
-#include "../Core.h"
+#include "../Basalt/Core.h"
 
 namespace Basalt {
 	class String;

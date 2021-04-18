@@ -2,7 +2,6 @@
 
 namespace Basalt
 {
-
 	Application::Application(String name)
 		: applicationName(std::move(name))
 	{
@@ -24,10 +23,8 @@ namespace Basalt
 		{
 			return EXIT_FAILURE;
 		}
-		else
-		{
-			return msg.wParam;
-		}
+
+		return msg.wParam;
 	}
 
 	String Application::GetAppName() const

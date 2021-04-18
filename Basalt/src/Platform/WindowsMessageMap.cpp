@@ -1,9 +1,14 @@
+/*
+ * Included from the WindowsMessageMap debug class in the Chili Direct3D Engine
+ * https://github.com/planetchili/hw3d
+ */
+
 #include "WindowsMessageMap.h"
 
 #include <iomanip>
 #include <sstream>
 
-#include "../Utility/String.h"
+#include "../Basalt/Utility/String.h"
 
 // secret messages
 #define WM_UAHDESTROYWINDOW 0x0090
@@ -150,15 +155,6 @@ Basalt::Platform::WindowsMessageMap::WindowsMessageMap()
 		REGISTER_MESSAGE(WM_QUERYNEWPALETTE),
 		REGISTER_MESSAGE(WM_PALETTEISCHANGING),
 		REGISTER_MESSAGE(WM_PALETTECHANGED),
-		REGISTER_MESSAGE(WM_DDE_INITIATE),
-		REGISTER_MESSAGE(WM_DDE_TERMINATE),
-		REGISTER_MESSAGE(WM_DDE_ADVISE),
-		REGISTER_MESSAGE(WM_DDE_UNADVISE),
-		REGISTER_MESSAGE(WM_DDE_ACK),
-		REGISTER_MESSAGE(WM_DDE_DATA),
-		REGISTER_MESSAGE(WM_DDE_REQUEST),
-		REGISTER_MESSAGE(WM_DDE_POKE),
-		REGISTER_MESSAGE(WM_DDE_EXECUTE),
 		REGISTER_MESSAGE(WM_DROPFILES),
 		REGISTER_MESSAGE(WM_POWER),
 		REGISTER_MESSAGE(WM_WINDOWPOSCHANGED),
