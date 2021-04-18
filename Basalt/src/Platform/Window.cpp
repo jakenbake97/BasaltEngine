@@ -12,14 +12,14 @@ namespace Basalt::Platform
 		// Register Window Class
 		WNDCLASSEX wc = {};
 		wc.cbSize = sizeof(wc);
-		wc.style = CS_OWNDC;
+		wc.style = CS_OWNDC | CS_VREDRAW | CS_HREDRAW;
 		wc.lpfnWndProc = HandleMsgSetup;
 		wc.cbClsExtra = 0;
 		wc.cbWndExtra = 0;
 		wc.hInstance = GetInstance();
 		wc.hIcon = nullptr;
 		wc.hCursor = nullptr;
-		wc.hbrBackground = nullptr;
+		wc.hbrBackground = (HBRUSH)COLOR_WINDOW;
 		wc.lpszMenuName = nullptr;
 		wc.lpszClassName = GetName();
 		wc.hIconSm = nullptr;
@@ -42,22 +42,32 @@ namespace Basalt::Platform
 		return wndClass.hInst;
 	}
 
-	Window::Window(int width, int height, const String& name)
+	Window::Window(const int width, const int height, const String& name)
+		: width(width), height(height)
 	{
-		RECT windowRegion;
-		windowRegion.left = 100;
-		windowRegion.right = width + windowRegion.left;
-		windowRegion.top = 100;
-		windowRegion.bottom = height + windowRegion.top;
+		RECT windowRect;
+		windowRect.left = 0;
+		windowRect.right = width;
+		windowRect.top = 0;
+		windowRect.bottom = height;
 
-		AdjustWindowRect(&windowRegion, WS_CAPTION | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_SYSMENU, false);
+		const auto styles = WS_OVERLAPPEDWINDOW;
+		
+		AdjustWindowRect(&windowRect, styles, false);
 
 		handle = CreateWindow(WindowClass::GetName(), name.CStr(),
-		                      WS_CAPTION | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_SYSMENU, CW_USEDEFAULT, CW_USEDEFAULT,
-		                      windowRegion.right - windowRegion.left, windowRegion.bottom - windowRegion.top, nullptr,
+		                      styles, 300, 300,
+		                      windowRect.right - windowRect.left, windowRect.bottom - windowRect.top, nullptr,
 		                      nullptr,
 		                      WindowClass::GetInstance(), this
 		);
+
+		if (!handle)
+		{
+			BE_LOG(ELogger::Core, ELogSeverity::Error, "Failed to create window!");
+			PostQuitMessage(-1);
+			return;
+		}
 
 		ShowWindow(handle, SW_SHOWDEFAULT);
 
@@ -97,12 +107,26 @@ namespace Basalt::Platform
 		return pWindow->HandleMsg(hWnd, msg, wParam, lParam);
 	}
 
-	LRESULT Window::HandleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
+	void Window::HandleWindowResize(HWND hWnd, UINT width, UINT height) const
+	{
+		RECT clientRect, windowRect;
+		POINT pointDiff;
+		GetClientRect(hWnd, &clientRect);
+		GetWindowRect(hWnd, &windowRect);
+		pointDiff.x = (windowRect.right - windowRect.left) - clientRect.right;
+		pointDiff.y = (windowRect.bottom - windowRect.top) - clientRect.bottom;
+		MoveWindow(hWnd, windowRect.left, windowRect.top, width + pointDiff.x, height + pointDiff.y, TRUE);
+	}
+
+	LRESULT Window::HandleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) const
 	{
 		switch (msg)
 		{
 		case WM_CLOSE:
 			PostQuitMessage(0);
+			return 0;
+		case WM_SIZE:
+			HandleWindowResize(hWnd, LOWORD(lParam), HIWORD(lParam));
 			return 0;
 		}
 
