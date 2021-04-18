@@ -34,12 +34,12 @@ namespace Basalt
 	};
 }
 
-
 #ifndef BE_DIST
 // If non-distribution build
-template <typename T>
-constexpr void BE_LOG(const Basalt::ELogger logger, const Basalt::ELogSeverity severity, const T& message)
+template <typename T, typename... Types>
+void BE_LOG(const Basalt::ELogger logger, const Basalt::ELogSeverity severity, T& message, Types... additionalMessages)
 {
+	
 	std::shared_ptr<spdlog::logger> log;
 	if (logger == Basalt::ELogger::Core)
 	{
@@ -49,20 +49,20 @@ constexpr void BE_LOG(const Basalt::ELogger logger, const Basalt::ELogSeverity s
 	{
 		log = Basalt::Log::GetClientLogger();
 	}
-
+	
 	switch (severity)
 	{
 	case Basalt::ELogSeverity::Trace:
-		log->trace(message);
+		log->trace(message, additionalMessages...);
 		break;
 	case Basalt::ELogSeverity::Info:
-		log->info(message);
+		log->info(message, additionalMessages...);
 		break;
 	case Basalt::ELogSeverity::Warn:
-		log->warn(message);
+		log->warn(message, additionalMessages...);
 		break;
 	case Basalt::ELogSeverity::Error:
-		log->error(message);
+		log->error(message, additionalMessages...);
 		break;
 	}
 }
@@ -70,6 +70,6 @@ constexpr void BE_LOG(const Basalt::ELogger logger, const Basalt::ELogSeverity s
 
 #ifdef BE_DIST
 // If distribution build
- template <typename T>
- constexpr void BE_LOG(const Basalt::ELogger logger, const Basalt::ELogSeverity severity, const T& message) {};
+template <typename T, typename... Types>
+void BE_LOG(const Basalt::ELogger logger, const Basalt::ELogSeverity severity, T message, Types... additionalMessage) {};
 #endif
