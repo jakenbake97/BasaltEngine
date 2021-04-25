@@ -60,7 +60,7 @@ namespace Basalt
 			std::string narrow;
 			narrow.resize(data.size());
 			
-			WideCharToMultiByte(CP_UTF8, 0, data.c_str(), data.size(), narrow.data(), data.size(), nullptr, nullptr);
+			WideCharToMultiByte(CP_ACP, 0, data.c_str(), data.size(), narrow.data(), data.size(), nullptr, nullptr);
 
 			return narrow;
 		}
@@ -83,7 +83,7 @@ namespace Basalt
 			std::wstring wide;
 			wide.resize(inString.size());
 
-			MultiByteToWideChar(CP_UTF8, 0, inString.c_str(), inString.size(), wide.data(), inString.size());
+			MultiByteToWideChar(CP_ACP, 0, inString.c_str(), inString.size(), wide.data(), inString.size());
 
 			return wide;
 		}

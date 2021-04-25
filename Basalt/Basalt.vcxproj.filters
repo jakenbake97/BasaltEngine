@@ -28,6 +28,7 @@
     <ClInclude Include="src\Platform\WindowsMessageMap.h" />
     <ClInclude Include="src\Platform\WindowsIncludes.h" />
     <ClInclude Include="src\Platform\Window.h" />
+    <ClInclude Include="src\Basalt\Exception.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Basalt\Application.cpp">
@@ -38,5 +39,6 @@
     </ClCompile>
     <ClCompile Include="src\Platform\WindowsMessageMap.cpp" />
     <ClCompile Include="src\Platform\Window.cpp" />
+    <ClCompile Include="src\Basalt\Exception.cpp" />
   </ItemGroup>
 </Project>
