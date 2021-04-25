@@ -17,6 +17,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	const Basalt::String className(L"Basalt Engine");
 
+	BE_LOG(Basalt::ELogger::Core, Basalt::ELogSeverity::Warn, app->GetAppName());
 	
 	const Basalt::String windowName = className + L" - " + app->GetAppName();
 

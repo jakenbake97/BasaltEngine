@@ -3,6 +3,8 @@
 #include "../../Platform/WindowsIncludes.h"
 #include <string>
 #include "../Core.h"
+#include "spdlog/spdlog.h"
+#include "spdlog/fmt/ostr.h"
 
 namespace Basalt
 {
@@ -21,7 +23,6 @@ namespace Basalt
 		String(std::wstring& string)
 			: data(string)
 		{
-			
 		}
 
 		String(const char* string)
@@ -38,6 +39,36 @@ namespace Basalt
 		{
 			std::wstring temp = data + object.data;
 			return String(temp);
+		}
+
+		String& operator+=(const String& object)
+		{
+			data += object.Get();
+			return *this;
+		}
+		
+		String& operator+=(std::wstring& object)
+		{
+			data += object;
+			return *this;
+		}
+
+		String& operator+=(std::string& object)
+		{
+			data += Wide(object);
+			return *this;
+		}
+
+		String& operator+=(wchar_t* object)
+		{
+			data += object;
+			return *this;
+		}
+
+		String& operator+=(char* object)
+		{
+			data += Wide(object);
+			return *this;
 		}
 
 		unsigned int Size() const
@@ -72,9 +103,15 @@ namespace Basalt
 
 			data.push_back(wideChar);
 		}
-		void PushBack(wchar_t character)
+		void PushBack(const wchar_t character)
 		{
 			data.push_back(character);
+		}
+
+		template<typename OStream>
+		friend OStream& operator<<(OStream& os, const String& s)
+		{
+			return os << s.Narrow();
 		}
 
 	private:

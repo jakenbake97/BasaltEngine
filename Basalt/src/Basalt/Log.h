@@ -37,7 +37,7 @@ namespace Basalt
 #ifndef BE_DIST
 // If non-distribution build
 template <typename T, typename... Types>
-void BE_LOG(const Basalt::ELogger logger, const Basalt::ELogSeverity severity, T& message, Types... additionalMessages)
+void BE_LOG(const Basalt::ELogger logger, const Basalt::ELogSeverity severity, T message, Types... additionalMessages)
 {
 	
 	std::shared_ptr<spdlog::logger> log;

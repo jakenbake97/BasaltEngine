@@ -7,6 +7,9 @@
     <Filter Include="Basalt\Utility">
       <UniqueIdentifier>{FF3BAF6D-EB09-A373-D49D-139AC00A7FD8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Platform">
+      <UniqueIdentifier>{2AC788B4-1694-E3BF-3FAD-D1672BD9184E}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Basalt.h" />
@@ -19,26 +22,40 @@
     <ClInclude Include="src\Basalt\EntryPoint.h">
       <Filter>Basalt</Filter>
     </ClInclude>
+    <ClInclude Include="src\Basalt\Exception.h">
+      <Filter>Basalt</Filter>
+    </ClInclude>
     <ClInclude Include="src\Basalt\Log.h">
       <Filter>Basalt</Filter>
     </ClInclude>
     <ClInclude Include="src\Basalt\Utility\String.h">
       <Filter>Basalt\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="src\Platform\WindowsMessageMap.h" />
-    <ClInclude Include="src\Platform\WindowsIncludes.h" />
-    <ClInclude Include="src\Platform\Window.h" />
-    <ClInclude Include="src\Basalt\Exception.h" />
+    <ClInclude Include="src\Platform\Window.h">
+      <Filter>Platform</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\WindowsIncludes.h">
+      <Filter>Platform</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\WindowsMessageMap.h">
+      <Filter>Platform</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Basalt\Application.cpp">
       <Filter>Basalt</Filter>
     </ClCompile>
+    <ClCompile Include="src\Basalt\Exception.cpp">
+      <Filter>Basalt</Filter>
+    </ClCompile>
     <ClCompile Include="src\Basalt\Log.cpp">
       <Filter>Basalt</Filter>
     </ClCompile>
-    <ClCompile Include="src\Platform\WindowsMessageMap.cpp" />
-    <ClCompile Include="src\Platform\Window.cpp" />
-    <ClCompile Include="src\Basalt\Exception.cpp" />
+    <ClCompile Include="src\Platform\Window.cpp">
+      <Filter>Platform</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\WindowsMessageMap.cpp">
+      <Filter>Platform</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
