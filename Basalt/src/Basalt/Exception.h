@@ -1,22 +1,26 @@
 #pragma once
 #include <exception>
 #include <string>
+#include "Core.h"
+#include "Utility/String.h"
 
 namespace Basalt
 {
-	class Exception : public std::exception
+	class BASALT_API Exception : public std::exception
 	{
 	protected:
 		mutable std::string whatBuffer;
 	private:
 		int line;
-		std::string file;
+		String file;
 	public:
-		Exception(int line, std::string file);
-		const char* what() const override;
-		virtual std::string GetType() const;
+		Exception(int line, String file);
+		virtual String GetException() const;
+		virtual String GetType() const;
 		int GetLine() const;
-		std::string GetFile() const;
-		std::string GetOriginString() const;
+		String GetFile() const;
+		String GetOriginString() const;
+	private:
+		const char* what() const override;
 	};
 }

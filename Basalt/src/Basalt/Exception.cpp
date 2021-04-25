@@ -1,34 +1,41 @@
 #include "Exception.h"
-
 #include <utility>
 
-Basalt::Exception::Exception(const int line, std::string file)
-	:line(line), file(std::move(file))
+namespace Basalt
 {
-}
+	Exception::Exception(const int line, String file)
+		: line(line), file(std::move(file))
+	{
+	}
 
-const char* Basalt::Exception::what() const
-{
-	whatBuffer = GetType() + "\n" + GetOriginString();
-	return whatBuffer.c_str();
-}
+	String Exception::GetException() const
+	{
+		return {what()};
+	}
 
-std::string Basalt::Exception::GetType() const
-{
-	return { "Basalt Exception" };
-}
+	const char* Exception::what() const
+	{
+		whatBuffer = (GetType() + "\n" + GetOriginString()).Narrow();
+		return whatBuffer.c_str();
+	}
 
-int Basalt::Exception::GetLine() const
-{
-	return line;
-}
+	String Exception::GetType() const
+	{
+		return {"Generic Basalt Exception"};
+	}
 
-std::string Basalt::Exception::GetFile() const
-{
-	return file;
-}
+	int Exception::GetLine() const
+	{
+		return line;
+	}
 
-std::string Basalt::Exception::GetOriginString() const
-{
-	return "[File] " + file + "\n" + "[Line] " + std::to_string(line);
+	String Exception::GetFile() const
+	{
+		return file;
+	}
+
+	String Exception::GetOriginString() const
+	{
+		return  L"[File] " + file + L"\n[Line] " + std::to_string(line);
+	}
 }

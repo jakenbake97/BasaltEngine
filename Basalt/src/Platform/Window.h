@@ -1,6 +1,7 @@
 #pragma once
 #include "WindowsIncludes.h"
 #include "../Basalt/Core.h"
+#include "../Basalt/Exception.h"
 
 namespace Basalt {
 	class String;
@@ -8,6 +9,7 @@ namespace Basalt {
 
 namespace Basalt::Platform
 {
+	
 	class BASALT_API Window
 	{
 	private:
@@ -33,6 +35,19 @@ namespace Basalt::Platform
 		};
 
 	public:
+		class WindowException : public Exception
+		{
+		private:
+			HRESULT hr;
+		public:
+			WindowException(int line, String file, HRESULT hr);
+			String GetException() const override;
+			String GetType() const override;
+			static String TranslateErrorCode(HRESULT hr);
+			HRESULT GetErrorCode() const;
+			String GetErrorString() const;
+		};
+		
 		Window(int width, int height, const String& name);
 		~Window();
 		Window(const Window&) = delete;
@@ -45,3 +60,6 @@ namespace Basalt::Platform
 		LRESULT HandleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) const;
 	};
 }
+
+#define BE_WND_EXCEPT(hr) Basalt::Platform::Window::WindowException(__LINE__, __FILE__, hr)
+#define BE_WND_LAST_EXCEPT() Basalt::Platform::Window::WindowException(__LINE__, __FILE__, GetLastError())

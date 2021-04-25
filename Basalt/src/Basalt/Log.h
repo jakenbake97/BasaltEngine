@@ -2,8 +2,8 @@
 
 #include <memory>
 #include "Core.h"
-#include "spdlog/spdlog.h"
 #include "Utility/String.h"
+#include "spdlog/spdlog.h"
 
 namespace Basalt
 {
@@ -14,6 +14,8 @@ namespace Basalt
 		static std::shared_ptr<spdlog::logger> clientLogger;	
 	public:
 		static void Init(const class String& clientName);
+		static void InitCoreLog();
+		static void InitClientLog(const class String& clientName);
 
 		static std::shared_ptr<spdlog::logger>& GetCoreLogger() { return coreLogger; }
 		static std::shared_ptr<spdlog::logger>& GetClientLogger() { return clientLogger; }
@@ -37,9 +39,8 @@ namespace Basalt
 #ifndef BE_DIST
 // If non-distribution build
 template <typename T, typename... Types>
-void BE_LOG(const Basalt::ELogger logger, const Basalt::ELogSeverity severity, T message, Types... additionalMessages)
+void BE_LOG(const Basalt::ELogger logger, const Basalt::ELogSeverity severity, T formatString, Types... additionalArguments)
 {
-	
 	std::shared_ptr<spdlog::logger> log;
 	if (logger == Basalt::ELogger::Core)
 	{
@@ -53,16 +54,16 @@ void BE_LOG(const Basalt::ELogger logger, const Basalt::ELogSeverity severity, T
 	switch (severity)
 	{
 	case Basalt::ELogSeverity::Trace:
-		log->trace(message, additionalMessages...);
+		log->trace(formatString, additionalArguments...);
 		break;
 	case Basalt::ELogSeverity::Info:
-		log->info(message, additionalMessages...);
+		log->info(formatString, additionalArguments...);
 		break;
 	case Basalt::ELogSeverity::Warn:
-		log->warn(message, additionalMessages...);
+		log->warn(formatString, additionalArguments...);
 		break;
 	case Basalt::ELogSeverity::Error:
-		log->error(message, additionalMessages...);
+		log->error(formatString, additionalArguments...);
 		break;
 	}
 }
@@ -71,5 +72,5 @@ void BE_LOG(const Basalt::ELogger logger, const Basalt::ELogSeverity severity, T
 #ifdef BE_DIST
 // If distribution build
 template <typename T, typename... Types>
-void BE_LOG(const Basalt::ELogger logger, const Basalt::ELogSeverity severity, T message, Types... additionalMessage) {};
+void BE_LOG(const Basalt::ELogger logger, const Basalt::ELogSeverity severity, T formatString, Types... additionalArguments) {};
 #endif

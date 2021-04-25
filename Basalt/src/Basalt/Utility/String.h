@@ -125,4 +125,16 @@ namespace Basalt
 			return wide;
 		}
 	};
+
+	inline String operator+(const char* lhs, String& rhs)
+	{
+		const String temp(lhs);
+		return temp + rhs;
+	}
+
+	inline String operator+(const wchar_t* lhs, const String& rhs)
+	{
+		const String temp(lhs);
+		return temp + rhs;
+	}
 }

@@ -52,8 +52,11 @@ namespace Basalt::Platform
 		windowRect.bottom = height;
 
 		const auto styles = WS_OVERLAPPEDWINDOW;
-		
-		AdjustWindowRect(&windowRect, styles, false);
+
+		if (!AdjustWindowRect(&windowRect, styles, false))
+		{
+			throw BE_WND_LAST_EXCEPT();
+		}
 
 		handle = CreateWindow(WindowClass::GetName(), name.CStr(),
 		                      styles, 300, 300,
@@ -64,9 +67,7 @@ namespace Basalt::Platform
 
 		if (!handle)
 		{
-			BE_LOG(ELogger::Core, ELogSeverity::Error, "Failed to create window!");
-			PostQuitMessage(-1);
-			return;
+			throw BE_WND_LAST_EXCEPT();
 		}
 
 		ShowWindow(handle, SW_SHOWDEFAULT);
@@ -77,6 +78,49 @@ namespace Basalt::Platform
 	Window::~Window()
 	{
 		DestroyWindow(handle);
+	}
+
+	Window::WindowException::WindowException(int line, String file, HRESULT hr)
+		: Exception(line, file), hr(hr)
+	{
+	}
+
+	String Window::WindowException::GetException() const
+	{
+		return GetType()
+			+ L"\n[Error Code] " + std::to_string(GetErrorCode())
+			+ L"\n[Description] " + GetErrorString()
+			+ GetOriginString();
+	}
+
+	String Window::WindowException::GetType() const
+	{
+		return "Basalt Window Exception";
+	}
+
+	String Window::WindowException::TranslateErrorCode(const HRESULT hr)
+	{
+		wchar_t* msgBuf = nullptr;
+
+		if (FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
+		                  nullptr, hr, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+		                  reinterpret_cast<LPWSTR>(&msgBuf), 0, nullptr) == 0)
+		{
+			return L"Unidentified error code";
+		}
+		String errorString = msgBuf;
+		LocalFree(msgBuf);
+		return errorString;
+	}
+
+	HRESULT Window::WindowException::GetErrorCode() const
+	{
+		return hr;
+	}
+
+	String Window::WindowException::GetErrorString() const
+	{
+		return TranslateErrorCode(hr);
 	}
 
 	LRESULT WINAPI Window::HandleMsgSetup(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)

@@ -4,14 +4,26 @@
 
 namespace Basalt
 {
-	BASALT_API std::shared_ptr<spdlog::logger> Log::coreLogger;
-	BASALT_API std::shared_ptr<spdlog::logger> Log::clientLogger;
+	BASALT_API std::shared_ptr<spdlog::logger> Log::coreLogger = nullptr;
+	BASALT_API std::shared_ptr<spdlog::logger> Log::clientLogger = nullptr;
 	
 	void Log::Init(const String& clientName)
 	{
+		if (!coreLogger)
+		{
+			InitCoreLog();
+		}
+		if (!clientLogger)
+		{
+			InitClientLog(clientName);
+		}
+	}
+
+	void Log::InitCoreLog()
+	{
 		// Setup console for winMain
 		AllocConsole();
-		
+
 		// %^ starts color range
 		// %T prints the time
 		// %n prints the name of the logger
@@ -21,7 +33,14 @@ namespace Basalt
 
 		coreLogger = spdlog::stdout_color_mt("BASALT");
 		coreLogger->set_level(spdlog::level::trace);
-		
+	}
+
+	void Log::InitClientLog(const String& clientName)
+	{
+		if (!coreLogger)
+		{
+			InitCoreLog();
+		}
 		clientLogger = spdlog::stdout_color_mt(clientName.Narrow());
 		clientLogger->set_level(spdlog::level::trace);
 	}
