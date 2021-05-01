@@ -28,6 +28,7 @@ namespace Basalt
 	
 	class BASALT_API Event
 	{
+		friend class EventDispatcher;
 	protected:
 		bool handled = false;
 	public:
@@ -43,5 +44,30 @@ namespace Basalt
 		}
 
 		virtual ~Event() = default;
+	};
+
+	class EventDispatcher
+	{
+	private:
+		template<typename T>
+		using EventFunc = std::function<bool>(T&);
+
+		Event& event;
+	public:
+		EventDispatcher(Event& event)
+			: event(event)
+		{
+		}
+
+		template<typename T>
+		bool Dispatch(EventFunc<T> func)
+		{
+			if (event.GetEventType() == T::GetStaticType())
+			{
+				event.handled = func(*static_cast<T*>(&event));
+				return true;
+			}
+			return false;
+		}
 	};
 }
