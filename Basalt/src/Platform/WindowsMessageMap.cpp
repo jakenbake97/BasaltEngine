@@ -8,7 +8,7 @@
 #include <iomanip>
 #include <sstream>
 
-#include "../Basalt/Utility/String.h"
+#include "Basalt/Utility/String.h"
 
 // secret messages
 #define WM_UAHDESTROYWINDOW 0x0090

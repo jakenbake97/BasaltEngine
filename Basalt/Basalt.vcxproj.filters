@@ -40,6 +40,11 @@
     <ClInclude Include="src\Platform\WindowsMessageMap.h">
       <Filter>Platform</Filter>
     </ClInclude>
+    <ClInclude Include="src\Basalt\Events\Event.h" />
+    <ClInclude Include="src\Basalt\Events\ApplicationEvent.h" />
+    <ClInclude Include="src\Basalt\Events\WindowEvent.h" />
+    <ClInclude Include="src\Basalt\Events\KeyboardEvent.h" />
+    <ClInclude Include="src\Basalt\Events\MouseEvent.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Basalt\Application.cpp">

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Platform/Window.h"
+#include "Platform/Window.h"
 #include "Application.h"
 #include "Utility/String.h"
 #include "Log.h"

@@ -1,8 +1,8 @@
 #pragma once
 
-#include "../../Platform/WindowsIncludes.h"
+#include "Platform/WindowsIncludes.h"
 #include <string>
-#include "../Core.h"
+#include "Basalt/Core.h"
 #include "spdlog/spdlog.h"
 #include "spdlog/fmt/ostr.h"
 

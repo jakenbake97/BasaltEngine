@@ -1,6 +1,8 @@
 #include "Window.h"
-#include "../Basalt/Utility/String.h"
-#include "../Basalt/Log.h"
+
+#include <utility>
+#include "Basalt/Utility/String.h"
+#include "Basalt/Log.h"
 
 namespace Basalt::Platform
 {
@@ -60,8 +62,8 @@ namespace Basalt::Platform
 
 		handle = CreateWindow(WindowClass::GetName(), name.CStr(),
 		                      styles, 300, 300,
-		                      windowRect.right - windowRect.left, windowRect.bottom - windowRect.top, nullptr,
-		                      nullptr,
+		                      windowRect.right - windowRect.left, windowRect.bottom - windowRect.top,
+		                      nullptr, nullptr,
 		                      WindowClass::GetInstance(), this
 		);
 
@@ -80,8 +82,8 @@ namespace Basalt::Platform
 		DestroyWindow(handle);
 	}
 
-	Window::WindowException::WindowException(int line, String file, HRESULT hr)
-		: Exception(line, file), hr(hr)
+	Window::WindowException::WindowException(const int line, String file, const HRESULT hr)
+		: Exception(line, std::move(file)), hr(hr)
 	{
 	}
 

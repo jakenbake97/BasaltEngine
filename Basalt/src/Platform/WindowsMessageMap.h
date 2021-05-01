@@ -7,7 +7,7 @@
 
 #include "WindowsIncludes.h"
 #include <unordered_map>
-#include "../Basalt/Core.h"
+#include "Basalt/Core.h"
 
 namespace Basalt {
 	class String;
