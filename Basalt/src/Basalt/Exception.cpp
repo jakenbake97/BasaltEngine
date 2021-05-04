@@ -1,5 +1,5 @@
+#include "BEpch.h"
 #include "Exception.h"
-#include <utility>
 
 namespace Basalt
 {

@@ -4,6 +4,9 @@
     <Filter Include="Basalt">
       <UniqueIdentifier>{BC81EFA8-A823-1A7F-91DE-2DD37D1FA1CF}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Basalt\Events">
+      <UniqueIdentifier>{206222DE-8C22-9E14-555D-E791C1DCE2F0}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Basalt\Utility">
       <UniqueIdentifier>{FF3BAF6D-EB09-A373-D49D-139AC00A7FD8}</UniqueIdentifier>
     </Filter>
@@ -12,6 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\BEpch.h" />
     <ClInclude Include="src\Basalt.h" />
     <ClInclude Include="src\Basalt\Application.h">
       <Filter>Basalt</Filter>
@@ -21,6 +25,21 @@
     </ClInclude>
     <ClInclude Include="src\Basalt\EntryPoint.h">
       <Filter>Basalt</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Basalt\Events\ApplicationEvent.h">
+      <Filter>Basalt\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Basalt\Events\Event.h">
+      <Filter>Basalt\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Basalt\Events\KeyboardEvent.h">
+      <Filter>Basalt\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Basalt\Events\MouseEvent.h">
+      <Filter>Basalt\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Basalt\Events\WindowEvent.h">
+      <Filter>Basalt\Events</Filter>
     </ClInclude>
     <ClInclude Include="src\Basalt\Exception.h">
       <Filter>Basalt</Filter>
@@ -34,19 +53,9 @@
     <ClInclude Include="src\Platform\Window.h">
       <Filter>Platform</Filter>
     </ClInclude>
-    <ClInclude Include="src\Platform\WindowsIncludes.h">
-      <Filter>Platform</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Platform\WindowsMessageMap.h">
-      <Filter>Platform</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Basalt\Events\Event.h" />
-    <ClInclude Include="src\Basalt\Events\ApplicationEvent.h" />
-    <ClInclude Include="src\Basalt\Events\WindowEvent.h" />
-    <ClInclude Include="src\Basalt\Events\KeyboardEvent.h" />
-    <ClInclude Include="src\Basalt\Events\MouseEvent.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\BEpch.cpp" />
     <ClCompile Include="src\Basalt\Application.cpp">
       <Filter>Basalt</Filter>
     </ClCompile>
@@ -57,9 +66,6 @@
       <Filter>Basalt</Filter>
     </ClCompile>
     <ClCompile Include="src\Platform\Window.cpp">
-      <Filter>Platform</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Platform\WindowsMessageMap.cpp">
       <Filter>Platform</Filter>
     </ClCompile>
   </ItemGroup>

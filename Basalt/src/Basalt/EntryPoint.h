@@ -1,9 +1,8 @@
 #pragma once
 
+#include "BEpch.h"
 #include "Platform/Window.h"
 #include "Application.h"
-#include "Utility/String.h"
-#include "Log.h"
 
 #ifdef BE_PLATFORM_WINDOWS
 

@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Platform/WindowsIncludes.h"
 #include <string>
 #include "Basalt/Core.h"
 #include "spdlog/spdlog.h"

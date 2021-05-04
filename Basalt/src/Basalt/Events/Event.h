@@ -1,6 +1,5 @@
 #pragma once
-#include "Basalt/Core.h"
-#include "Basalt/Utility/String.h"
+#include "BEpch.h"
 
 namespace Basalt
 {

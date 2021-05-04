@@ -1,6 +1,5 @@
 #pragma once
-#include "WindowsIncludes.h"
-#include "Basalt/Core.h"
+
 #include "Basalt/Exception.h"
 
 namespace Basalt {

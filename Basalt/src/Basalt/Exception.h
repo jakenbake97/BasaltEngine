@@ -1,7 +1,6 @@
 #pragma once
+
 #include <exception>
-#include "Core.h"
-#include "Utility/String.h"
 
 namespace Basalt
 {

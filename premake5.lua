@@ -30,6 +30,9 @@ project "Basalt"
 		"%{prj.name}/vendor/spdlog/include"
 	}
 
+	pchheader "BEpch.h"
+	pchsource "Basalt/src/BEpch.cpp"
+
 	filter "system:windows"
 		cppdialect "C++17"
 		staticruntime "On"

@@ -1,3 +1,4 @@
+#include "BEpch.h"
 #include "Application.h"
 
 namespace Basalt
