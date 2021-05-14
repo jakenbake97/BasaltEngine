@@ -4,6 +4,7 @@
 #include <utility>
 #include "Basalt/Utility/String.h"
 #include "Basalt/Log.h"
+#include "Basalt/Events/WindowEvent.h"
 
 namespace Basalt::Platform
 {
@@ -154,6 +155,11 @@ namespace Basalt::Platform
 		return pWindow->HandleMsg(hWnd, msg, wParam, lParam);
 	}
 
+	void Window::SetEventCallback(const EventCallbackFn& callback)
+	{
+		eventCallback = callback;
+	}
+
 	void Window::HandleWindowResize(HWND hWnd, UINT width, UINT height) const
 	{
 		RECT clientRect, windowRect;
@@ -170,11 +176,27 @@ namespace Basalt::Platform
 		switch (msg)
 		{
 		case WM_CLOSE:
-			PostQuitMessage(0);
-			return 0;
+			{
+				if (eventCallback)
+				{
+					WindowCloseEvent event;
+					eventCallback(event);
+				}
+
+				PostQuitMessage(0);
+				return 0;
+			}
 		case WM_SIZE:
-			HandleWindowResize(hWnd, LOWORD(lParam), HIWORD(lParam));
-			return 0;
+			{
+				if (eventCallback)
+				{
+					WindowResizeEvent event(LOWORD(lParam), HIWORD(lParam));
+					eventCallback(event);
+				}
+
+				HandleWindowResize(hWnd, LOWORD(lParam), HIWORD(lParam));
+				return 0;
+			}
 		}
 
 		return DefWindowProc(hWnd, msg, wParam, lParam);

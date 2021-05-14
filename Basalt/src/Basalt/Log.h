@@ -36,10 +36,11 @@ namespace Basalt
 	};
 }
 
-#ifndef BE_DIST
 // If non-distribution build
+#ifndef BE_DIST
+
 template <typename T, typename... Types>
-void BE_LOG(const Basalt::ELogger logger, const Basalt::ELogSeverity severity, T formatString, Types... additionalArguments)
+void BE_LOG(const Basalt::ELogger logger, const Basalt::ELogSeverity severity, T& formatString, Types&... additionalArguments)
 {
 	std::shared_ptr<spdlog::logger> log;
 	if (logger == Basalt::ELogger::Core)
@@ -67,10 +68,64 @@ void BE_LOG(const Basalt::ELogger logger, const Basalt::ELogSeverity severity, T
 		break;
 	}
 }
+
+template <typename T, typename... Types>
+void BE_CORE_LOG(const Basalt::ELogSeverity severity, const T& formatString, const Types&... additionalArguments)
+{
+	BE_LOG(Basalt::ELogger::Core, severity, formatString, additionalArguments...);
+}
+
+template <typename T, typename... Types>
+void BE_CLIENT_LOG(const Basalt::ELogSeverity severity, const T& formatString, const Types&... additionalArguments)
+{
+	BE_LOG(Basalt::ELogger::Client, severity, formatString, additionalArguments...);
+}
+
+template <typename T, typename... Types>
+void BE_TRACE(const T& formatString, const Types&... additionalArguments)
+{
+	BE_LOG(Basalt::ELogger::Core, Basalt::ELogSeverity::Trace, formatString, additionalArguments...);
+}
+
+template <typename T, typename... Types>
+void BE_INFO(const T& formatString, const Types&... additionalArguments)
+{
+	BE_LOG(Basalt::ELogger::Core, Basalt::ELogSeverity::Info, formatString, additionalArguments...);
+}
+
+template <typename T, typename... Types>
+void BE_WARN(const T& formatString, const Types&... additionalArguments)
+{
+	BE_LOG(Basalt::ELogger::Core, Basalt::ELogSeverity::Warn, formatString, additionalArguments...);
+}
+
+template <typename T, typename... Types>
+void BE_ERROR(const T& formatString, const Types&... additionalArguments)
+{
+	BE_LOG(Basalt::ELogger::Core, Basalt::ELogSeverity::Error, formatString, additionalArguments...);
+}
 #endif
 
 #ifdef BE_DIST
 // If distribution build
 template <typename T, typename... Types>
-void BE_LOG(const Basalt::ELogger logger, const Basalt::ELogSeverity severity, T formatString, Types... additionalArguments) {};
+void BE_LOG(const Basalt::ELogger logger, const Basalt::ELogSeverity severity, T formatString, Types... additionalArguments) {}
+
+template <typename T, typename... Types>
+void BE_CORE_LOG(const Basalt::ELogSeverity severity, T formatString, Types... additionalArguments) {}
+
+template <typename T, typename... Types>
+void BE_CLIENT_LOG(const Basalt::ELogSeverity severity, T formatString, Types... additionalArguments) {}
+
+template <typename T, typename... Types>
+void BE_TRACE(T formatString, Types... additionalArguments){}
+
+template <typename T, typename... Types>
+void BE_INFO(T formatString, Types... additionalArguments){}
+
+template <typename T, typename... Types>
+void BE_WARN(T formatString, Types... additionalArguments){}
+
+template <typename T, typename... Types>
+void BE_ERROR(T formatString, Types... additionalArguments) {}
 #endif

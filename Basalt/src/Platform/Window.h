@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Basalt/Exception.h"
+#include "Basalt/Events/Event.h"
 
 namespace Basalt {
 	class String;
@@ -12,10 +13,6 @@ namespace Basalt::Platform
 	class BASALT_API Window
 	{
 	private:
-		int width;
-		int height;
-		HWND handle;
-
 		class WindowClass
 		{
 		private:
@@ -33,7 +30,15 @@ namespace Basalt::Platform
 			WindowClass& operator=(const WindowClass&) = delete;
 		};
 
+		using EventCallbackFn = std::function<void(Event&)>;
+
+		int width;
+		int height;
+		HWND handle;
+		EventCallbackFn eventCallback;
+		
 	public:
+		
 		class WindowException : public Exception
 		{
 		private:
@@ -52,10 +57,13 @@ namespace Basalt::Platform
 		Window(const Window&) = delete;
 		Window& operator=(const Window&) = delete;
 
+		void SetEventCallback(const EventCallbackFn& callback);
+		
+		void HandleWindowResize(HWND hWnd, UINT width, UINT height) const;
+
 	private:
 		static LRESULT WINAPI HandleMsgSetup(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 		static LRESULT WINAPI HandleMsgAdapter(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
-		void HandleWindowResize(HWND hWnd, UINT width, UINT height) const;
 		LRESULT HandleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) const;
 	};
 }

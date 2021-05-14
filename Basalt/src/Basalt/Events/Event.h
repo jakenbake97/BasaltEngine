@@ -31,9 +31,9 @@ namespace Basalt
 	protected:
 		bool handled = false;
 	public:
-		virtual EventType GetEventType() const = 0;
-		virtual String GetName() const = 0;
-		virtual int GetCategories() const = 0;
+		virtual EventType GetEventType() const { return GetStaticType(); };
+		virtual String GetName() const { return "Generic Event"; }
+		virtual int GetCategories() const { return static_cast<int>(EventCategory::None);}
 		virtual String ToString() const { return GetName(); }
 		static EventType GetStaticType() { return EventType::None; }
 
@@ -49,7 +49,7 @@ namespace Basalt
 	{
 	private:
 		template<typename T>
-		using EventFunc = std::function<bool>(T&);
+		using EventFunc = std::function<bool(T&)>;
 
 		Event& event;
 	public:
@@ -69,4 +69,10 @@ namespace Basalt
 			return false;
 		}
 	};
+
+	template<typename OStream>
+	OStream& operator<<(OStream& os, const Event& e)
+	{
+		return os << e.ToString();
+	}
 }
