@@ -6,8 +6,10 @@ namespace Basalt
 {
 	class BASALT_API AppTickEvent : public Event
 	{
+	private:
+		float deltaTime;
 	public:
-		AppTickEvent() = default;
+		AppTickEvent(const float deltaTime) : deltaTime(deltaTime) {}
 
 		static EventType GetStaticType() { return EventType::AppTick; }
 		EventType GetEventType() const override { return GetStaticType(); }

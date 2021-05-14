@@ -6,14 +6,14 @@ namespace Basalt
 	enum class EventType
 	{
 		None = 0,
-		// Window Events
-		WindowClose, WindowResize, WindowFocus, WindowLostFocus, WindowMoved,
 		// Application Events
 		AppTick, AppUpdate, AppRender,
 		// Keyboard Events
 		KeyPressed, KeyReleased,
 		// Mouse Events
-		MouseButtonPressed, MouseButtonReleased, MouseMoved, MouseScrolled, MouseEnter, MouseLeave
+		MouseButtonPressed, MouseButtonReleased, MouseMoved, MouseScrolled, MouseEnter, MouseLeave,
+		// Window Events
+		WindowClose, WindowResize, WindowFocus, WindowLostFocus, WindowMoved
 	};
 
 	enum class EventCategory
@@ -27,11 +27,19 @@ namespace Basalt
 	
 	class BASALT_API Event
 	{
+	private:
 		friend class EventDispatcher;
 	protected:
 		bool handled = false;
 	public:
-		virtual EventType GetEventType() const { return GetStaticType(); };
+		Event() = default;
+		Event(const Event & other) = default;
+		Event(Event && other) noexcept = default;
+		Event& operator=(const Event & other) = default;
+		Event& operator=(Event && other) noexcept = default;
+		virtual ~Event() = default;
+		
+		virtual EventType GetEventType() const { return GetStaticType(); }
 		virtual String GetName() const { return "Generic Event"; }
 		virtual int GetCategories() const { return static_cast<int>(EventCategory::None);}
 		virtual String ToString() const { return GetName(); }
@@ -41,8 +49,6 @@ namespace Basalt
 		{
 			return GetCategories() & static_cast<int> (category);
 		}
-
-		virtual ~Event() = default;
 	};
 
 	class EventDispatcher

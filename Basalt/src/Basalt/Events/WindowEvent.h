@@ -6,13 +6,19 @@ namespace Basalt
 {
 	class BASALT_API WindowCloseEvent : public Event
 	{
+	private:
+		int code;
 	public:
-		WindowCloseEvent() = default;
+		WindowCloseEvent(const int exitCode) : code(exitCode)
+		{
+		}
+
+		int GetExitCode() const { return code; }
 
 		static EventType GetStaticType() { return EventType::WindowClose; }
 		EventType GetEventType() const override { return GetStaticType(); }
 		String GetName() const override { return "WindowCloseEvent"; }
-		int GetCategories() const override {return static_cast<int>(EventCategory::Window);}
+		int GetCategories() const override { return static_cast<int>(EventCategory::Window); }
 	};
 
 	class BASALT_API WindowResizeEvent : public Event
@@ -22,7 +28,8 @@ namespace Basalt
 	public:
 		WindowResizeEvent(unsigned int width, unsigned int height)
 			: width(width), height(height)
-		{}
+		{
+		}
 
 		unsigned int GetWidth() const { return width; }
 		unsigned int GetHeight() const { return height; }
@@ -33,7 +40,7 @@ namespace Basalt
 			temp += std::to_string(width) + ", " + std::to_string(height);
 			return temp;
 		}
-		
+
 		static EventType GetStaticType() { return EventType::WindowResize; }
 		EventType GetEventType() const override { return GetStaticType(); }
 		String GetName() const override { return "WindowResizeEvent"; }
@@ -43,8 +50,6 @@ namespace Basalt
 	class BASALT_API WindowFocusEvent : public Event
 	{
 	public:
-		WindowFocusEvent() = default;
-
 		static EventType GetStaticType() { return EventType::WindowFocus; }
 		EventType GetEventType() const override { return GetStaticType(); }
 		String GetName() const override { return "WindowFocusEvent"; }
@@ -54,8 +59,6 @@ namespace Basalt
 	class BASALT_API WindowLostFocusEvent : public Event
 	{
 	public:
-		WindowLostFocusEvent() = default;
-
 		static EventType GetStaticType() { return EventType::WindowLostFocus; }
 		EventType GetEventType() const override { return GetStaticType(); }
 		String GetName() const override { return "WindowLostFocusEvent"; }
@@ -64,8 +67,13 @@ namespace Basalt
 
 	class BASALT_API WindowMovedEvent : public Event
 	{
+	private:
+		int x, y;
+
 	public:
-		WindowMovedEvent() = default;
+		WindowMovedEvent(const int xPos, const int yPos) : x(xPos), y(yPos)
+		{
+		}
 
 		static EventType GetStaticType() { return EventType::WindowMoved; }
 		EventType GetEventType() const override { return GetStaticType(); }

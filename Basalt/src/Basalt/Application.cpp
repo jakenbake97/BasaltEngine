@@ -51,6 +51,10 @@ namespace Basalt
 	bool Application::OnWindowClose(WindowCloseEvent& event)
 	{
 		system("pause");
+
+		if (event.GetExitCode() != 0)
+			return false;
+		
 		return true;
 	}
 }

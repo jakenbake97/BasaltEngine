@@ -179,7 +179,7 @@ namespace Basalt::Platform
 			{
 				if (eventCallback)
 				{
-					WindowCloseEvent event;
+					WindowCloseEvent event(0);
 					eventCallback(event);
 				}
 
