@@ -34,6 +34,26 @@ namespace Basalt
 			data = Wide(string);
 		}
 
+		String(const int i)
+		{
+			data = std::to_wstring(i);
+		}
+
+		String(const unsigned int u)
+		{
+			data = std::to_wstring(u);
+		}
+
+		String(const float f)
+		{
+			data = std::to_wstring(f);
+		}
+
+		String(const double d)
+		{
+			data = std::to_wstring(d);
+		}
+
 		String operator+(const String& object) const // Concatenation
 		{
 			std::wstring temp = data + object.data;
@@ -45,28 +65,76 @@ namespace Basalt
 			data += object.Get();
 			return *this;
 		}
-		
-		String& operator+=(std::wstring& object)
+
+		String& operator+=(const std::wstring& object)
 		{
 			data += object;
 			return *this;
 		}
 
-		String& operator+=(std::string& object)
+		String& operator+=(const std::string& object)
 		{
 			data += Wide(object);
 			return *this;
 		}
 
-		String& operator+=(wchar_t* object)
+		String& operator+=(const wchar_t* object)
 		{
 			data += object;
 			return *this;
 		}
 
-		String& operator+=(char* object)
+		String& operator+=(const char* object)
 		{
 			data += Wide(object);
+			return *this;
+		}
+
+		String operator+(const int i)
+		{
+			String temp(data);
+			return temp += std::to_wstring(i);
+		}
+
+		String& operator+=(const int i)
+		{
+			data += std::to_wstring(i);
+			return *this;
+		}
+
+		String operator+(const unsigned int u)
+		{
+			String temp(data);
+			return temp += std::to_wstring(u);
+		}
+
+		String& operator+=(const unsigned int u)
+		{
+			data += std::to_wstring(u);
+			return *this;
+		}
+
+		String operator+(const float f)
+		{
+			String temp(data);
+			return temp += std::to_wstring(f);
+		}
+
+		String& operator+=(const float f)
+		{
+			data += std::to_wstring(f);
+			return *this;
+		}
+
+		String operator+(const double d)
+		{
+			String temp(data);
+			return temp += std::to_wstring(d);
+		}
+
+		String& operator+=(const double d)
+		{
+			data += std::to_wstring(d);
 			return *this;
 		}
 
@@ -89,7 +157,7 @@ namespace Basalt
 		{
 			std::string narrow;
 			narrow.resize(data.size());
-			
+
 			WideCharToMultiByte(CP_ACP, 0, data.c_str(), data.size(), narrow.data(), data.size(), nullptr, nullptr);
 
 			return narrow;
@@ -102,12 +170,13 @@ namespace Basalt
 
 			data.push_back(wideChar);
 		}
+
 		void PushBack(const wchar_t character)
 		{
 			data.push_back(character);
 		}
 
-		template<typename OStream>
+		template <typename OStream>
 		friend OStream& operator<<(OStream& os, const String& s)
 		{
 			return os << s.Narrow();

@@ -36,6 +36,6 @@ namespace Basalt
 
 	String Exception::GetOriginString() const
 	{
-		return  L"[File] " + file + L"\n[Line] " + std::to_string(line);
+		return  L"[File] " + file + L"\n[Line] " + line;
 	}
 }

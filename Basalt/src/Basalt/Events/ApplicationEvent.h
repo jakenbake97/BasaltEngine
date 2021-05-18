@@ -13,7 +13,8 @@ namespace Basalt
 
 		static EventType GetStaticType() { return EventType::AppTick; }
 		EventType GetEventType() const override { return GetStaticType(); }
-		String GetName() const override { return "AppTick"; }
+		String GetName() const override { return "App Tick Event"; }
+		String ToString() const override { return GetName() + L" DeltaTime: " + deltaTime; }
 		int GetCategories() const override { return static_cast<int>(EventCategory::Application);}
 	};
 
@@ -24,7 +25,8 @@ namespace Basalt
 
 		static EventType GetStaticType() { return EventType::AppUpdate; }
 		EventType GetEventType() const override { return GetStaticType(); }
-		String GetName() const override { return "AppUpdate"; }
+		String GetName() const override { return "App Update Event"; }
+		String ToString() const override { return GetName(); }
 		int GetCategories() const override { return static_cast<int>(EventCategory::Application); }
 	};
 
@@ -35,7 +37,8 @@ namespace Basalt
 
 		static EventType GetStaticType() { return EventType::AppRender; }
 		EventType GetEventType() const override { return GetStaticType(); }
-		String GetName() const override { return "AppRender"; }
+		String GetName() const override { return "App Render Event"; }
+		String ToString() const override { return GetName(); }
 		int GetCategories() const override { return static_cast<int>(EventCategory::Application);}
 	};
 }

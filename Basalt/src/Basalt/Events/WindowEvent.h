@@ -17,8 +17,9 @@ namespace Basalt
 
 		static EventType GetStaticType() { return EventType::WindowClose; }
 		EventType GetEventType() const override { return GetStaticType(); }
-		String GetName() const override { return "WindowCloseEvent"; }
+		String GetName() const override { return "Window Close Event"; }
 		int GetCategories() const override { return static_cast<int>(EventCategory::Window); }
+		String ToString() const override { return GetName(); }
 	};
 
 	class BASALT_API WindowResizeEvent : public Event
@@ -34,16 +35,11 @@ namespace Basalt
 		unsigned int GetWidth() const { return width; }
 		unsigned int GetHeight() const { return height; }
 
-		String ToString() const override
-		{
-			String temp("WindowResizeEvent: ");
-			temp += std::to_string(width) + ", " + std::to_string(height);
-			return temp;
-		}
+		String ToString() const override{return GetName() + ": Size(" + width + ", " + height + ")";}
 
 		static EventType GetStaticType() { return EventType::WindowResize; }
 		EventType GetEventType() const override { return GetStaticType(); }
-		String GetName() const override { return "WindowResizeEvent"; }
+		String GetName() const override { return "Window Resize Event"; }
 		int GetCategories() const override { return static_cast<int>(EventCategory::Window); }
 	};
 
@@ -52,8 +48,9 @@ namespace Basalt
 	public:
 		static EventType GetStaticType() { return EventType::WindowFocus; }
 		EventType GetEventType() const override { return GetStaticType(); }
-		String GetName() const override { return "WindowFocusEvent"; }
+		String GetName() const override { return "Window Focus Event"; }
 		int GetCategories() const override { return static_cast<int>(EventCategory::Window); }
+		String ToString() const override { return GetName(); }
 	};
 
 	class BASALT_API WindowLostFocusEvent : public Event
@@ -61,8 +58,9 @@ namespace Basalt
 	public:
 		static EventType GetStaticType() { return EventType::WindowLostFocus; }
 		EventType GetEventType() const override { return GetStaticType(); }
-		String GetName() const override { return "WindowLostFocusEvent"; }
+		String GetName() const override { return "Window Lost Focus Event"; }
 		int GetCategories() const override { return static_cast<int>(EventCategory::Window); }
+		String ToString() const override { return GetName(); }
 	};
 
 	class BASALT_API WindowMovedEvent : public Event
@@ -77,7 +75,8 @@ namespace Basalt
 
 		static EventType GetStaticType() { return EventType::WindowMoved; }
 		EventType GetEventType() const override { return GetStaticType(); }
-		String GetName() const override { return "WindowMovedEvent"; }
+		String GetName() const override { return "Window Moved Event"; }
 		int GetCategories() const override { return static_cast<int>(EventCategory::Window); }
+		String ToString() const override { return GetName() + ": Position(" + x + ", " + y + ")"; }
 	};
 }

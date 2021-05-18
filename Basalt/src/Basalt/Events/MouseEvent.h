@@ -20,7 +20,8 @@ namespace Basalt
 
 		static EventType GetStaticType() { return EventType::MouseButtonPressed; }
 		EventType GetEventType() const override { return GetStaticType(); }
-		String GetName() const override { return "MouseButtonPressed"; }
+		String GetName() const override { return "Mouse Button Pressed Event"; }
+		String ToString() const override { return GetName() + ": Button[" + button + "]"; }
 	};
 
 	class BASALT_API MouseButtonReleasedEvent : public MouseButtonEvent
@@ -30,7 +31,8 @@ namespace Basalt
 
 		static EventType GetStaticType() { return EventType::MouseButtonReleased; }
 		EventType GetEventType() const override { return GetStaticType(); }
-		String GetName() const override { return "MouseButtonReleased"; }
+		String GetName() const override { return "Mouse Button Released Event"; }
+		String ToString() const override { return GetName() + ": Button[" + button + "]"; }
 	};
 
 	class BASALT_API MouseScrolledEvent : public Event
@@ -45,8 +47,9 @@ namespace Basalt
 		
 		static EventType GetStaticType() { return EventType::MouseScrolled; }
 		EventType GetEventType() const override { return GetStaticType(); }
-		String GetName() const override { return "MouseScrolled"; }
+		String GetName() const override { return "Mouse Scrolled Event"; }
 		int GetCategories() const override { return static_cast<int>(EventCategory::Mouse); }
+		String ToString() const override { return GetName() + ": Scroll Offset[" + offset + "]"; }
 	};
 
 	class BASALT_API MousePositionEvent : public Event
@@ -69,7 +72,8 @@ namespace Basalt
 
 		static EventType GetStaticType() { return EventType::MouseMoved; }
 		EventType GetEventType() const override { return GetStaticType(); }
-		String GetName() const override { return "MouseMoved"; }
+		String GetName() const override { return "Mouse Moved Event"; }
+		String ToString() const override { return GetName() + ": Position(" + x +", " + y + ")"; }
 	};
 
 	class BASALT_API MouseEnterEvent : public MousePositionEvent
@@ -79,8 +83,8 @@ namespace Basalt
 
 		static EventType GetStaticType() { return EventType::MouseEnter; }
 		EventType GetEventType() const override { return GetStaticType(); }
-		String GetName() const override { return "MouseEnter"; }
-		
+		String GetName() const override { return "Mouse Enter Event"; }
+		String ToString() const override { return GetName() + ": Position(" + x + ", " + y + ")"; }
 	};
 
 	class BASALT_API MouseLeaveEvent : public MousePositionEvent
@@ -90,6 +94,7 @@ namespace Basalt
 		
 		static EventType GetStaticType() { return EventType::MouseLeave; }
 		EventType GetEventType() const override { return GetStaticType(); }
-		String GetName() const override { return "MouseLeave"; }
+		String GetName() const override { return "Mouse Leave Event"; }
+		String ToString() const override { return GetName() + ": Position(" + x + ", " + y + ")"; }
 	};
 }

@@ -26,12 +26,12 @@ namespace Basalt
 
 		static EventType GetStaticType() { return EventType::KeyPressed; }
 		EventType GetEventType() const override { return GetStaticType(); }
-		String GetName() const override { return "KeyPressed"; }
+		String GetName() const override { return "Key Pressed Event"; }
 		int GetCategories() const override { return static_cast<int>(EventCategory::Keyboard);}
 
 		String ToString() const override
 		{
-			return { "KeyPressedEvent: " + std::to_string(keycode) + " (" + std::to_string(repeatCount) + " repeats)" };
+			return GetName() + ": " + keycode + " (" + repeatCount + " repeats)";
 		}
 	};
 
@@ -42,7 +42,9 @@ namespace Basalt
 
 		static EventType GetStaticType() { return EventType::KeyReleased; }
 		EventType GetEventType() const override { return GetStaticType(); }
-		String GetName() const override { return "KeyReleased"; }
+		String GetName() const override { return "Key Released Event"; }
 		int GetCategories() const override { return static_cast<int>(EventCategory::Keyboard); }
+
+		String ToString() const override { return GetName() + ": " + keycode; }
 	};
 }

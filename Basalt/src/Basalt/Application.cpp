@@ -19,7 +19,6 @@ namespace Basalt
 
 	int Application::Run()
 	{
-		
 		MSG msg;
 		BOOL gResult;
 		while ((gResult = GetMessage(&msg, nullptr, 0, 0)) > 0)

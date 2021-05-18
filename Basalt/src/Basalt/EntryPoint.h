@@ -27,7 +27,11 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		Basalt::Platform::Window window(1600, 900, windowName);
 
 		window.SetEventCallback([app](Basalt::Event& event) {app->OnEvent(event); });
-		
+
+
+		const Basalt::String test = Basalt::String("test") + 3;
+
+		BE_INFO(test);
 
 		const int exitCode = app->Run();
 		delete app;

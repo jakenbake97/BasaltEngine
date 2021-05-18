@@ -92,7 +92,7 @@ namespace Basalt::Platform
 	String Window::WindowException::GetException() const
 	{
 		return GetType()
-			+ L"\n[Error Code] " + std::to_string(GetErrorCode())
+			+ L"\n[Error Code] " + GetErrorCode()
 			+ L"\n[Description] " + GetErrorString()
 			+ GetOriginString();
 	}
