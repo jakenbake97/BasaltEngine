@@ -2,6 +2,8 @@
 #include "Window.h"
 
 #include <utility>
+
+#include "Basalt/Input.h"
 #include "Basalt/Utility/String.h"
 #include "Basalt/Log.h"
 #include "Basalt/Events/WindowEvent.h"
@@ -160,7 +162,7 @@ namespace Basalt::Platform
 		eventCallback = callback;
 	}
 
-	void Window::HandleWindowResize(HWND hWnd, UINT width, UINT height) const
+	void Window::HandleWindowResize(HWND hWnd, UINT width, UINT height)
 	{
 		RECT clientRect, windowRect;
 		POINT pointDiff;
@@ -197,8 +199,40 @@ namespace Basalt::Platform
 				HandleWindowResize(hWnd, LOWORD(lParam), HIWORD(lParam));
 				return 0;
 			}
+		case WM_KEYDOWN:
+			{
+				WPARAM virtualCode = MapLeftRightKeys(wParam, lParam);
+			}
 		}
 
 		return DefWindowProc(hWnd, msg, wParam, lParam);
+	}
+
+	WPARAM Window::MapLeftRightKeys(WPARAM vk, LPARAM lParam)
+	{
+		WPARAM newVK = vk;
+		UINT scancode = (lParam & 0x00ff0000) >> 16;
+		int extended = (lParam & 0x1000000) != 0;
+
+		switch (vk)
+		{
+		case VK_SHIFT:
+			newVK = MapVirtualKey(scancode, MAPVK_VSC_TO_VK_EX);
+			break;
+		case VK_CONTROL:
+			newVK = extended ? VK_RCONTROL : VK_LCONTROL;
+			break;
+		case VK_MENU:
+			newVK = extended ? VK_RMENU : VK_LMENU;
+			break;
+		case VK_RETURN:
+			newVK = extended ? 0xFF : VK_RETURN;
+			break;
+		default:
+			newVK = vk;
+			break;
+		}
+
+		return newVK;
 	}
 }

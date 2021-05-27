@@ -26,6 +26,9 @@
 #include <vector>
 #include <unordered_map>
 #include <unordered_set>
+#include <queue>
+#include <bitset>
+#include <cstdint>
 
 // Engine includes
 #include "Basalt/Core.h"

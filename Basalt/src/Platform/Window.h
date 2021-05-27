@@ -9,36 +9,17 @@ namespace Basalt {
 
 namespace Basalt::Platform
 {
-	
 	class BASALT_API Window
 	{
 	private:
-		class WindowClass
-		{
-		private:
-			static WindowClass wndClass;
-			HINSTANCE hInst;
-
-		private:
-			WindowClass();
-			~WindowClass();
-		public:
-			static const wchar_t* GetName();
-			static HINSTANCE GetInstance();
-
-			WindowClass(const WindowClass&) = delete;
-			WindowClass& operator=(const WindowClass&) = delete;
-		};
-
 		using EventCallbackFn = std::function<void(Event&)>;
 
 		int width;
 		int height;
 		HWND handle;
 		EventCallbackFn eventCallback;
-		
+
 	public:
-		
 		class WindowException : public Exception
 		{
 		private:
@@ -56,15 +37,35 @@ namespace Basalt::Platform
 		~Window();
 		Window(const Window&) = delete;
 		Window& operator=(const Window&) = delete;
+		Window(Window&& other) noexcept = default;
+		Window& operator=(Window && other) noexcept = default;
 
 		void SetEventCallback(const EventCallbackFn& callback);
-		
-		void HandleWindowResize(HWND hWnd, UINT width, UINT height) const;
+
+		static void HandleWindowResize(HWND hWnd, UINT width, UINT height);
 
 	private:
+		class WindowClass
+		{
+		private:
+			static WindowClass wndClass;
+			HINSTANCE hInst;
+
+		private:
+			WindowClass();
+			~WindowClass();
+		public:
+			static const wchar_t* GetName();
+			static HINSTANCE GetInstance();
+
+			WindowClass(const WindowClass&) = delete;
+			WindowClass& operator=(const WindowClass&) = delete;
+		};
+		
 		static LRESULT WINAPI HandleMsgSetup(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 		static LRESULT WINAPI HandleMsgAdapter(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 		LRESULT HandleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) const;
+		static WPARAM MapLeftRightKeys(WPARAM vk, LPARAM lParam);
 	};
 }
 

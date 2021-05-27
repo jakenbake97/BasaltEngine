@@ -20,6 +20,9 @@
     <ClInclude Include="src\Basalt\Application.h">
       <Filter>Basalt</Filter>
     </ClInclude>
+    <ClInclude Include="src\Basalt\Keycodes.h">
+      <Filter>Basalt</Filter>
+    </ClInclude>
     <ClInclude Include="src\Basalt\Core.h">
       <Filter>Basalt</Filter>
     </ClInclude>
@@ -44,6 +47,9 @@
     <ClInclude Include="src\Basalt\Exception.h">
       <Filter>Basalt</Filter>
     </ClInclude>
+    <ClInclude Include="src\Basalt\Input.h">
+      <Filter>Basalt</Filter>
+    </ClInclude>
     <ClInclude Include="src\Basalt\Log.h">
       <Filter>Basalt</Filter>
     </ClInclude>
@@ -51,6 +57,9 @@
       <Filter>Basalt\Utility</Filter>
     </ClInclude>
     <ClInclude Include="src\Platform\Window.h">
+      <Filter>Platform</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\WindowsInput.h">
       <Filter>Platform</Filter>
     </ClInclude>
   </ItemGroup>
@@ -66,6 +75,9 @@
       <Filter>Basalt</Filter>
     </ClCompile>
     <ClCompile Include="src\Platform\Window.cpp">
+      <Filter>Platform</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\WindowsInput.cpp">
       <Filter>Platform</Filter>
     </ClCompile>
   </ItemGroup>

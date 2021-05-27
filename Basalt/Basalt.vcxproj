@@ -150,6 +150,7 @@
     <ClInclude Include="src\BEpch.h" />
     <ClInclude Include="src\Basalt.h" />
     <ClInclude Include="src\Basalt\Application.h" />
+    <ClInclude Include="src\Basalt\Keycodes.h" />
     <ClInclude Include="src\Basalt\Core.h" />
     <ClInclude Include="src\Basalt\EntryPoint.h" />
     <ClInclude Include="src\Basalt\Events\ApplicationEvent.h" />
@@ -158,9 +159,11 @@
     <ClInclude Include="src\Basalt\Events\MouseEvent.h" />
     <ClInclude Include="src\Basalt\Events\WindowEvent.h" />
     <ClInclude Include="src\Basalt\Exception.h" />
+    <ClInclude Include="src\Basalt\Input.h" />
     <ClInclude Include="src\Basalt\Log.h" />
     <ClInclude Include="src\Basalt\Utility\String.h" />
     <ClInclude Include="src\Platform\Window.h" />
+    <ClInclude Include="src\Platform\WindowsInput.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\BEpch.cpp">
@@ -170,6 +173,7 @@
     <ClCompile Include="src\Basalt\Exception.cpp" />
     <ClCompile Include="src\Basalt\Log.cpp" />
     <ClCompile Include="src\Platform\Window.cpp" />
+    <ClCompile Include="src\Platform\WindowsInput.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
