@@ -41,15 +41,13 @@ namespace Basalt::Platform
 
 	void WindowsInput::OnKeyDown(const unsigned char keycode)
 	{
-		// TODO: Convert to basalt keycode
-		const int basaltCode = keycode;
+		const KeyCode basaltCode = Key::ConvertToBasaltKeyCode.at(keycode);
 		keyStates[basaltCode] = true;
 	}
 
 	void WindowsInput::OnKeyUp(const unsigned char keycode)
 	{
-		// TODO: Convert to basalt keycode
-		const int basaltCode = keycode;
+		const KeyCode basaltCode = Key::ConvertToBasaltKeyCode.at(keycode);
 		keyStates[basaltCode] = false;
 	}
 
