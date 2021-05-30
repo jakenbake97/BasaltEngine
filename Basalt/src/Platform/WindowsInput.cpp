@@ -1,6 +1,9 @@
 ﻿#include "BEpch.h"
 #include "WindowsInput.h"
 
+#include "Basalt/Application.h"
+#include "Basalt/Events/KeyboardEvent.h"
+
 namespace Basalt
 {
 	IInput* IInput::instance = new Platform::WindowsInput();
@@ -39,16 +42,18 @@ namespace Basalt::Platform
 		return autoRepeatEnabled;
 	}
 
-	void WindowsInput::OnKeyDown(const unsigned char keycode)
+	void WindowsInput::HandleKeyDown(const KeyCode keycode)
 	{
-		const KeyCode basaltCode = Key::ConvertToBasaltKeyCode.at(keycode);
-		keyStates[basaltCode] = true;
+		keyStates[keycode] = true;
+		const auto keyDown = std::make_shared<KeyPressedEvent>(keycode, 0);
+		Application::OnEvent(keyDown);
 	}
 
-	void WindowsInput::OnKeyUp(const unsigned char keycode)
+	void WindowsInput::HandleKeyUp(const KeyCode keycode)
 	{
-		const KeyCode basaltCode = Key::ConvertToBasaltKeyCode.at(keycode);
-		keyStates[basaltCode] = false;
+		keyStates[keycode] = false;
+		const auto keyUp = std::make_shared<KeyReleasedEvent>(keycode);
+		Application::OnEvent(keyUp);
 	}
 
 	void WindowsInput::ClearState()
@@ -64,32 +69,12 @@ namespace Basalt::Platform
 		}
 	}
 
-	bool WindowsInput::CheckKey(const int keycode)
+	bool WindowsInput::CheckKey(const KeyCode keycode)
 	{
 		return keyStates[keycode];
 	}
 
-	bool WindowsInput::CheckKeyDown(int keycode)
-	{
-		return false;
-	}
-
-	bool WindowsInput::CheckKeyUp(int keycode)
-	{
-		return false;
-	}
-
 	bool WindowsInput::CheckMouseButton(int button)
-	{
-		return false;
-	}
-
-	bool WindowsInput::CheckMouseButtonDown(int button)
-	{
-		return false;
-	}
-
-	bool WindowsInput::CheckMouseButtonUp(int button)
 	{
 		return false;
 	}

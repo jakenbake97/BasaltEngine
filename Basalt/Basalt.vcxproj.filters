@@ -47,7 +47,7 @@
     <ClInclude Include="src\Basalt\Exception.h">
       <Filter>Basalt</Filter>
     </ClInclude>
-    <ClInclude Include="src\Basalt\Input.h">
+    <ClInclude Include="src\Basalt\IInput.h">
       <Filter>Basalt</Filter>
     </ClInclude>
     <ClInclude Include="src\Basalt\Log.h">

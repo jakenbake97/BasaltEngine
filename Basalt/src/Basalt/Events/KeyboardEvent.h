@@ -1,14 +1,15 @@
 #pragma once
 #include "Event.h"
+#include "Basalt/Keycodes.h"
 
 namespace Basalt
 {
 	class BASALT_API KeyEvent : public Event
 	{
 	protected:
-		int keycode;
+		KeyCode keycode;
 		
-		KeyEvent(const int keycode) : keycode(keycode) {}
+		KeyEvent(const KeyCode keycode) : keycode(keycode) {}
 
 	public:
 		int GetKeyCode() const { return keycode; }
@@ -22,7 +23,7 @@ namespace Basalt
 		int repeatCount;
 		
 	public:
-		KeyPressedEvent(const int keycode, const int repeatCount) : KeyEvent(keycode), repeatCount(repeatCount) {}
+		KeyPressedEvent(const KeyCode keycode, const int repeatCount) : KeyEvent(keycode), repeatCount(repeatCount) {}
 
 		static EventType GetStaticType() { return EventType::KeyPressed; }
 		EventType GetEventType() const override { return GetStaticType(); }
@@ -31,20 +32,20 @@ namespace Basalt
 
 		String ToString() const override
 		{
-			return GetName() + ": " + keycode + " (" + repeatCount + " repeats)";
+			return GetName() + ": " + keycode + " " + Key::GetKeyName.at(keycode) +" (" + repeatCount + " repeats)";
 		}
 	};
 
 	class BASALT_API KeyReleasedEvent final : public KeyEvent
 	{
 	public:
-		KeyReleasedEvent(const int keycode) : KeyEvent(keycode) {}
+		KeyReleasedEvent(const KeyCode keycode) : KeyEvent(keycode) {}
 
 		static EventType GetStaticType() { return EventType::KeyReleased; }
 		EventType GetEventType() const override { return GetStaticType(); }
 		String GetName() const override { return "Key Released Event"; }
 		int GetCategories() const override { return static_cast<int>(EventCategory::Keyboard); }
 
-		String ToString() const override { return GetName() + ": " + keycode; }
+		String ToString() const override { return GetName() + ": " + keycode + " " + Key::GetKeyName.at(keycode); }
 	};
 }

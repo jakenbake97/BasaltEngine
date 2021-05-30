@@ -3,10 +3,13 @@
 
 #include <utility>
 
-#include "Basalt/Input.h"
+#include "WindowsInput.h"
+#include "Basalt/Application.h"
+#include "Basalt/IInput.h"
 #include "Basalt/Utility/String.h"
 #include "Basalt/Log.h"
 #include "Basalt/Events/WindowEvent.h"
+#include "Basalt/Events/KeyboardEvent.h"
 
 namespace Basalt::Platform
 {
@@ -151,15 +154,10 @@ namespace Basalt::Platform
 	LRESULT WINAPI Window::HandleMsgAdapter(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	{
 		// retrieve ptr to window class
-		Window* const pWindow = reinterpret_cast<Window*>(GetWindowLongPtr(hWnd, GWLP_USERDATA));
+		auto* const pWindow = reinterpret_cast<Window*>(GetWindowLongPtr(hWnd, GWLP_USERDATA));
 
 		// forward message to the window class message handler
 		return pWindow->HandleMsg(hWnd, msg, wParam, lParam);
-	}
-
-	void Window::SetEventCallback(const EventCallbackFn& callback)
-	{
-		eventCallback = callback;
 	}
 
 	void Window::HandleWindowResize(HWND hWnd, UINT width, UINT height)
@@ -179,45 +177,42 @@ namespace Basalt::Platform
 		{
 		case WM_CLOSE:
 			{
-				if (eventCallback)
-				{
-					WindowCloseEvent event(0);
-					eventCallback(event);
-				}
-
 				PostQuitMessage(0);
+				const auto event = std::make_shared<WindowCloseEvent>(0);
+				Application::OnEvent(event);
+
 				return 0;
 			}
 		case WM_SIZE:
 			{
-				if (eventCallback)
-				{
-					WindowResizeEvent event(LOWORD(lParam), HIWORD(lParam));
-					eventCallback(event);
-				}
-
 				HandleWindowResize(hWnd, LOWORD(lParam), HIWORD(lParam));
+				const auto event = std::make_shared<WindowResizeEvent>(LOWORD(lParam), HIWORD(lParam));
+				Application::OnEvent(event);
+
 				return 0;
 			}
 		case WM_KEYDOWN:
 			{
-				WPARAM virtualCode = MapLeftRightKeys(wParam, lParam);
+				const WPARAM virtualCode = MapLeftRightKeys(wParam, lParam);
+				const KeyCode basaltCode = Key::ConvertToBasaltKeyCode.at(static_cast<unsigned char>(virtualCode));
+				IInput::OnKeyDown(basaltCode);
 			}
 		}
 
-		return DefWindowProc(hWnd, msg, wParam, lParam);
+		return
+			DefWindowProc(hWnd, msg, wParam, lParam);
 	}
 
 	WPARAM Window::MapLeftRightKeys(WPARAM vk, LPARAM lParam)
 	{
 		WPARAM newVK = vk;
-		UINT scancode = (lParam & 0x00ff0000) >> 16;
-		int extended = (lParam & 0x1000000) != 0;
+		const UINT scanCode = (lParam & 0x00ff0000) >> 16;
+		const int extended = (lParam & 0x1000000) != 0;
 
 		switch (vk)
 		{
 		case VK_SHIFT:
-			newVK = MapVirtualKey(scancode, MAPVK_VSC_TO_VK_EX);
+			newVK = MapVirtualKey(scanCode, MAPVK_VSC_TO_VK_EX);
 			break;
 		case VK_CONTROL:
 			newVK = extended ? VK_RCONTROL : VK_LCONTROL;

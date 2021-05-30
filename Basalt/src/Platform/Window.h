@@ -9,15 +9,15 @@ namespace Basalt {
 
 namespace Basalt::Platform
 {
+	class WindowsInput;
+
 	class BASALT_API Window
 	{
 	private:
-		using EventCallbackFn = std::function<void(Event&)>;
 
 		int width;
 		int height;
 		HWND handle;
-		EventCallbackFn eventCallback;
 
 	public:
 		class WindowException : public Exception
@@ -39,8 +39,6 @@ namespace Basalt::Platform
 		Window& operator=(const Window&) = delete;
 		Window(Window&& other) noexcept = default;
 		Window& operator=(Window && other) noexcept = default;
-
-		void SetEventCallback(const EventCallbackFn& callback);
 
 		static void HandleWindowResize(HWND hWnd, UINT width, UINT height);
 

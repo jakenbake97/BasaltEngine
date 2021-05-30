@@ -9,10 +9,12 @@
 
 namespace Basalt
 {
+	Application* Application::instance = nullptr;
+	
 	Application::Application(String name)
 		: applicationName(std::move(name))
 	{
-		
+		instance = this;
 	}
 
 	Application::~Application() = default;
@@ -25,6 +27,7 @@ namespace Basalt
 		{
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
+			EventUpdate();
 		}
 
 		if (gResult == -1)
@@ -40,11 +43,22 @@ namespace Basalt
 		return applicationName;
 	}
 
-	void Application::OnEvent(Event& event)
+	void Application::EventUpdate()
 	{
-		EventDispatcher dispatcher(event);
-		dispatcher.Dispatch<WindowCloseEvent>([this](WindowCloseEvent& event)->bool {return OnWindowClose(event); });
-		BE_TRACE(event);
+		while(!eventBuffer.empty())
+		{
+			auto event = eventBuffer.front();
+			EventDispatcher dispatcher(*event);
+			dispatcher.Dispatch<WindowCloseEvent>([](WindowCloseEvent& closeEvent)->bool {return OnWindowClose(closeEvent); });
+			dispatcher.Dispatch<KeyPressedEvent>([](KeyPressedEvent& pressedEvent)->bool {return true; });
+			BE_TRACE("Event Buffer: {0}", *event);
+			eventBuffer.pop();
+		}
+	}
+
+	void Application::OnEvent(const std::shared_ptr<Event>& event)
+	{	
+		instance->eventBuffer.push(event);
 	}
 
 	bool Application::OnWindowClose(WindowCloseEvent& event)

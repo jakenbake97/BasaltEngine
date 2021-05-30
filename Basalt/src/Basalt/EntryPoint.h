@@ -26,8 +26,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		// Create window instance
 		Basalt::Platform::Window window(1600, 900, windowName);
 
-		window.SetEventCallback([app](Basalt::Event& event) {app->OnEvent(event); });
-
 
 		const Basalt::String test = Basalt::String("test") + 3;
 

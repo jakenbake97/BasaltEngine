@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include "Basalt/Core.h"
-#include "Basalt/Input.h"
+#include "Basalt/IInput.h"
 #include "Basalt/Keycodes.h"
 
 namespace Basalt::Platform
@@ -22,12 +22,12 @@ namespace Basalt::Platform
 			};
 		private:
 			Type type;
-			int keycode;
+			KeyCode keycode;
 
 		public:
 			KeyAction()
 				: type(Type::Invalid), keycode(-1) {}
-			KeyAction(const Type type, const int keycode)
+			KeyAction(const Type type, const KeyCode keycode)
 				: type(type), keycode(keycode) {}
 			bool IsKeyDown() const
 			{
@@ -41,7 +41,7 @@ namespace Basalt::Platform
 			{
 				return type != Type::Invalid;
 			}
-			int GetKeycode() const
+			KeyCode GetKeycode() const
 			{
 				return keycode;
 			}
@@ -54,24 +54,20 @@ namespace Basalt::Platform
 		void DisableAutoRepeat();
 		bool IsAutoRepeatEnabled() const;
 	protected:
-		bool CheckKey(int keycode) override;
-		bool CheckKeyDown(int keycode) override;
-		bool CheckKeyUp(int keycode) override;
+		bool CheckKey(KeyCode keycode) override;
 
 		bool CheckMouseButton(int button) override;
-		bool CheckMouseButtonDown(int button) override;
-		bool CheckMouseButtonUp(int button) override;
 		std::pair<float, float> CheckMousePosition() override;
 	private:
-		void OnKeyDown(unsigned char keycode);
-		void OnKeyUp(unsigned char keycode);
+		void HandleKeyDown(KeyCode keycode) override;
+		void HandleKeyUp(KeyCode keycode) override;
 		void ClearState();
 
 		void TrimBuffer();
 
 		static constexpr unsigned int bufferSize = 16u;
 		bool autoRepeatEnabled = false;
-		std::unordered_map<int, bool> keyStates;
+		std::unordered_map<KeyCode, bool> keyStates;
 		std::queue<KeyAction> keyBuffer;
 	};
 }
