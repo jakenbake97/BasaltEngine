@@ -31,7 +31,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 		BE_INFO(test);
 
-		const int exitCode = app->Run();
+		const int exitCode = app->Update();
 		delete app;
 		
 		return exitCode;

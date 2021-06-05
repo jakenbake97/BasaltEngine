@@ -11,36 +11,6 @@ namespace Basalt
 
 namespace Basalt::Platform
 {
-	WindowsInput::KeyAction WindowsInput::ReadKey()
-	{
-		if (keyBuffer.empty())
-		{
-			return KeyAction();
-		}
-		const KeyAction key = keyBuffer.front();
-		keyBuffer.pop();
-		return key;
-	}
-
-	void WindowsInput::ClearKey()
-	{
-		keyBuffer = std::queue<KeyAction>();
-	}
-
-	void WindowsInput::EnableAutoRepeat()
-	{
-		autoRepeatEnabled = true;
-	}
-
-	void WindowsInput::DisableAutoRepeat()
-	{
-		autoRepeatEnabled = false;
-	}
-
-	bool WindowsInput::IsAutoRepeatEnabled() const
-	{
-		return autoRepeatEnabled;
-	}
 
 	void WindowsInput::HandleKeyDown(const KeyCode keycode)
 	{
@@ -56,17 +26,9 @@ namespace Basalt::Platform
 		Application::OnEvent(keyUp);
 	}
 
-	void WindowsInput::ClearState()
+	void WindowsInput::ClearInputStates()
 	{
 		keyStates.clear();
-	}
-
-	void WindowsInput::TrimBuffer()
-	{
-		while(keyBuffer.size() > bufferSize)
-		{
-			keyBuffer.pop();
-		}
 	}
 
 	bool WindowsInput::CheckKey(const KeyCode keycode)

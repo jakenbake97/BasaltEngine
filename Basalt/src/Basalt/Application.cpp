@@ -1,6 +1,7 @@
 #include "BEpch.h"
 #include "Application.h"
 
+#include "IInput.h"
 #include "Events/Event.h"
 #include "Events/ApplicationEvent.h"
 #include "Events/KeyboardEvent.h"
@@ -19,7 +20,7 @@ namespace Basalt
 
 	Application::~Application() = default;
 
-	int Application::Run()
+	int Application::Update()
 	{
 		MSG msg;
 		BOOL gResult;
@@ -28,6 +29,15 @@ namespace Basalt
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
 			EventUpdate();
+
+			if (IInput::GetKey(Key::A))
+			{
+				BE_INFO("A Pressed");
+			}
+			if (IInput::GetKey(Key::LeftAlt))
+			{
+				BE_ERROR("ALT WAS PRESSED!!!!!!");
+			}
 		}
 
 		if (gResult == -1)

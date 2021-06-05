@@ -191,11 +191,32 @@ namespace Basalt::Platform
 
 				return 0;
 			}
+		case WM_SYSKEYDOWN:
 		case WM_KEYDOWN:
+			{
+				if (!(lParam & 0x40000000))
+				{
+					const WPARAM virtualCode = MapLeftRightKeys(wParam, lParam);
+					const KeyCode basaltCode = Key::ConvertToBasaltKeyCode.at(static_cast<unsigned char>(virtualCode));
+					IInput::OnKeyDown(basaltCode);
+				}
+				return 0;
+			}
+		case WM_SYSKEYUP:
+		case WM_KEYUP:
 			{
 				const WPARAM virtualCode = MapLeftRightKeys(wParam, lParam);
 				const KeyCode basaltCode = Key::ConvertToBasaltKeyCode.at(static_cast<unsigned char>(virtualCode));
-				IInput::OnKeyDown(basaltCode);
+				IInput::OnKeyUp(basaltCode);
+
+				return 0;
+			}
+		case WM_KILLFOCUS:
+			{
+				IInput::ClearState();
+				const auto event = std::make_shared<WindowLostFocusEvent>();
+				Application::OnEvent(event);
+				return 0;
 			}
 		}
 

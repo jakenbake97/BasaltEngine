@@ -20,7 +20,7 @@ namespace Basalt
 		Application(String name);
 		virtual ~Application();
 
-		int Run();
+		int Update();
 		String GetAppName() const;
 		void EventUpdate();
 
