@@ -175,13 +175,14 @@ namespace Basalt::Platform
 	{
 		switch (msg)
 		{
+			// -- Window Messages --
 		case WM_CLOSE:
 			{
 				PostQuitMessage(0);
 				const auto event = std::make_shared<WindowCloseEvent>(0);
 				Application::OnEvent(event);
 
-				return 0;
+				break;
 			}
 		case WM_SIZE:
 			{
@@ -189,8 +190,16 @@ namespace Basalt::Platform
 				const auto event = std::make_shared<WindowResizeEvent>(LOWORD(lParam), HIWORD(lParam));
 				Application::OnEvent(event);
 
-				return 0;
+				break;
 			}
+		case WM_KILLFOCUS:
+			{
+				IInput::ClearState();
+				const auto event = std::make_shared<WindowLostFocusEvent>();
+				Application::OnEvent(event);
+				break;
+			}
+			// -- Keyboard Messages --
 		case WM_SYSKEYDOWN:
 		case WM_KEYDOWN:
 			{
@@ -200,7 +209,7 @@ namespace Basalt::Platform
 					const KeyCode basaltCode = Key::ConvertToBasaltKeyCode.at(static_cast<unsigned char>(virtualCode));
 					IInput::OnKeyDown(basaltCode);
 				}
-				return 0;
+				break;
 			}
 		case WM_SYSKEYUP:
 		case WM_KEYUP:
@@ -209,14 +218,84 @@ namespace Basalt::Platform
 				const KeyCode basaltCode = Key::ConvertToBasaltKeyCode.at(static_cast<unsigned char>(virtualCode));
 				IInput::OnKeyUp(basaltCode);
 
-				return 0;
+				break;
 			}
-		case WM_KILLFOCUS:
+
+			// -- Mouse Messages --
+		case WM_MOUSEMOVE:
 			{
-				IInput::ClearState();
-				const auto event = std::make_shared<WindowLostFocusEvent>();
-				Application::OnEvent(event);
-				return 0;
+				const auto [x, y] = MAKEPOINTS(lParam);
+				IInput::OnMouseMoved(x, y);
+				break;
+			}
+		case WM_LBUTTONDOWN:
+			{
+				IInput::OnMouseButtonDown(Mouse::ButtonLeft);
+				break;
+			}
+		case WM_LBUTTONUP:
+			{
+				IInput::OnMouseButtonUp(Mouse::ButtonLeft);
+				break;
+			}
+		case WM_RBUTTONDOWN:
+			{
+				IInput::OnMouseButtonDown(Mouse::ButtonRight);
+				break;
+			}
+		case WM_RBUTTONUP:
+			{
+				IInput::OnMouseButtonUp(Mouse::ButtonRight);
+				break;
+			}
+		case WM_MBUTTONDOWN:
+			{
+				IInput::OnMouseButtonDown(Mouse::ButtonMiddle);
+				break;
+			}
+		case WM_MBUTTONUP:
+			{
+				IInput::OnMouseButtonUp(Mouse::ButtonMiddle);
+				break;
+			}
+		case WM_XBUTTONDOWN:
+			{
+				const UINT button = GET_XBUTTON_WPARAM(wParam);
+				if (button == XBUTTON1)
+				{
+					IInput::OnMouseButtonDown(Mouse::Button3);
+				}
+				else if (button == XBUTTON2)
+				{
+					IInput::OnMouseButtonDown(Mouse::Button4);
+				}
+				else
+				{
+					BE_ERROR("Button {0} is unknown XButton", button);
+				}
+				break;
+			}
+		case WM_XBUTTONUP:
+			{
+				const UINT button = GET_XBUTTON_WPARAM(wParam);
+				if (button == XBUTTON1)
+				{
+					IInput::OnMouseButtonUp(Mouse::Button3);
+				}
+				else if (button == XBUTTON2)
+				{
+					IInput::OnMouseButtonUp(Mouse::Button4);
+				}
+				else
+				{
+					BE_ERROR("Button {0} is unknown XButton", button);
+				}
+				break;
+			}
+		case WM_MOUSEWHEEL:
+			{
+				IInput::OnMouseWheel(GET_WHEEL_DELTA_WPARAM(wParam));
+				break;
 			}
 		}
 
@@ -224,9 +303,9 @@ namespace Basalt::Platform
 			DefWindowProc(hWnd, msg, wParam, lParam);
 	}
 
-	WPARAM Window::MapLeftRightKeys(WPARAM vk, LPARAM lParam)
+	WPARAM Window::MapLeftRightKeys(const WPARAM vk, const LPARAM lParam)
 	{
-		WPARAM newVK = vk;
+		WPARAM newVK;
 		const UINT scanCode = (lParam & 0x00ff0000) >> 16;
 		const int extended = (lParam & 0x1000000) != 0;
 

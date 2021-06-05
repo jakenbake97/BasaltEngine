@@ -1,22 +1,23 @@
 #pragma once
 #include "Event.h"
+#include "Basalt/MouseCodes.h"
 
 namespace Basalt
 {
 	class BASALT_API MouseButtonEvent : public Event
 	{
 	protected:
-		int button;
-		MouseButtonEvent(const int button) : button(button) {}
+		MouseCode button;
+		MouseButtonEvent(const MouseCode button) : button(button) {}
 	public:
 		int GetCategories() const override { return static_cast<int>(EventCategory::Mouse); }
-		int GetButton() const { return button; }
+		MouseCode GetButton() const { return button; }
 	};
 	
 	class BASALT_API MouseButtonPressedEvent : public MouseButtonEvent
 	{
 	public:
-		MouseButtonPressedEvent(const int button) : MouseButtonEvent(button){}
+		MouseButtonPressedEvent(const MouseCode button) : MouseButtonEvent(button){}
 
 		static EventType GetStaticType() { return EventType::MouseButtonPressed; }
 		EventType GetEventType() const override { return GetStaticType(); }
@@ -27,7 +28,7 @@ namespace Basalt
 	class BASALT_API MouseButtonReleasedEvent : public MouseButtonEvent
 	{
 	public:
-		MouseButtonReleasedEvent(const int button) : MouseButtonEvent(button) {}
+		MouseButtonReleasedEvent(const MouseCode button) : MouseButtonEvent(button) {}
 
 		static EventType GetStaticType() { return EventType::MouseButtonReleased; }
 		EventType GetEventType() const override { return GetStaticType(); }
@@ -38,7 +39,6 @@ namespace Basalt
 	class BASALT_API MouseScrolledEvent : public Event
 	{
 	private:
-		// TODO: check with mouse input in D3D implementation
 		float offset;
 	public:
 		MouseScrolledEvent(const float scrollOffset) : offset(scrollOffset) {}
@@ -55,12 +55,13 @@ namespace Basalt
 	class BASALT_API MousePositionEvent : public Event
 	{
 	protected:
-		float x, y;
-		MousePositionEvent(const float xPos, const float yPos) : x(xPos), y(yPos) {}
+		int x, y;
+		MousePositionEvent(const int xPos, const int yPos) : x(xPos), y(yPos) {}
 
 	public:
-		float GetX() const { return x; }
-		float GetY() const { return y; }
+		int GetX() const { return x; }
+		int GetY() const { return y; }
+		std::pair<int, int> GetPosition() { return {x,y}; }
 
 		int GetCategories() const override { return static_cast<int>(EventCategory::Mouse); }
 	};
@@ -68,7 +69,7 @@ namespace Basalt
 	class BASALT_API MouseMovedEvent : public MousePositionEvent
 	{
 	public:
-		MouseMovedEvent(const float xPos, const float yPos) : MousePositionEvent(xPos, yPos) {}
+		MouseMovedEvent(const int xPos, const int yPos) : MousePositionEvent(xPos, yPos) {}
 
 		static EventType GetStaticType() { return EventType::MouseMoved; }
 		EventType GetEventType() const override { return GetStaticType(); }

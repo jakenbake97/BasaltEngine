@@ -3,6 +3,7 @@
 
 #include "Basalt/Application.h"
 #include "Basalt/Events/KeyboardEvent.h"
+#include "Basalt/Events/MouseEvent.h"
 
 namespace Basalt
 {
@@ -31,18 +32,46 @@ namespace Basalt::Platform
 		keyStates.clear();
 	}
 
+	void WindowsInput::HandleMouseButtonDown(MouseCode mouseCode)
+	{
+		mouseButtonStates[mouseCode] = true;
+		const auto mouseDown = std::make_shared<MouseButtonPressedEvent>(mouseCode);
+		Application::OnEvent(mouseDown);
+	}
+
+	void WindowsInput::HandleMouseButtonUp(MouseCode mouseCode)
+	{
+		mouseButtonStates[mouseCode] = false;
+		const auto mouseUp = std::make_shared<MouseButtonReleasedEvent>(mouseCode);
+		Application::OnEvent(mouseUp);
+	}
+
+	void WindowsInput::HandleMouseMoved(const int x, const int y)
+	{
+		this->x = x;
+		this->y = y;
+		const auto mouseMoved = std::make_shared<MouseMovedEvent>(x, y);
+		Application::OnEvent(mouseMoved);
+	}
+
+	void WindowsInput::HandleMouseWheel(float delta)
+	{
+		const auto mouseWheel = std::make_shared<MouseScrolledEvent>(delta);
+		Application::OnEvent(mouseWheel);
+	}
+
 	bool WindowsInput::CheckKey(const KeyCode keycode)
 	{
 		return keyStates[keycode];
 	}
 
-	bool WindowsInput::CheckMouseButton(int button)
+	bool WindowsInput::CheckMouseButton(const MouseCode button)
 	{
-		return false;
+		return mouseButtonStates[button];
 	}
 
-	std::pair<float, float> WindowsInput::CheckMousePosition()
+	std::pair<int, int> WindowsInput::CheckMousePosition()
 	{
-		return { 0,0 };
+		return { x,y };
 	}
 }
