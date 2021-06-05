@@ -225,7 +225,31 @@ namespace Basalt::Platform
 		case WM_MOUSEMOVE:
 			{
 				const auto [x, y] = MAKEPOINTS(lParam);
-				IInput::OnMouseMoved(x, y);
+
+				// The mouse is over the client
+				if (x >= 0 && x < width && y >= 0 && y < height)
+				{
+					IInput::OnMouseMoved(x, y);
+					if (!IInput::IsMouseInWindow())
+					{
+						SetCapture(hWnd);
+						IInput::OnMouseEnter();
+					}
+				}
+				// not in client, but maintain capture if a button is held
+				else
+				{
+					if (wParam & (MK_LBUTTON | MK_RBUTTON | MK_MBUTTON | MK_XBUTTON1 | MK_XBUTTON2))
+					{
+						IInput::OnMouseMoved(x, y);
+					}
+					// no button pressed, release capture
+					else
+					{
+						ReleaseCapture();
+						IInput::OnMouseLeave();
+					}
+				}
 				break;
 			}
 		case WM_LBUTTONDOWN:
@@ -298,7 +322,6 @@ namespace Basalt::Platform
 				break;
 			}
 		}
-
 		return
 			DefWindowProc(hWnd, msg, wParam, lParam);
 	}

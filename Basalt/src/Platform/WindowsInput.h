@@ -13,19 +13,27 @@ namespace Basalt::Platform
 
 		bool CheckMouseButton(MouseCode button) override;
 		std::pair<int, int> CheckMousePosition() override;
-	private:
+		bool CheckMouseInWindow() override;
+		
 		void HandleKeyDown(KeyCode keycode) override;
 		void HandleKeyUp(KeyCode keycode) override;
 		void ClearInputStates() override;
 
 		void HandleMouseButtonDown(MouseCode mouseCode) override;
 		void HandleMouseButtonUp(MouseCode mouseCode) override;
-		void HandleMouseMoved(int x, int y) override;
-		void HandleMouseWheel(float delta) override;
+		void HandleMouseMoved(int xPos, int yPos) override;
+		void HandleMouseWheel(int delta) override;
 
+		void HandleMouseEnter() override;
+		void HandleMouseLeave() override;
+
+	private:
 		std::unordered_map<KeyCode, bool> keyStates;
+		
 		std::unordered_map<MouseCode, bool> mouseButtonStates;
 		int x = 0;
 		int y = 0;
+		bool mouseInWindow = false;
+		int accumulatedWheelDelta = 0;
 	};
 }

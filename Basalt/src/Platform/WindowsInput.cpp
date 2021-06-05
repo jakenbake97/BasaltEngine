@@ -46,18 +46,44 @@ namespace Basalt::Platform
 		Application::OnEvent(mouseUp);
 	}
 
-	void WindowsInput::HandleMouseMoved(const int x, const int y)
+	void WindowsInput::HandleMouseMoved(const int xPos, const int yPos)
 	{
-		this->x = x;
-		this->y = y;
-		const auto mouseMoved = std::make_shared<MouseMovedEvent>(x, y);
+		x = xPos;
+		y = yPos;
+		const auto mouseMoved = std::make_shared<MouseMovedEvent>(xPos, yPos);
 		Application::OnEvent(mouseMoved);
 	}
 
-	void WindowsInput::HandleMouseWheel(float delta)
+	void WindowsInput::HandleMouseWheel(const int delta)
 	{
-		const auto mouseWheel = std::make_shared<MouseScrolledEvent>(delta);
-		Application::OnEvent(mouseWheel);
+		accumulatedWheelDelta += delta;
+
+		while (accumulatedWheelDelta >= WHEEL_DELTA)
+		{
+			const auto mouseWheel = std::make_shared<MouseScrolledEvent>(accumulatedWheelDelta);
+			Application::OnEvent(mouseWheel);
+			accumulatedWheelDelta -= WHEEL_DELTA;
+		}
+		while (accumulatedWheelDelta <= -WHEEL_DELTA)
+		{
+			const auto mouseWheel = std::make_shared<MouseScrolledEvent>(accumulatedWheelDelta);
+			Application::OnEvent(mouseWheel);
+			accumulatedWheelDelta += WHEEL_DELTA;
+		}
+	}
+
+	void WindowsInput::HandleMouseEnter()
+	{
+		mouseInWindow = true;
+		const auto mouseEnter = std::make_shared<MouseEnterEvent>(x, y);
+		Application::OnEvent(mouseEnter);
+	}
+
+	void WindowsInput::HandleMouseLeave()
+	{
+		mouseInWindow = false;
+		const auto mouseLeave = std::make_shared<MouseLeaveEvent>(x, y);
+		Application::OnEvent(mouseLeave);
 	}
 
 	bool WindowsInput::CheckKey(const KeyCode keycode)
@@ -73,5 +99,10 @@ namespace Basalt::Platform
 	std::pair<int, int> WindowsInput::CheckMousePosition()
 	{
 		return { x,y };
+	}
+
+	bool WindowsInput::CheckMouseInWindow()
+	{
+		return mouseInWindow;
 	}
 }

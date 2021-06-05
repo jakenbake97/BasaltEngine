@@ -29,15 +29,6 @@ namespace Basalt
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
 			EventUpdate();
-
-			if (IInput::GetKey(Key::A))
-			{
-				BE_INFO("A Pressed");
-			}
-			if (IInput::GetKey(Key::LeftAlt))
-			{
-				BE_ERROR("ALT WAS PRESSED!!!!!!");
-			}
 		}
 
 		if (gResult == -1)
@@ -58,10 +49,9 @@ namespace Basalt
 		while(!eventBuffer.empty())
 		{
 			auto event = eventBuffer.front();
+			BE_TRACE("Event Buffer: {0}", *event);
 			EventDispatcher dispatcher(*event);
 			dispatcher.Dispatch<WindowCloseEvent>([](WindowCloseEvent& closeEvent)->bool {return OnWindowClose(closeEvent); });
-			dispatcher.Dispatch<KeyPressedEvent>([](KeyPressedEvent& pressedEvent)->bool {return true; });
-			BE_TRACE("Event Buffer: {0}", *event);
 			eventBuffer.pop();
 		}
 	}

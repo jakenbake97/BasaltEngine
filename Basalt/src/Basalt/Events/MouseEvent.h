@@ -80,7 +80,7 @@ namespace Basalt
 	class BASALT_API MouseEnterEvent : public MousePositionEvent
 	{
 	public:
-		MouseEnterEvent(const float xPos, const float yPos) : MousePositionEvent(xPos, yPos) {}
+		MouseEnterEvent(const int xPos, const int yPos) : MousePositionEvent(xPos, yPos) {}
 
 		static EventType GetStaticType() { return EventType::MouseEnter; }
 		EventType GetEventType() const override { return GetStaticType(); }
@@ -91,7 +91,7 @@ namespace Basalt
 	class BASALT_API MouseLeaveEvent : public MousePositionEvent
 	{
 	public:
-		MouseLeaveEvent(const float xPos, const float yPos) : MousePositionEvent(xPos, yPos) {}
+		MouseLeaveEvent(const int xPos, const int yPos) : MousePositionEvent(xPos, yPos) {}
 		
 		static EventType GetStaticType() { return EventType::MouseLeave; }
 		EventType GetEventType() const override { return GetStaticType(); }

@@ -27,6 +27,7 @@ namespace Basalt
 
 		static bool GetMouseButton(const KeyCode button) { return instance->CheckMouseButton(button); }
 		static std::pair<int, int> GetMousePosition() { return instance->CheckMousePosition(); }
+		static bool IsMouseInWindow() { return instance->CheckMouseInWindow(); }
 
 	protected:
 		static void OnKeyDown(const KeyCode keycode) { return instance->HandleKeyDown(keycode); }
@@ -35,7 +36,10 @@ namespace Basalt
 		static void OnMouseButtonDown(const MouseCode mouseCode) { return instance->HandleMouseButtonDown(mouseCode); }
 		static void OnMouseButtonUp(const MouseCode mouseCode) { return instance->HandleMouseButtonUp(mouseCode); }
 		static void OnMouseMoved(const int xPos, const int yPos) { return instance->HandleMouseMoved(xPos, yPos); }
-		static void OnMouseWheel(const float wheelDelta) { return instance->HandleMouseWheel(wheelDelta); }
+		static void OnMouseWheel(const int wheelDelta) { return instance->HandleMouseWheel(wheelDelta); }
+
+		static void OnMouseEnter() { return instance->HandleMouseEnter(); }
+		static void OnMouseLeave() { return instance->HandleMouseLeave(); }
 
 		static void ClearState() { return instance->ClearInputStates(); }
 		
@@ -43,6 +47,7 @@ namespace Basalt
 		virtual bool CheckMouseButton(MouseCode button) = 0;
 		// TODO: Replace with vector2 when implemented
 		virtual std::pair<int, int> CheckMousePosition() = 0;
+		virtual bool CheckMouseInWindow() = 0;
 
 		virtual void HandleKeyDown(KeyCode keyCode) = 0;
 		virtual void HandleKeyUp(KeyCode keyCode) = 0;
@@ -50,7 +55,10 @@ namespace Basalt
 		virtual void HandleMouseButtonDown(MouseCode mouseCode) = 0;
 		virtual void HandleMouseButtonUp(MouseCode mouseCode) = 0;
 		virtual void HandleMouseMoved(int x, int y) = 0;
-		virtual void HandleMouseWheel(float delta) = 0;
+		virtual void HandleMouseWheel(int delta) = 0;
+
+		virtual void HandleMouseEnter() = 0;
+		virtual void HandleMouseLeave() = 0;
 
 		virtual void ClearInputStates() = 0;
 		
