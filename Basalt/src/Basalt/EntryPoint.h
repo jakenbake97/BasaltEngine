@@ -1,8 +1,9 @@
 #pragma once
 
 #include "BEpch.h"
-#include "Platform/Window.h"
 #include "Application.h"
+#include "Exception.h"
+#include "IWindow.h"
 
 #ifdef BE_PLATFORM_WINDOWS
 
@@ -24,12 +25,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		const Basalt::String windowName = className + L" - " + app->GetAppName();
 
 		// Create window instance
-		Basalt::Platform::Window window(1600, 900, windowName);
-
-
-		const Basalt::String test = Basalt::String("test") + 3;
-
-		BE_INFO(test);
+		auto window = Basalt::IWindow::Create({windowName});
 
 		const int exitCode = app->Update();
 		delete app;

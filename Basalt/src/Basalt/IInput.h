@@ -6,14 +6,9 @@
 
 namespace Basalt
 {
-	namespace Platform
-	{
-		class Window;
-	}
-
 	class BASALT_API IInput
 	{
-		friend class Platform::Window;
+		friend class IWindow;
 	protected:
 		IInput() = default;
 	public:

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Basalt/Exception.h"
-#include "Basalt/Events/Event.h"
+#include "Basalt/IWindow.h"
 
 namespace Basalt {
 	class String;
@@ -9,15 +9,13 @@ namespace Basalt {
 
 namespace Basalt::Platform
 {
-	class WindowsInput;
-
-	class BASALT_API Window
+	class BASALT_API Window : public IWindow
 	{
 	private:
-
-		int width;
-		int height;
+		WindowProperties properties;
 		HWND handle;
+		bool vSync;
+		bool focused = true;
 
 	public:
 		class WindowException : public Exception
@@ -32,16 +30,6 @@ namespace Basalt::Platform
 			HRESULT GetErrorCode() const;
 			String GetErrorString() const;
 		};
-		
-		Window(int width, int height, const String& name);
-		~Window();
-		Window(const Window&) = delete;
-		Window& operator=(const Window&) = delete;
-		Window(Window&& other) noexcept = default;
-		Window& operator=(Window && other) noexcept = default;
-
-		static void HandleWindowResize(HWND hWnd, UINT width, UINT height);
-
 	private:
 		class WindowClass
 		{
@@ -59,10 +47,26 @@ namespace Basalt::Platform
 			WindowClass(const WindowClass&) = delete;
 			WindowClass& operator=(const WindowClass&) = delete;
 		};
+	public:
+		Window(const WindowProperties& properties);
+		~Window() override;
+		Window(const Window&) = delete;
+		Window& operator=(const Window&) = delete;
+		Window(Window&& other) noexcept = delete;
+		Window& operator=(Window && other) noexcept = delete;
+
+		void OnUpdate() override;
+		unsigned int GetWidth() const override;
+		unsigned int GetHeight() const override;
+		void SetVSync(bool enabled) override;
+		bool IsVSync() const override;
+		
+	private:
+		static void HandleWindowResize(HWND hWnd, UINT width, UINT height);
 		
 		static LRESULT WINAPI HandleMsgSetup(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 		static LRESULT WINAPI HandleMsgAdapter(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
-		LRESULT HandleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) const;
+		LRESULT HandleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 		static WPARAM MapLeftRightKeys(WPARAM vk, LPARAM lParam);
 	};
 }

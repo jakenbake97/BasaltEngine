@@ -65,6 +65,7 @@
     <ClInclude Include="src\Platform\WindowsInput.h">
       <Filter>Platform</Filter>
     </ClInclude>
+    <ClInclude Include="src\Basalt\IWindow.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\BEpch.cpp" />

@@ -268,6 +268,7 @@ namespace Basalt
 			{VK_RCONTROL, RightControl },
 			{VK_RMENU, RightAlt},
 			{VK_RWIN, RightWindows},
+			{VK_APPS, Menu}
 		};
 
 		const std::unordered_map<KeyCode, String> GetKeyName

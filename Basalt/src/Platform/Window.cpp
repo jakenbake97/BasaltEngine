@@ -11,6 +11,14 @@
 #include "Basalt/Events/WindowEvent.h"
 #include "Basalt/Events/KeyboardEvent.h"
 
+namespace Basalt
+{
+	std::unique_ptr<IWindow> IWindow::Create(const WindowProperties& properties)
+	{
+		return std::make_unique<Platform::Window>(properties);
+	}
+}
+
 namespace Basalt::Platform
 {
 	Window::WindowClass Window::WindowClass::wndClass;
@@ -51,14 +59,14 @@ namespace Basalt::Platform
 		return wndClass.hInst;
 	}
 
-	Window::Window(const int width, const int height, const String& name)
-		: width(width), height(height)
+	Window::Window(const WindowProperties& properties)
+		: properties(properties), vSync(false)
 	{
 		RECT windowRect;
 		windowRect.left = 0;
-		windowRect.right = width;
+		windowRect.right = properties.width;
 		windowRect.top = 0;
-		windowRect.bottom = height;
+		windowRect.bottom = properties.height;
 
 		const auto styles = WS_OVERLAPPEDWINDOW;
 
@@ -67,8 +75,8 @@ namespace Basalt::Platform
 			throw BE_WND_LAST_EXCEPT();
 		}
 
-		handle = CreateWindow(WindowClass::GetName(), name.CStr(),
-		                      styles, 300, 300,
+		handle = CreateWindow(WindowClass::GetName(), properties.title.CStr(),
+		                      styles, CW_USEDEFAULT, CW_USEDEFAULT,
 		                      windowRect.right - windowRect.left, windowRect.bottom - windowRect.top,
 		                      nullptr, nullptr,
 		                      WindowClass::GetInstance(), this
@@ -81,7 +89,7 @@ namespace Basalt::Platform
 
 		ShowWindow(handle, SW_SHOWDEFAULT);
 
-		BE_LOG(ELogger::Core, ELogSeverity::Trace, "{0} x {1} Window Successfully Created!", width, height);
+		BE_LOG(ELogger::Core, ELogSeverity::Trace, "{0} x {1} Window Successfully Created!", properties.width, properties.height);
 	}
 
 	Window::~Window()
@@ -160,6 +168,30 @@ namespace Basalt::Platform
 		return pWindow->HandleMsg(hWnd, msg, wParam, lParam);
 	}
 
+	void Window::OnUpdate()
+	{
+	}
+
+	unsigned Window::GetWidth() const
+	{
+		return properties.width;
+	}
+
+	unsigned Window::GetHeight() const
+	{
+		return properties.height;
+	}
+
+	void Window::SetVSync(const bool enabled)
+	{
+		vSync = enabled;
+	}
+
+	bool Window::IsVSync() const
+	{
+		return vSync;
+	}
+
 	void Window::HandleWindowResize(HWND hWnd, UINT width, UINT height)
 	{
 		RECT clientRect, windowRect;
@@ -171,7 +203,7 @@ namespace Basalt::Platform
 		MoveWindow(hWnd, windowRect.left, windowRect.top, width + pointDiff.x, height + pointDiff.y, TRUE);
 	}
 
-	LRESULT Window::HandleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) const
+	LRESULT Window::HandleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	{
 		switch (msg)
 		{
@@ -192,13 +224,33 @@ namespace Basalt::Platform
 
 				break;
 			}
-		case WM_KILLFOCUS:
+		case WM_MOVE:
 			{
-				IInput::ClearState();
-				const auto event = std::make_shared<WindowLostFocusEvent>();
+				const auto [x, y] = MAKEPOINTS(lParam);
+				const auto event = std::make_shared<WindowMovedEvent>(x, y);
 				Application::OnEvent(event);
+
 				break;
 			}
+		case WM_SETFOCUS:
+			{
+				focused = true;
+				const auto event = std::make_shared<WindowFocusEvent>();
+				Application::OnEvent(event);
+
+				break;
+			}
+		case WM_KILLFOCUS:
+			{
+				ClearInputState();
+				focused = false;
+				const auto event = std::make_shared<WindowLostFocusEvent>();
+				Application::OnEvent(event);
+
+				break;
+			}
+
+
 			// -- Keyboard Messages --
 		case WM_SYSKEYDOWN:
 		case WM_KEYDOWN:
@@ -207,7 +259,7 @@ namespace Basalt::Platform
 				{
 					const WPARAM virtualCode = MapLeftRightKeys(wParam, lParam);
 					const KeyCode basaltCode = Key::ConvertToBasaltKeyCode.at(static_cast<unsigned char>(virtualCode));
-					IInput::OnKeyDown(basaltCode);
+					OnKeyDown(basaltCode);
 				}
 				break;
 			}
@@ -216,7 +268,7 @@ namespace Basalt::Platform
 			{
 				const WPARAM virtualCode = MapLeftRightKeys(wParam, lParam);
 				const KeyCode basaltCode = Key::ConvertToBasaltKeyCode.at(static_cast<unsigned char>(virtualCode));
-				IInput::OnKeyUp(basaltCode);
+				OnKeyUp(basaltCode);
 
 				break;
 			}
@@ -227,59 +279,71 @@ namespace Basalt::Platform
 				const auto [x, y] = MAKEPOINTS(lParam);
 
 				// The mouse is over the client
-				if (x >= 0 && x < width && y >= 0 && y < height)
+				if (x >= 0 && x < properties.width && y >= 0 && y < properties.height)
 				{
-					IInput::OnMouseMoved(x, y);
+					OnMouseMoved(x, y);
 					if (!IInput::IsMouseInWindow())
 					{
 						SetCapture(hWnd);
-						IInput::OnMouseEnter();
+						OnMouseEnter();
 					}
 				}
-				// not in client, but maintain capture if a button is held
+					// not in client, but maintain capture if a button is held
 				else
 				{
 					if (wParam & (MK_LBUTTON | MK_RBUTTON | MK_MBUTTON | MK_XBUTTON1 | MK_XBUTTON2))
 					{
-						IInput::OnMouseMoved(x, y);
+						OnMouseMoved(x, y);
 					}
-					// no button pressed, release capture
+						// no button pressed, release capture
 					else
 					{
 						ReleaseCapture();
-						IInput::OnMouseLeave();
+						OnMouseLeave();
 					}
 				}
 				break;
 			}
 		case WM_LBUTTONDOWN:
 			{
-				IInput::OnMouseButtonDown(Mouse::ButtonLeft);
+				OnMouseButtonDown(Mouse::ButtonLeft);
+				if (IInput::IsMouseInWindow() && !focused)
+				{
+					SetActiveWindow(hWnd);
+				}
 				break;
 			}
 		case WM_LBUTTONUP:
 			{
-				IInput::OnMouseButtonUp(Mouse::ButtonLeft);
+				OnMouseButtonUp(Mouse::ButtonLeft);
 				break;
 			}
 		case WM_RBUTTONDOWN:
 			{
-				IInput::OnMouseButtonDown(Mouse::ButtonRight);
+				OnMouseButtonDown(Mouse::ButtonRight);
+				if (IInput::IsMouseInWindow() && !focused)
+				{
+					SetActiveWindow(hWnd);
+				}
 				break;
 			}
 		case WM_RBUTTONUP:
 			{
-				IInput::OnMouseButtonUp(Mouse::ButtonRight);
+				OnMouseButtonUp(Mouse::ButtonRight);
 				break;
 			}
 		case WM_MBUTTONDOWN:
 			{
-				IInput::OnMouseButtonDown(Mouse::ButtonMiddle);
+				OnMouseButtonDown(Mouse::ButtonMiddle);
+				if (IInput::IsMouseInWindow() && !focused)
+				{
+					SetActiveWindow(hWnd);
+				}
 				break;
 			}
 		case WM_MBUTTONUP:
 			{
-				IInput::OnMouseButtonUp(Mouse::ButtonMiddle);
+				OnMouseButtonUp(Mouse::ButtonMiddle);
 				break;
 			}
 		case WM_XBUTTONDOWN:
@@ -287,16 +351,22 @@ namespace Basalt::Platform
 				const UINT button = GET_XBUTTON_WPARAM(wParam);
 				if (button == XBUTTON1)
 				{
-					IInput::OnMouseButtonDown(Mouse::Button3);
+					OnMouseButtonDown(Mouse::Button3);
 				}
 				else if (button == XBUTTON2)
 				{
-					IInput::OnMouseButtonDown(Mouse::Button4);
+					OnMouseButtonDown(Mouse::Button4);
 				}
 				else
 				{
 					BE_ERROR("Button {0} is unknown XButton", button);
 				}
+
+				if (IInput::IsMouseInWindow() && !focused)
+				{
+					SetActiveWindow(hWnd);
+				}
+				
 				break;
 			}
 		case WM_XBUTTONUP:
@@ -304,11 +374,11 @@ namespace Basalt::Platform
 				const UINT button = GET_XBUTTON_WPARAM(wParam);
 				if (button == XBUTTON1)
 				{
-					IInput::OnMouseButtonUp(Mouse::Button3);
+					OnMouseButtonUp(Mouse::Button3);
 				}
 				else if (button == XBUTTON2)
 				{
-					IInput::OnMouseButtonUp(Mouse::Button4);
+					OnMouseButtonUp(Mouse::Button4);
 				}
 				else
 				{
@@ -318,7 +388,7 @@ namespace Basalt::Platform
 			}
 		case WM_MOUSEWHEEL:
 			{
-				IInput::OnMouseWheel(GET_WHEEL_DELTA_WPARAM(wParam));
+				OnMouseWheel(GET_WHEEL_DELTA_WPARAM(wParam));
 				break;
 			}
 		}
