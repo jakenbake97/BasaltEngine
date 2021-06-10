@@ -3,6 +3,7 @@
 #include "Basalt/Utility/String.h"
 #include <queue>
 
+#include "LayerStack.h"
 #include "Events/Event.h"
 
 namespace Basalt
@@ -21,7 +22,7 @@ namespace Basalt
 		std::unique_ptr<IWindow> window;
 		int exitCode = 0;
 
-		bool Quit(AppQuitEvent& event);
+		LayerStack layerStack;
 		
 	public:
 		Application(String name);
@@ -32,8 +33,13 @@ namespace Basalt
 		void EventUpdate();
 		int GetExitCode() const;
 
+		void PushLayer(std::shared_ptr<Layer> layer);
+		void PushOverlay(std::shared_ptr<Layer> overlay);
+
 		static void OnEvent(const std::shared_ptr<Event>& event);
 		static bool OnWindowClose(WindowCloseEvent& event);
+	private:
+		bool Quit(AppQuitEvent& event);
 	};
 
 	extern std::unique_ptr<Application> CreateApplication();

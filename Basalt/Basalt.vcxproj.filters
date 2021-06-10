@@ -47,7 +47,16 @@
     <ClInclude Include="src\Basalt\IInput.h">
       <Filter>Basalt</Filter>
     </ClInclude>
+    <ClInclude Include="src\Basalt\IWindow.h">
+      <Filter>Basalt</Filter>
+    </ClInclude>
     <ClInclude Include="src\Basalt\Keycodes.h">
+      <Filter>Basalt</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Basalt\Layer.h">
+      <Filter>Basalt</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Basalt\LayerStack.h">
       <Filter>Basalt</Filter>
     </ClInclude>
     <ClInclude Include="src\Basalt\Log.h">
@@ -65,7 +74,6 @@
     <ClInclude Include="src\Platform\WindowsInput.h">
       <Filter>Platform</Filter>
     </ClInclude>
-    <ClInclude Include="src\Basalt\IWindow.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\BEpch.cpp" />
@@ -73,6 +81,9 @@
       <Filter>Basalt</Filter>
     </ClCompile>
     <ClCompile Include="src\Basalt\Exception.cpp">
+      <Filter>Basalt</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Basalt\LayerStack.cpp">
       <Filter>Basalt</Filter>
     </ClCompile>
     <ClCompile Include="src\Basalt\Log.cpp">

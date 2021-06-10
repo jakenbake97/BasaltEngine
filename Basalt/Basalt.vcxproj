@@ -109,6 +109,7 @@
       <MinimalRebuild>false</MinimalRebuild>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <AdditionalOptions>/MD %(AdditionalOptions)</AdditionalOptions>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -134,6 +135,7 @@
       <MinimalRebuild>false</MinimalRebuild>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <AdditionalOptions>/MD %(AdditionalOptions)</AdditionalOptions>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -147,7 +149,6 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\Basalt\IWindow.h" />
     <ClInclude Include="src\BEpch.h" />
     <ClInclude Include="src\Basalt.h" />
     <ClInclude Include="src\Basalt\Application.h" />
@@ -160,7 +161,10 @@
     <ClInclude Include="src\Basalt\Events\WindowEvent.h" />
     <ClInclude Include="src\Basalt\Exception.h" />
     <ClInclude Include="src\Basalt\IInput.h" />
+    <ClInclude Include="src\Basalt\IWindow.h" />
     <ClInclude Include="src\Basalt\Keycodes.h" />
+    <ClInclude Include="src\Basalt\Layer.h" />
+    <ClInclude Include="src\Basalt\LayerStack.h" />
     <ClInclude Include="src\Basalt\Log.h" />
     <ClInclude Include="src\Basalt\MouseCodes.h" />
     <ClInclude Include="src\Basalt\Utility\String.h" />
@@ -173,6 +177,7 @@
     </ClCompile>
     <ClCompile Include="src\Basalt\Application.cpp" />
     <ClCompile Include="src\Basalt\Exception.cpp" />
+    <ClCompile Include="src\Basalt\LayerStack.cpp" />
     <ClCompile Include="src\Basalt\Log.cpp" />
     <ClCompile Include="src\Platform\Window.cpp" />
     <ClCompile Include="src\Platform\WindowsInput.cpp" />

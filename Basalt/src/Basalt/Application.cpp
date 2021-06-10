@@ -33,8 +33,14 @@ namespace Basalt
 	{
 		while (running)
 		{
+			// Update message loop
 			window->OnUpdate();
+
+			for (const auto& layer : layerStack)
+				layer->OnUpdate();
+			
 			EventUpdate();
+			
 			// Frame Update
 		}		
 	}
@@ -50,9 +56,18 @@ namespace Basalt
 		{
 			auto event = eventBuffer.front();
 			BE_TRACE("Event Buffer: {0}", *event);
+			
 			EventDispatcher dispatcher(*event);
 			dispatcher.Dispatch<WindowCloseEvent>([](WindowCloseEvent& closeEvent)->bool {return OnWindowClose(closeEvent); });
 			dispatcher.Dispatch<AppQuitEvent>([this](AppQuitEvent& quitEvent)->bool {return this->Quit(quitEvent); });
+
+			for (auto iterator = layerStack.rbegin(); iterator != layerStack.rend(); ++iterator)
+			{
+				if (event->handled)
+					break;
+				(*iterator)->OnEvent(*event);
+			}
+			
 			eventBuffer.pop();
 		}
 	}
@@ -60,6 +75,16 @@ namespace Basalt
 	int Application::GetExitCode() const
 	{
 		return exitCode;
+	}
+
+	void Application::PushLayer(const std::shared_ptr<Layer> layer)
+	{
+		layerStack.PushLayer(layer);
+	}
+
+	void Application::PushOverlay(const std::shared_ptr<Layer> overlay)
+	{
+		layerStack.PushOverlay(overlay);
 	}
 
 	void Application::OnEvent(const std::shared_ptr<Event>& event)

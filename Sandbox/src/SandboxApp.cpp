@@ -1,10 +1,27 @@
 #include <Basalt.h>
 
+class ExampleLayer : public Basalt::Layer
+{
+public:
+	ExampleLayer() : Layer("Example") {}
+
+	void OnUpdate() override
+	{
+		BE_INFO("ExampleLayer::Update");
+	}
+
+	void OnEvent(Basalt::Event& event) override
+	{
+		BE_TRACE("ExampleLayer::Event{0}", event);
+	}
+};
+
 class Sandbox : public Basalt::Application
 {
 public:
 	Sandbox(): Application("SANDBOX")
 	{
+		PushLayer(std::make_shared<ExampleLayer>());
 	}
 
 	~Sandbox() override = default;

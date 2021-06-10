@@ -27,11 +27,10 @@ namespace Basalt
 	
 	class BASALT_API Event
 	{
-	private:
 		friend class EventDispatcher;
-	protected:
-		bool handled = false;
 	public:
+		bool handled = false;
+		
 		Event() = default;
 		Event(const Event & other) = default;
 		Event(Event && other) noexcept = default;
