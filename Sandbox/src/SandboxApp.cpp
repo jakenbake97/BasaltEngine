@@ -10,7 +10,7 @@ public:
 	~Sandbox() override = default;
 };
 
-Basalt::Application* Basalt::CreateApplication()
+std::unique_ptr<Basalt::Application> Basalt::CreateApplication()
 {
-	return new Sandbox();
+	return std::make_unique<Sandbox>();
 }

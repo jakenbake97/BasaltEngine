@@ -138,6 +138,16 @@ namespace Basalt
 			return *this;
 		}
 
+		operator std::string() const
+		{
+			return Narrow();
+		}
+
+		explicit operator std::wstring() const
+		{
+			return data;
+		}
+
 		unsigned int Size() const
 		{
 			return data.size();

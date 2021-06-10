@@ -13,24 +13,14 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	try
 	{
 		// Initialize engine application
-		auto* app = Basalt::CreateApplication();
+		auto app = Basalt::CreateApplication();
 
 		// Initialize the logger
 		Basalt::Log::InitClientLog(app->GetAppName());
 
-		const Basalt::String className(L"Basalt Engine");
+		app->Update();
 		
-		BE_WARN("Class Name: {0}, App Name: {1}",className, app->GetAppName());
-	
-		const Basalt::String windowName = className + L" - " + app->GetAppName();
-
-		// Create window instance
-		auto window = Basalt::IWindow::Create({windowName});
-
-		const int exitCode = app->Update();
-		delete app;
-		
-		return exitCode;
+		return app->GetExitCode();
 	}
 
 	// Catch issues in creating application before the logger is created

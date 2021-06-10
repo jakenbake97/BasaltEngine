@@ -8,6 +8,7 @@
 #include "Basalt/IInput.h"
 #include "Basalt/Utility/String.h"
 #include "Basalt/Log.h"
+#include "Basalt/Events/ApplicationEvent.h"
 #include "Basalt/Events/WindowEvent.h"
 #include "Basalt/Events/KeyboardEvent.h"
 
@@ -170,6 +171,20 @@ namespace Basalt::Platform
 
 	void Window::OnUpdate()
 	{
+		MSG msg;
+		while (PeekMessage(&msg, nullptr, 0,0,PM_REMOVE))
+		{
+			// Check for quit message and create an event if the application should quit
+			if (msg.message == WM_QUIT)
+			{
+				const auto event = std::make_shared<AppQuitEvent>(msg.wParam);
+				Application::OnEvent(event);
+				return;
+			}
+
+			TranslateMessage(&msg);
+			DispatchMessage(&msg);
+		}
 	}
 
 	unsigned Window::GetWidth() const

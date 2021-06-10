@@ -7,7 +7,7 @@ namespace Basalt
 	{
 		None = 0,
 		// Application Events
-		AppTick, AppUpdate, AppRender,
+		AppTick, AppUpdate, AppRender, AppQuit,
 		// Keyboard Events
 		KeyPressed, KeyReleased,
 		// Mouse Events

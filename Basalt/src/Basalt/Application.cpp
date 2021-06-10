@@ -11,32 +11,32 @@
 namespace Basalt
 {
 	Application* Application::instance = nullptr;
-	
+
+
 	Application::Application(String name)
 		: applicationName(std::move(name))
 	{
 		instance = this;
+
+		const String className(L"Basalt Engine");
+
+		BE_WARN("Class Name: {0}, App Name: {1}", className, name);
+
+		const String windowName = className + L" - " + name;
+		
+		window = IWindow::Create({windowName});
 	}
 
 	Application::~Application() = default;
 
-	int Application::Update()
+	void Application::Update()
 	{
-		MSG msg;
-		BOOL gResult;
-		while ((gResult = GetMessage(&msg, nullptr, 0, 0)) > 0)
+		while (running)
 		{
-			TranslateMessage(&msg);
-			DispatchMessage(&msg);
+			window->OnUpdate();
 			EventUpdate();
-		}
-
-		if (gResult == -1)
-		{
-			return EXIT_FAILURE;
-		}
-
-		return msg.wParam;
+			// Frame Update
+		}		
 	}
 
 	String Application::GetAppName() const
@@ -52,8 +52,14 @@ namespace Basalt
 			BE_TRACE("Event Buffer: {0}", *event);
 			EventDispatcher dispatcher(*event);
 			dispatcher.Dispatch<WindowCloseEvent>([](WindowCloseEvent& closeEvent)->bool {return OnWindowClose(closeEvent); });
+			dispatcher.Dispatch<AppQuitEvent>([this](AppQuitEvent& quitEvent)->bool {return this->Quit(quitEvent); });
 			eventBuffer.pop();
 		}
+	}
+
+	int Application::GetExitCode() const
+	{
+		return exitCode;
 	}
 
 	void Application::OnEvent(const std::shared_ptr<Event>& event)
@@ -63,11 +69,19 @@ namespace Basalt
 
 	bool Application::OnWindowClose(WindowCloseEvent& event)
 	{
-		system("pause");
+		return true;
+	}
 
-		if (event.GetExitCode() != 0)
-			return false;
-		
+	bool Application::Quit(AppQuitEvent& event)
+	{
+		running = false;
+		exitCode = event.GetExitCode();
+		if (exitCode != 0)
+		{
+			BE_ERROR("Exited with Code {0}", exitCode);
+		}
+
+		system("pause");
 		return true;
 	}
 }
