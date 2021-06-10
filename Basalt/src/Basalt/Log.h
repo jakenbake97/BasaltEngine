@@ -81,6 +81,7 @@ void BE_CLIENT_LOG(const Basalt::ELogSeverity severity, const T& formatString, c
 	BE_LOG(Basalt::ELogger::Client, severity, formatString, additionalArguments...);
 }
 
+#ifdef BE_BUILD_DLL
 template <typename T, typename... Types>
 void BE_TRACE(const T& formatString, const Types&... additionalArguments)
 {
@@ -104,6 +105,32 @@ void BE_ERROR(const T& formatString, const Types&... additionalArguments)
 {
 	BE_LOG(Basalt::ELogger::Core, Basalt::ELogSeverity::Error, formatString, additionalArguments...);
 }
+
+#else
+template <typename T, typename... Types>
+void BE_TRACE(const T& formatString, const Types&... additionalArguments)
+{
+	BE_LOG(Basalt::ELogger::Client, Basalt::ELogSeverity::Trace, formatString, additionalArguments...);
+}
+
+template <typename T, typename... Types>
+void BE_INFO(const T& formatString, const Types&... additionalArguments)
+{
+	BE_LOG(Basalt::ELogger::Client, Basalt::ELogSeverity::Info, formatString, additionalArguments...);
+}
+
+template <typename T, typename... Types>
+void BE_WARN(const T& formatString, const Types&... additionalArguments)
+{
+	BE_LOG(Basalt::ELogger::Client, Basalt::ELogSeverity::Warn, formatString, additionalArguments...);
+}
+
+template <typename T, typename... Types>
+void BE_ERROR(const T& formatString, const Types&... additionalArguments)
+{
+	BE_LOG(Basalt::ELogger::Client, Basalt::ELogSeverity::Error, formatString, additionalArguments...);
+}
+#endif
 #endif
 
 #ifdef BE_DIST

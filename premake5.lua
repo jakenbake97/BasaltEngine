@@ -51,15 +51,17 @@ project "Basalt"
 
 	filter "configurations:Debug"
 		defines "BE_DEBUG"
-		symbols "On"
 		buildoptions "/MDd"
+		symbols "On"
 		
 	filter "configurations:Release"
 		defines "BE_RELEASE"
+		buildoptions "/MD"
 		optimize "On"
 		
 	filter "configurations:Dist"
 		defines "BE_DIST"
+		buildoptions "/MD"
 		optimize "On"
 
 project "Sandbox"
@@ -99,13 +101,15 @@ project "Sandbox"
 
 	filter "configurations:Debug"
 		defines "BE_DEBUG"
-		symbols "On"
 		buildoptions "/MDd"
+		symbols "On"
 		
 	filter "configurations:Release"
 		defines "BE_RELEASE"
+		buildoptions "/MD"
 		optimize "On"
 		
 	filter "configurations:Dist"
 		defines "BE_DIST"
+		buildoptions "/MD"
 		optimize "On"
