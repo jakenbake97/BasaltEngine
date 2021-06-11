@@ -55,9 +55,8 @@ namespace Basalt
 		while(!eventBuffer.empty())
 		{
 			auto event = eventBuffer.front();
-			BE_TRACE("Event Buffer: {0}", *event);
 			
-			EventDispatcher dispatcher(*event);
+			EventDispatcher dispatcher(event);
 			dispatcher.Dispatch<WindowCloseEvent>([](WindowCloseEvent& closeEvent)->bool {return OnWindowClose(closeEvent); });
 			dispatcher.Dispatch<AppQuitEvent>([this](AppQuitEvent& quitEvent)->bool {return this->Quit(quitEvent); });
 
@@ -65,7 +64,7 @@ namespace Basalt
 			{
 				if (event->handled)
 					break;
-				(*iterator)->OnEvent(*event);
+				(*iterator)->OnEvent(event);
 			}
 			
 			eventBuffer.pop();
@@ -77,12 +76,12 @@ namespace Basalt
 		return exitCode;
 	}
 
-	void Application::PushLayer(const std::shared_ptr<Layer> layer)
+	void Application::PushLayer(const std::shared_ptr<Layer>& layer)
 	{
 		layerStack.PushLayer(layer);
 	}
 
-	void Application::PushOverlay(const std::shared_ptr<Layer> overlay)
+	void Application::PushOverlay(const std::shared_ptr<Layer>& overlay)
 	{
 		layerStack.PushOverlay(overlay);
 	}

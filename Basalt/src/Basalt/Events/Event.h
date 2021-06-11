@@ -56,9 +56,9 @@ namespace Basalt
 		template<typename T>
 		using EventFunc = std::function<bool(T&)>;
 
-		Event& event;
+		std::shared_ptr<Event> event;
 	public:
-		EventDispatcher(Event& event)
+		EventDispatcher(std::shared_ptr<Event>& event)
 			: event(event)
 		{
 		}
@@ -66,9 +66,9 @@ namespace Basalt
 		template<typename T>
 		bool Dispatch(EventFunc<T> func)
 		{
-			if (event.GetEventType() == T::GetStaticType())
+			if (event->GetEventType() == T::GetStaticType())
 			{
-				event.handled = func(*static_cast<T*>(&event));
+				event->handled = func(*static_cast<T*>(event.get()));
 				return true;
 			}
 			return false;

@@ -7,12 +7,12 @@ public:
 
 	void OnUpdate() override
 	{
-		BE_INFO("ExampleLayer::Update");
+		
 	}
 
-	void OnEvent(Basalt::Event& event) override
+	void OnEvent(std::shared_ptr<Basalt::Event>& event) override
 	{
-		BE_TRACE("ExampleLayer::Event{0}", event);
+		BE_TRACE("ExampleLayer::Event {0}", *event);
 	}
 };
 

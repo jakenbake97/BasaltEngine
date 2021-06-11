@@ -33,8 +33,8 @@ namespace Basalt
 		void EventUpdate();
 		int GetExitCode() const;
 
-		void PushLayer(std::shared_ptr<Layer> layer);
-		void PushOverlay(std::shared_ptr<Layer> overlay);
+		void PushLayer(const std::shared_ptr<Layer>& layer);
+		void PushOverlay(const std::shared_ptr<Layer>& overlay);
 
 		static void OnEvent(const std::shared_ptr<Event>& event);
 		static bool OnWindowClose(WindowCloseEvent& event);

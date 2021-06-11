@@ -19,7 +19,7 @@ namespace Basalt
 		virtual void OnDetach() {}
 		virtual void OnUpdate() {} // TODO: Include deltaTime
 		virtual void OnImGuiRender() {}
-		virtual void OnEvent(Event& event) {}
+		virtual void OnEvent(std::shared_ptr<Event>& event) {}
 
 		const String& GetName() const { return debugName; }
 	};

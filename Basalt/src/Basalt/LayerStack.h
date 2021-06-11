@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include "Layer.h"
 
 namespace Basalt
@@ -6,7 +6,7 @@ namespace Basalt
 	class LayerStack
 	{
 	private:
-		std::vector<std::shared_ptr<Layer>> layers;  // TODO: Update to unique pointer if needed
+		std::vector<std::shared_ptr<Layer>> layers;
 		unsigned int layerInsertionIndex = 0;
 	public:
 		LayerStack() = default;
