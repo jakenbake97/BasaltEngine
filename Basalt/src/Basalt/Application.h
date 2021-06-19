@@ -27,6 +27,10 @@ namespace Basalt
 	public:
 		Application(String name);
 		virtual ~Application();
+		Application(const Application& other) = delete;
+		Application(Application&& other) noexcept = delete;
+		Application& operator=(const Application& other) = delete;
+		Application& operator=(Application&& other) noexcept = delete;
 
 		void Update();
 		String GetAppName() const;
