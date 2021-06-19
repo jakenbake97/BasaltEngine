@@ -1,5 +1,6 @@
 workspace "BasaltEngine"
 	architecture "x64"
+	startproject "Sandbox"
 
 	configurations
 	{
@@ -10,7 +11,6 @@ workspace "BasaltEngine"
 
 outputDir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
-startproject "Sandbox"
 
 project "Basalt"
 	location "Basalt"
@@ -48,7 +48,7 @@ project "Basalt"
 
 		postbuildcommands
 		{
-			("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputDir .. "/Sandbox")
+			("{COPY} %{cfg.buildtarget.relpath} \"../bin/" .. outputDir .. "/Sandbox/\"")
 		}
 
 	filter "configurations:Debug"
