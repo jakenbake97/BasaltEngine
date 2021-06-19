@@ -20,9 +20,9 @@ namespace Basalt
 
 		const String className(L"Basalt Engine");
 
-		BE_WARN("Class Name: {0}, App Name: {1}", className, name);
+		BE_WARN("Class Name: {0}, App Name: {1}", className, applicationName);
 
-		const String windowName = className + L" - " + name;
+		const String windowName = className + L" - " + applicationName;
 		
 		window = IWindow::Create({windowName});
 	}
@@ -103,6 +103,10 @@ namespace Basalt
 		if (exitCode != 0)
 		{
 			BE_ERROR("Exited with Code {0}", exitCode);
+		}
+		else
+		{
+			BE_TRACE("Exited with Code {0}", exitCode);
 		}
 
 		system("pause");

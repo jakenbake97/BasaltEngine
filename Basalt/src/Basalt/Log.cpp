@@ -23,6 +23,7 @@ namespace Basalt
 	{
 		// Setup console for winMain
 		AllocConsole();
+		SetConsoleTitle(L"Basalt Engine");
 
 		// %^ starts color range
 		// %T prints the time

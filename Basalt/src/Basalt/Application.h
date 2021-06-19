@@ -11,7 +11,7 @@ namespace Basalt
 	class IWindow;
 	class AppQuitEvent;
 	class WindowCloseEvent;
-
+	
 	class BASALT_API Application
 	{
 	private:

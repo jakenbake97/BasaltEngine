@@ -10,10 +10,13 @@ workspace "BasaltEngine"
 
 outputDir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
+startproject "Sandbox"
+
 project "Basalt"
 	location "Basalt"
 	kind "SharedLib"
 	language "C++"
+	staticruntime "off"
 
 	targetdir("bin/" .. outputDir .. "/%{prj.name}")
 	objdir("bin-int/" .. outputDir .. "/%{prj.name}")
@@ -35,7 +38,6 @@ project "Basalt"
 
 	filter "system:windows"
 		cppdialect "C++17"
-		staticruntime "On"
 		systemversion "latest"
 
 		defines
@@ -51,23 +53,24 @@ project "Basalt"
 
 	filter "configurations:Debug"
 		defines "BE_DEBUG"
-		buildoptions "/MDd"
+		runtime "Debug"
 		symbols "On"
 		
 	filter "configurations:Release"
 		defines "BE_RELEASE"
-		buildoptions "/MD"
+		runtime "Release"
 		optimize "On"
 		
 	filter "configurations:Dist"
 		defines "BE_DIST"
-		buildoptions "/MD"
+		runtime "Release"
 		optimize "On"
 
 project "Sandbox"
 	location "Sandbox"
 	kind "WindowedApp"
 	language "C++"
+	staticruntime "off"
 
 	targetdir("bin/" .. outputDir .. "/%{prj.name}")
 	objdir("bin-int/" .. outputDir .. "/%{prj.name}")
@@ -91,7 +94,6 @@ project "Sandbox"
 
 	filter "system:windows"
 		cppdialect "C++17"
-		staticruntime "On"
 		systemversion "latest"
 
 		defines
@@ -101,15 +103,15 @@ project "Sandbox"
 
 	filter "configurations:Debug"
 		defines "BE_DEBUG"
-		buildoptions "/MDd"
+		runtime "Debug"
 		symbols "On"
 		
 	filter "configurations:Release"
 		defines "BE_RELEASE"
-		buildoptions "/MD"
+		runtime "Release"
 		optimize "On"
 		
 	filter "configurations:Dist"
 		defines "BE_DIST"
-		buildoptions "/MD"
+		runtime "Release"
 		optimize "On"
