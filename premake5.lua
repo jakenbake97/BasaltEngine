@@ -11,6 +11,10 @@ workspace "BasaltEngine"
 
 outputDir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
+-- Include directories relative to root folder (solution directory)
+IncludeDir = {}
+IncludeDir["spdlog"] = "Basalt/vendor/spdlog/include"
+IncludeDir["glm"] = "Basalt/vendor/glm"
 
 project "Basalt"
 	location "Basalt"
@@ -21,20 +25,23 @@ project "Basalt"
 	targetdir("bin/" .. outputDir .. "/%{prj.name}")
 	objdir("bin-int/" .. outputDir .. "/%{prj.name}")
 
+	pchheader "BEpch.h"
+	pchsource "Basalt/src/BEpch.cpp"
+
 	files
 	{
 		"%{prj.name}/src/**.h",
 		"%{prj.name}/src/**.cpp",
+		"%{prj.name}/vendor/glm/glm/**.hpp",
+		"%{prj.name}/vendor/glm/glm/**.inl",
 	}
 
 	includedirs
 	{
 		"%{prj.name}/src",
-		"%{prj.name}/vendor/spdlog/include"
+		"%{IncludeDir.spdlog}",
+		"%{IncludeDir.glm}"
 	}
-
-	pchheader "BEpch.h"
-	pchsource "Basalt/src/BEpch.cpp"
 
 	filter "system:windows"
 		cppdialect "C++17"
@@ -83,8 +90,9 @@ project "Sandbox"
 
 	includedirs
 	{
-		"Basalt/vendor/spdlog/include",
-		"Basalt/src"
+		"%{IncludeDir.spdlog}",
+		"Basalt/src",
+		"%{IncludeDir.glm}"
 	}
 
 	links

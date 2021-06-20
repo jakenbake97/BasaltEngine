@@ -186,8 +186,7 @@ namespace Basalt
 			data.push_back(character);
 		}
 
-		template <typename OStream>
-		friend OStream& operator<<(OStream& os, const String& s)
+		friend std::ostream& operator<<(std::ostream& os, const String& s)
 		{
 			return os << s.Narrow();
 		}

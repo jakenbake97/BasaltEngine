@@ -32,5 +32,6 @@
 
 // Engine includes
 #include "Basalt/Core.h"
-#include "Basalt/Log.h"
 #include "Basalt/Utility/String.h"
+#include "Basalt/Utility/Math.h"
+#include "Basalt/Log.h"
