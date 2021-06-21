@@ -12,7 +12,7 @@ namespace Basalt::Platform
 		bool CheckKey(KeyCode keycode) override;
 
 		bool CheckMouseButton(MouseCode button) override;
-		std::pair<int, int> CheckMousePosition() override;
+		Vector2Int CheckMousePosition() override;
 		bool CheckMouseInWindow() override;
 		
 		void HandleKeyDown(KeyCode keycode) override;

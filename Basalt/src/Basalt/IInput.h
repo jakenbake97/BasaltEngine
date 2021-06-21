@@ -21,7 +21,7 @@ namespace Basalt
 		static bool GetKey(const KeyCode keycode) { return instance->CheckKey(keycode); }
 
 		static bool GetMouseButton(const KeyCode button) { return instance->CheckMouseButton(button); }
-		static std::pair<int, int> GetMousePosition() { return instance->CheckMousePosition(); }
+		static Vector2Int GetMousePosition() { return instance->CheckMousePosition(); }
 		static bool IsMouseInWindow() { return instance->CheckMouseInWindow(); }
 
 	protected:
@@ -40,8 +40,7 @@ namespace Basalt
 		
 		virtual bool CheckKey(KeyCode keycode) = 0;
 		virtual bool CheckMouseButton(MouseCode button) = 0;
-		// TODO: Replace with vector2 when implemented
-		virtual std::pair<int, int> CheckMousePosition() = 0;
+		virtual Vector2Int CheckMousePosition() = 0;
 		virtual bool CheckMouseInWindow() = 0;
 
 		virtual void HandleKeyDown(KeyCode keyCode) = 0;

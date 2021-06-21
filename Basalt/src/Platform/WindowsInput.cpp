@@ -96,7 +96,7 @@ namespace Basalt::Platform
 		return mouseButtonStates[button];
 	}
 
-	std::pair<int, int> WindowsInput::CheckMousePosition()
+	Vector2Int WindowsInput::CheckMousePosition()
 	{
 		return { x,y };
 	}
