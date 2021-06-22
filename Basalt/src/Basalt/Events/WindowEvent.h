@@ -4,7 +4,7 @@
 
 namespace Basalt
 {
-	class BASALT_API WindowCloseEvent : public Event
+	class WindowCloseEvent : public Event
 	{
 	private:
 		int code;
@@ -22,7 +22,7 @@ namespace Basalt
 		String ToString() const override { return GetName(); }
 	};
 
-	class BASALT_API WindowResizeEvent : public Event
+	class WindowResizeEvent : public Event
 	{
 	private:
 		unsigned int width, height;
@@ -43,7 +43,7 @@ namespace Basalt
 		int GetCategories() const override { return static_cast<int>(EventCategory::Window); }
 	};
 
-	class BASALT_API WindowFocusEvent : public Event
+	class WindowFocusEvent : public Event
 	{
 	public:
 		static EventType GetStaticType() { return EventType::WindowFocus; }
@@ -53,7 +53,7 @@ namespace Basalt
 		String ToString() const override { return GetName(); }
 	};
 
-	class BASALT_API WindowLostFocusEvent : public Event
+	class WindowLostFocusEvent : public Event
 	{
 	public:
 		static EventType GetStaticType() { return EventType::WindowLostFocus; }
@@ -63,7 +63,7 @@ namespace Basalt
 		String ToString() const override { return GetName(); }
 	};
 
-	class BASALT_API WindowMovedEvent : public Event
+	class WindowMovedEvent : public Event
 	{
 	private:
 		int x, y;

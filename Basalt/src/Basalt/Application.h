@@ -12,7 +12,7 @@ namespace Basalt
 	class AppQuitEvent;
 	class WindowCloseEvent;
 	
-	class BASALT_API Application
+	class Application
 	{
 	private:
 		String applicationName;

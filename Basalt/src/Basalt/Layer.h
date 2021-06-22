@@ -7,7 +7,7 @@
 
 namespace Basalt
 {
-	class BASALT_API Layer
+	class Layer
 	{
 	protected:
 		String debugName;

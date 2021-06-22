@@ -16,7 +16,7 @@ namespace Basalt
 		{}
 	};
 
-	class BASALT_API IWindow
+	class IWindow
 	{
 	protected:
 		IWindow() = default;

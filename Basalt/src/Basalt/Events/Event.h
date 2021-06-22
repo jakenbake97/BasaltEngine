@@ -25,7 +25,7 @@ namespace Basalt
 		Window			= BIT(3)
 	};
 	
-	class BASALT_API Event
+	class Event
 	{
 		friend class EventDispatcher;
 	public:

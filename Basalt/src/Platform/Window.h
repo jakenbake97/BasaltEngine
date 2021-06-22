@@ -9,7 +9,7 @@ namespace Basalt {
 
 namespace Basalt::Platform
 {
-	class BASALT_API Window : public IWindow
+	class Window : public IWindow
 	{
 	private:
 		WindowProperties properties;
@@ -37,15 +37,16 @@ namespace Basalt::Platform
 			static WindowClass wndClass;
 			HINSTANCE hInst;
 
-		private:
-			WindowClass();
-			~WindowClass();
 		public:
 			static const wchar_t* GetName();
 			static HINSTANCE GetInstance();
-
-			WindowClass(const WindowClass&) = delete;
-			WindowClass& operator=(const WindowClass&) = delete;
+		private:
+			WindowClass();
+			~WindowClass();
+			WindowClass(const WindowClass& other) = delete;
+			WindowClass(WindowClass&& other) noexcept = delete;
+			WindowClass& operator=(const WindowClass& other) = delete;
+			WindowClass& operator=(WindowClass&& other) noexcept = delete;
 		};
 	public:
 		Window(const WindowProperties& properties);

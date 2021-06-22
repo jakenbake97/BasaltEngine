@@ -177,7 +177,7 @@ namespace Basalt::Platform
 			// Check for quit message and create an event if the application should quit
 			if (msg.message == WM_QUIT)
 			{
-				const auto event = std::make_shared<AppQuitEvent>(msg.wParam);
+				const auto event = std::make_shared<AppQuitEvent>((int)msg.wParam);
 				Application::OnEvent(event);
 				return;
 			}
@@ -294,7 +294,7 @@ namespace Basalt::Platform
 				const auto [x, y] = MAKEPOINTS(lParam);
 
 				// The mouse is over the client
-				if (x >= 0 && x < properties.width && y >= 0 && y < properties.height)
+				if (x >= 0 && x < (short)properties.width && y >= 0 && y < (short)properties.height)
 				{
 					OnMouseMoved(x, y);
 					if (!IInput::IsMouseInWindow())

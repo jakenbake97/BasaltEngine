@@ -4,7 +4,7 @@
 
 namespace Basalt
 {
-	class BASALT_API AppTickEvent : public Event
+	class AppTickEvent : public Event
 	{
 	private:
 		float deltaTime;
@@ -20,7 +20,7 @@ namespace Basalt
 		int GetCategories() const override { return static_cast<int>(EventCategory::Application);}
 	};
 
-	class BASALT_API AppUpdateEvent : public Event
+	class AppUpdateEvent : public Event
 	{
 	public:
 		AppUpdateEvent() = default;
@@ -32,7 +32,7 @@ namespace Basalt
 		int GetCategories() const override { return static_cast<int>(EventCategory::Application); }
 	};
 
-	class BASALT_API AppRenderEvent : public Event
+	class AppRenderEvent : public Event
 	{
 	public:
 		AppRenderEvent() = default;
@@ -44,7 +44,7 @@ namespace Basalt
 		int GetCategories() const override { return static_cast<int>(EventCategory::Application);}
 	};
 
-	class BASALT_API AppQuitEvent : public Event
+	class AppQuitEvent : public Event
 	{
 	private:
 		int code;

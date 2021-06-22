@@ -4,7 +4,7 @@
 
 namespace Basalt
 {
-	class BASALT_API KeyEvent : public Event
+	class KeyEvent : public Event
 	{
 	protected:
 		KeyCode keycode;
@@ -17,7 +17,7 @@ namespace Basalt
 		int GetCategories() const override { return static_cast<int>(EventCategory::Keyboard); }
 	};
 	
-	class BASALT_API KeyPressedEvent final : public KeyEvent
+	class KeyPressedEvent final : public KeyEvent
 	{
 	private:
 		int repeatCount;
@@ -36,7 +36,7 @@ namespace Basalt
 		}
 	};
 
-	class BASALT_API KeyReleasedEvent final : public KeyEvent
+	class KeyReleasedEvent final : public KeyEvent
 	{
 	public:
 		KeyReleasedEvent(const KeyCode keycode) : KeyEvent(keycode) {}

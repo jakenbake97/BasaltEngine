@@ -93,6 +93,9 @@
     <ClInclude Include="src\Basalt\MouseCodes.h">
       <Filter>src\Basalt</Filter>
     </ClInclude>
+    <ClInclude Include="src\Basalt\Utility\Math.h">
+      <Filter>src\Basalt\Utility</Filter>
+    </ClInclude>
     <ClInclude Include="src\Basalt\Utility\String.h">
       <Filter>src\Basalt\Utility</Filter>
     </ClInclude>
@@ -1347,7 +1350,6 @@
     <ClInclude Include="vendor\glm\glm\vector_relational.hpp">
       <Filter>vendor\glm\glm</Filter>
     </ClInclude>
-    <ClInclude Include="src\Basalt\Utility\Math.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\BEpch.cpp">

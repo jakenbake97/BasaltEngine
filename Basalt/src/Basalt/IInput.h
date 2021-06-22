@@ -6,7 +6,7 @@
 
 namespace Basalt
 {
-	class BASALT_API IInput
+	class IInput
 	{
 		friend class IWindow;
 	protected:

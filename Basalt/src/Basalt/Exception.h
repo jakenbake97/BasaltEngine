@@ -4,7 +4,7 @@
 
 namespace Basalt
 {
-	class BASALT_API Exception : public std::exception
+	class Exception : public std::exception
 	{
 	protected:
 		mutable std::string whatBuffer;

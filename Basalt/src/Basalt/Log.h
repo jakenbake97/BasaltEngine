@@ -2,12 +2,17 @@
 
 #include "Core.h"
 #include "Utility/String.h"
+
+// This excludes all warnings raised inside External headers
+#pragma warning(push)
+#pragma warning ( disable : ALL_CODE_ANALYSIS_WARNINGS )
 #include "spdlog/spdlog.h"
 #include "spdlog/fmt/ostr.h"
+#pragma warning(pop)
 
 namespace Basalt
 {
-	class BASALT_API Log
+	class Log
 	{
 	private:
 		static std::shared_ptr<spdlog::logger> coreLogger;
@@ -81,7 +86,7 @@ void BE_CLIENT_LOG(const Basalt::ELogSeverity severity, const T& formatString, c
 	BE_LOG(Basalt::ELogger::Client, severity, formatString, additionalArguments...);
 }
 
-#ifdef BE_BUILD_DLL
+#ifdef BE_STATIC_LIB
 template <typename T, typename... Types>
 void BE_TRACE(const T& formatString, const Types&... additionalArguments)
 {

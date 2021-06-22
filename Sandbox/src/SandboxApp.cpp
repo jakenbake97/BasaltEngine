@@ -27,7 +27,7 @@ public:
 
 	void OnUpdate() override
 	{
-		Mat4x4 tempMat({ 1.1f, 2.2f, 3.3f, 4.4f });
+		const Mat4x4 tempMat({ 1.1f, 2.2f, 3.3f, 4.4f });
 		BE_TRACE(tempMat);
 	}
 

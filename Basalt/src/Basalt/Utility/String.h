@@ -2,12 +2,18 @@
 
 #include <string>
 #include "Basalt/Core.h"
+
+// This excludes all warnings raised inside External headers
+#pragma warning(push)
+#pragma warning ( disable : ALL_CODE_ANALYSIS_WARNINGS )
 #include "spdlog/spdlog.h"
 #include "spdlog/fmt/ostr.h"
+#pragma warning(pop)
+
 
 namespace Basalt
 {
-	class BASALT_API String
+	class String
 	{
 	private:
 		std::wstring data;
@@ -150,7 +156,7 @@ namespace Basalt
 
 		unsigned int Size() const
 		{
-			return data.size();
+			return (unsigned int)data.size();
 		}
 
 		const wchar_t* CStr() const
@@ -168,7 +174,7 @@ namespace Basalt
 			std::string narrow;
 			narrow.resize(data.size());
 
-			WideCharToMultiByte(CP_ACP, 0, data.c_str(), data.size(), narrow.data(), data.size(), nullptr, nullptr);
+			WideCharToMultiByte(CP_ACP, 0, data.c_str(), (int)data.size(), narrow.data(), (int)data.size(), nullptr, nullptr);
 
 			return narrow;
 		}
@@ -197,7 +203,7 @@ namespace Basalt
 			std::wstring wide;
 			wide.resize(inString.size());
 
-			MultiByteToWideChar(CP_ACP, 0, inString.c_str(), inString.size(), wide.data(), inString.size());
+			MultiByteToWideChar(CP_ACP, 0, inString.c_str(), (int)inString.size(), wide.data(), (int)inString.size());
 
 			return wide;
 		}

@@ -1,5 +1,8 @@
 #pragma once
 
+// This excludes all warnings raised inside External headers
+#pragma warning(push)
+#pragma warning ( disable : ALL_CODE_ANALYSIS_WARNINGS )
 #include "glm/vec2.hpp"
 #include "glm/vec3.hpp"
 #include "glm/vec4.hpp"
@@ -10,6 +13,7 @@
 
 #include "spdlog/spdlog.h"
 #include "spdlog/fmt/ostr.h"
+#pragma warning(pop)
 
 using Vector2 = glm::vec2;
 using Vector2Int = glm::ivec2;

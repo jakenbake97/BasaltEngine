@@ -6,7 +6,7 @@
 
 namespace Basalt::Platform
 {
-	class BASALT_API WindowsInput : public IInput
+	class WindowsInput : public IInput
 	{
 	protected:
 		bool CheckKey(KeyCode keycode) override;

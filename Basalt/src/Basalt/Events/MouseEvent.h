@@ -4,7 +4,7 @@
 
 namespace Basalt
 {
-	class BASALT_API MouseButtonEvent : public Event
+	class MouseButtonEvent : public Event
 	{
 	protected:
 		MouseCode button;
@@ -14,7 +14,7 @@ namespace Basalt
 		MouseCode GetButton() const { return button; }
 	};
 	
-	class BASALT_API MouseButtonPressedEvent : public MouseButtonEvent
+	class MouseButtonPressedEvent : public MouseButtonEvent
 	{
 	public:
 		MouseButtonPressedEvent(const MouseCode button) : MouseButtonEvent(button){}
@@ -25,7 +25,7 @@ namespace Basalt
 		String ToString() const override { return GetName() + ": Button[" + button + "]"; }
 	};
 
-	class BASALT_API MouseButtonReleasedEvent : public MouseButtonEvent
+	class MouseButtonReleasedEvent : public MouseButtonEvent
 	{
 	public:
 		MouseButtonReleasedEvent(const MouseCode button) : MouseButtonEvent(button) {}
@@ -36,14 +36,14 @@ namespace Basalt
 		String ToString() const override { return GetName() + ": Button[" + button + "]"; }
 	};
 
-	class BASALT_API MouseScrolledEvent : public Event
+	class MouseScrolledEvent : public Event
 	{
 	private:
-		float offset;
+		int offset;
 	public:
-		MouseScrolledEvent(const float scrollOffset) : offset(scrollOffset) {}
+		MouseScrolledEvent(const int scrollOffset) : offset(scrollOffset) {}
 
-		float GetScrollOffset() const { return offset; }
+		int GetScrollOffset() const { return offset; }
 		
 		static EventType GetStaticType() { return EventType::MouseScrolled; }
 		EventType GetEventType() const override { return GetStaticType(); }
@@ -52,7 +52,7 @@ namespace Basalt
 		String ToString() const override { return GetName() + ": Scroll Offset[" + offset + "]"; }
 	};
 
-	class BASALT_API MousePositionEvent : public Event
+	class MousePositionEvent : public Event
 	{
 	protected:
 		int x, y;
@@ -66,7 +66,7 @@ namespace Basalt
 		int GetCategories() const override { return static_cast<int>(EventCategory::Mouse); }
 	};
 	
-	class BASALT_API MouseMovedEvent : public MousePositionEvent
+	class MouseMovedEvent : public MousePositionEvent
 	{
 	public:
 		MouseMovedEvent(const int xPos, const int yPos) : MousePositionEvent(xPos, yPos) {}
@@ -77,7 +77,7 @@ namespace Basalt
 		String ToString() const override { return GetName() + ": Position(" + x +", " + y + ")"; }
 	};
 
-	class BASALT_API MouseEnterEvent : public MousePositionEvent
+	class MouseEnterEvent : public MousePositionEvent
 	{
 	public:
 		MouseEnterEvent(const int xPos, const int yPos) : MousePositionEvent(xPos, yPos) {}
@@ -88,7 +88,7 @@ namespace Basalt
 		String ToString() const override { return GetName() + ": Position(" + x + ", " + y + ")"; }
 	};
 
-	class BASALT_API MouseLeaveEvent : public MousePositionEvent
+	class MouseLeaveEvent : public MousePositionEvent
 	{
 	public:
 		MouseLeaveEvent(const int xPos, const int yPos) : MousePositionEvent(xPos, yPos) {}
