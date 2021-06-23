@@ -4,8 +4,7 @@
 #include "Utility/String.h"
 
 // This excludes all warnings raised inside External headers
-#pragma warning(push)
-#pragma warning ( disable : ALL_CODE_ANALYSIS_WARNINGS )
+#pragma warning(push, 0)
 #include "spdlog/spdlog.h"
 #include "spdlog/fmt/ostr.h"
 #pragma warning(pop)
@@ -38,6 +37,7 @@ namespace Basalt
 		Info,
 		Warn,
 		Error,
+		Critical
 	};
 }
 
@@ -70,6 +70,9 @@ void BE_LOG(const Basalt::ELogger logger, const Basalt::ELogSeverity severity, T
 		break;
 	case Basalt::ELogSeverity::Error:
 		log->error(formatString, additionalArguments...);
+		break;
+	case Basalt::ELogSeverity::Critical:
+		log->critical(formatString, additionalArguments...);
 		break;
 	}
 }
@@ -111,6 +114,12 @@ void BE_ERROR(const T& formatString, const Types&... additionalArguments)
 	BE_LOG(Basalt::ELogger::Core, Basalt::ELogSeverity::Error, formatString, additionalArguments...);
 }
 
+template <typename T, typename... Types>
+void BE_CRITICAL(const T& formatString, const Types&... additionalArguments)
+{
+	BE_LOG(Basalt::ELogger::Core, Basalt::ELogSeverity::Critical, formatString, additionalArguments...);
+}
+
 #else
 template <typename T, typename... Types>
 void BE_TRACE(const T& formatString, const Types&... additionalArguments)
@@ -134,6 +143,12 @@ template <typename T, typename... Types>
 void BE_ERROR(const T& formatString, const Types&... additionalArguments)
 {
 	BE_LOG(Basalt::ELogger::Client, Basalt::ELogSeverity::Error, formatString, additionalArguments...);
+}
+
+template <typename T, typename... Types>
+void BE_CRITICAL(const T& formatString, const Types&... additionalArguments)
+{
+	BE_LOG(Basalt::ELogger::Client, Basalt::ELogSeverity::Critical, formatString, additionalArguments...);
 }
 #endif
 #endif
@@ -159,5 +174,8 @@ template <typename T, typename... Types>
 void BE_WARN(T formatString, Types... additionalArguments){}
 
 template <typename T, typename... Types>
-void BE_ERROR(T formatString, Types... additionalArguments) {}
+void BE_ERROR(T formatString, Types... additionalArguments){}
+
+template <typename T, typename... Types>
+void BE_CRITICAL(const T& formatString, const Types&... additionalArguments){}
 #endif

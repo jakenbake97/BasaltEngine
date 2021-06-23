@@ -1,6 +1,11 @@
 #include "BEpch.h"
 #include "Log.h"
+
+#include <codeanalysis\warnings.h>
+#pragma warning( push )
+#pragma warning ( disable : ALL_CODE_ANALYSIS_WARNINGS )
 #include "spdlog/sinks/stdout_color_sinks.h"
+#pragma warning( pop )
 
 namespace Basalt
 {

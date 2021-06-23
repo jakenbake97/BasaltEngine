@@ -1,6 +1,6 @@
 #pragma once
 #include "Event.h"
-#include "Platform/Window.h"
+#include "Basalt/IWindow.h"
 
 namespace Basalt
 {

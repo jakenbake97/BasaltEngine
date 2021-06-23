@@ -19,11 +19,7 @@
 	#include <Windows.h>
 #endif
 
-#include <CodeAnalysis/Warnings.h>
-
 // Common includes
-#pragma warning(push) // This excludes all warnings raised inside External headers
-#pragma warning ( disable : ALL_CODE_ANALYSIS_WARNINGS )
 #include <memory>
 #include <utility>
 #include <algorithm>
@@ -35,7 +31,6 @@
 #include <queue>
 #include <bitset>
 #include <cstdint>
-#pragma warning(pop)
 
 
 // Engine includes

@@ -16,12 +16,9 @@ namespace Basalt
 {
 	std::unique_ptr<IWindow> IWindow::Create(const WindowProperties& properties)
 	{
-		return std::make_unique<Platform::Window>(properties);
+		return std::make_unique<Window>(properties);
 	}
-}
-
-namespace Basalt::Platform
-{
+	
 	Window::WindowClass Window::WindowClass::wndClass;
 
 	Window::WindowClass::WindowClass()

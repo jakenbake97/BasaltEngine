@@ -4,7 +4,7 @@
 #include "Basalt/IInput.h"
 #include "Basalt/Keycodes.h"
 
-namespace Basalt::Platform
+namespace Basalt
 {
 	class WindowsInput : public IInput
 	{

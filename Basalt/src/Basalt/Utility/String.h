@@ -4,11 +4,12 @@
 #include "Basalt/Core.h"
 
 // This excludes all warnings raised inside External headers
-#pragma warning(push)
+#include <CodeAnalysis\Warnings.h>
+#pragma warning( push )
 #pragma warning ( disable : ALL_CODE_ANALYSIS_WARNINGS )
 #include "spdlog/spdlog.h"
 #include "spdlog/fmt/ostr.h"
-#pragma warning(pop)
+#pragma warning( pop )
 
 
 namespace Basalt

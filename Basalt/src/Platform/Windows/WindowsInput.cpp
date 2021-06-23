@@ -7,11 +7,7 @@
 
 namespace Basalt
 {
-	IInput* IInput::instance = new Platform::WindowsInput();
-}
-
-namespace Basalt::Platform
-{
+	std::unique_ptr<IInput> IInput::instance = std::make_unique<WindowsInput>();
 
 	void WindowsInput::HandleKeyDown(const KeyCode keycode)
 	{

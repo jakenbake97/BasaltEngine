@@ -57,6 +57,6 @@ namespace Basalt
 		virtual void ClearInputStates() = 0;
 		
 	private:
-		static IInput* instance;
+		static std::unique_ptr<IInput> instance;
 	};
 }

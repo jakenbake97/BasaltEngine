@@ -5,10 +5,7 @@
 
 namespace Basalt {
 	class String;
-}
 
-namespace Basalt::Platform
-{
 	class Window : public IWindow
 	{
 	private:
@@ -72,5 +69,5 @@ namespace Basalt::Platform
 	};
 }
 
-#define BE_WND_EXCEPT(hr) Basalt::Platform::Window::WindowException(__LINE__, __FILE__, hr)
-#define BE_WND_LAST_EXCEPT() Basalt::Platform::Window::WindowException(__LINE__, __FILE__, GetLastError())
+#define BE_WND_EXCEPT(hr) Basalt::Window::WindowException(__LINE__, __FILE__, hr)
+#define BE_WND_LAST_EXCEPT() Basalt::Window::WindowException(__LINE__, __FILE__, GetLastError())
