@@ -5,9 +5,8 @@ class WindowLayer : public Basalt::Layer
 public:
 	WindowLayer() : Layer("Example") {}
 
-	void OnUpdate() override
+	void OnUpdate(float deltaTime) override
 	{
-		
 	}
 
 	void OnEvent(std::shared_ptr<Basalt::Event>& event) override
@@ -25,7 +24,7 @@ class InputLayer : public Basalt::Layer
 public:
 	InputLayer() : Layer("Input") {}
 
-	void OnUpdate() override
+	void OnUpdate(float deltaTime) override
 	{
 	}
 

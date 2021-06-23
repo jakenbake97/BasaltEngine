@@ -1355,6 +1355,7 @@
     </ClInclude>
     <ClInclude Include="src\Basalt\Renderer\RenderContext.h" />
     <ClInclude Include="src\Platform\DirectX11\Dx11Context.h" />
+    <ClInclude Include="src\Basalt\Timer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\BEpch.cpp">
@@ -1379,5 +1380,6 @@
       <Filter>src\Platform\Windows</Filter>
     </ClCompile>
     <ClCompile Include="src\Platform\DirectX11\Dx11Context.cpp" />
+    <ClCompile Include="src\Basalt\Timer.cpp" />
   </ItemGroup>
 </Project>

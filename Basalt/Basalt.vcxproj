@@ -143,6 +143,7 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Basalt\Timer.h" />
     <ClInclude Include="src\Platform\DirectX11\Dx11Context.h" />
     <ClInclude Include="src\Basalt\Renderer\RenderContext.h" />
     <ClInclude Include="src\BEpch.h" />
@@ -584,6 +585,7 @@
     <ClInclude Include="vendor\glm\glm\vector_relational.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Basalt\Timer.cpp" />
     <ClCompile Include="src\Platform\DirectX11\Dx11Context.cpp" />
     <ClCompile Include="src\BEpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>

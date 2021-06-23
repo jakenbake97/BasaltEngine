@@ -11,6 +11,7 @@ namespace Basalt
 	class IWindow;
 	class AppQuitEvent;
 	class WindowCloseEvent;
+	class Timer;
 	
 	class Application
 	{
@@ -21,6 +22,7 @@ namespace Basalt
 		bool running = true;
 		std::unique_ptr<IWindow> window;
 		int exitCode = 0;
+		Timer timer;
 
 		LayerStack layerStack;
 		

@@ -38,3 +38,4 @@
 #include "Basalt/Utility/String.h"
 #include "Basalt/Utility/Math.h"
 #include "Basalt/Log.h"
+#include "Basalt/Timer.h"

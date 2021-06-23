@@ -17,7 +17,7 @@ namespace Basalt
 
 		virtual void OnAttach() {}
 		virtual void OnDetach() {}
-		virtual void OnUpdate() {} // TODO: Include deltaTime
+		virtual void OnUpdate(float deltaTime) {}
 		virtual void OnImGuiRender() {}
 		virtual void OnEvent(std::shared_ptr<Event>& event) {}
 
