@@ -1,4 +1,4 @@
-#include <Basalt.h>
+#include "Basalt.h"
 
 class WindowLayer : public Basalt::Layer
 {
@@ -27,8 +27,6 @@ public:
 
 	void OnUpdate() override
 	{
-		const Mat4x4 tempMat({ 1.1f, 2.2f, 3.3f, 4.4f });
-		BE_TRACE(tempMat);
 	}
 
 	void OnEvent(std::shared_ptr<Basalt::Event>& event) override

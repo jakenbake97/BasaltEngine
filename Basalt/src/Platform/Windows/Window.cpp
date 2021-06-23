@@ -87,6 +87,8 @@ namespace Basalt
 
 		ShowWindow(handle, SW_SHOWDEFAULT);
 
+		graphicsContext = RenderContext::CreateRenderContext(handle);
+
 		BE_LOG(ELogger::Core, ELogSeverity::Trace, "{0} x {1} Window Successfully Created!", properties.width, properties.height);
 	}
 
@@ -192,6 +194,11 @@ namespace Basalt
 	unsigned Window::GetHeight() const
 	{
 		return properties.height;
+	}
+
+	RenderContext& Window::GetRenderContext()
+	{
+		return *graphicsContext;
 	}
 
 	void Window::SetVSync(const bool enabled)

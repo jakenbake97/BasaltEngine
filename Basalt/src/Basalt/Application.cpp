@@ -42,6 +42,8 @@ namespace Basalt
 			EventUpdate();
 			
 			// Frame Update
+			window->GetRenderContext().ClearColor({ 1.0f, 0.0f, 1.0f, 1.0f });
+			window->GetRenderContext().SwapBuffers();
 		}		
 	}
 

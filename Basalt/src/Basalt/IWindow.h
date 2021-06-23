@@ -2,6 +2,7 @@
 #include "BEpch.h"
 
 #include "IInput.h"
+#include "Renderer/RenderContext.h"
 
 namespace Basalt
 {
@@ -36,6 +37,8 @@ namespace Basalt
 		// Window attributes
 		virtual void SetVSync(bool enabled) = 0;
 		virtual bool IsVSync() const = 0;
+
+		virtual RenderContext& GetRenderContext() = 0;
 
 		static std::unique_ptr<IWindow> Create(const WindowProperties& properties = WindowProperties());
 

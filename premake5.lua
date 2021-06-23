@@ -60,6 +60,11 @@ project "Basalt"
 			"WINVER=0x0601"
 		}
 
+		links
+		{
+			"d3d11.lib"
+		}
+
 	filter "configurations:Debug"
 		defines "BE_DEBUG"
 		runtime "Debug"

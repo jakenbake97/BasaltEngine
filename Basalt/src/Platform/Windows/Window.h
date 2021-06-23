@@ -2,6 +2,7 @@
 
 #include "Basalt/Exception.h"
 #include "Basalt/IWindow.h"
+#include "Basalt/Renderer/RenderContext.h"
 
 namespace Basalt {
 	class String;
@@ -13,6 +14,7 @@ namespace Basalt {
 		HWND handle;
 		bool vSync;
 		bool focused = true;
+		std::unique_ptr<RenderContext> graphicsContext;
 
 	public:
 		class WindowException : public Exception
@@ -52,10 +54,13 @@ namespace Basalt {
 		Window& operator=(const Window&) = delete;
 		Window(Window&& other) noexcept = delete;
 		Window& operator=(Window && other) noexcept = delete;
-
+		
 		void OnUpdate() override;
 		unsigned int GetWidth() const override;
 		unsigned int GetHeight() const override;
+
+		RenderContext& GetRenderContext() override;
+		
 		void SetVSync(bool enabled) override;
 		bool IsVSync() const override;
 		
