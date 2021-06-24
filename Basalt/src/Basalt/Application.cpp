@@ -31,24 +31,24 @@ namespace Basalt
 
 	void Application::Update()
 	{
-		float lastFrameTime = timer.Peek();
 		while (running)
 		{
-			const float deltaTime = timer.Peek() - lastFrameTime;
-			lastFrameTime = timer.Peek();
+			timer.Mark();
 			
 			// Update message loop
 			window->OnUpdate();
 
 			for (const auto& layer : layerStack)
-				layer->OnUpdate(deltaTime);
+				layer->OnUpdate(timer.GetDeltaTime());
 			
 			EventUpdate();
 			
 			// Frame Update
-			const float c = sin(timer.Peek()) / 2.0f + 0.5f;
+			const float c = sin(timer.GetTime()) / 2.0f + 0.5f;
 			window->GetRenderContext().ClearColor({ 1.0f, c, 1.0f, 1.0f });
 			window->GetRenderContext().SwapBuffers();
+
+			BE_WARN("Total Time: {0}", timer.GetTime());
 		}		
 	}
 

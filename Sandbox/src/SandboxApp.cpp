@@ -5,8 +5,9 @@ class WindowLayer : public Basalt::Layer
 public:
 	WindowLayer() : Layer("Example") {}
 
-	void OnUpdate(float deltaTime) override
+	void OnUpdate(const float deltaTime) override
 	{
+		BE_TRACE("WindowLayer - DeltaTime: {0}", deltaTime);
 	}
 
 	void OnEvent(std::shared_ptr<Basalt::Event>& event) override

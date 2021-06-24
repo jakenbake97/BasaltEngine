@@ -7,19 +7,22 @@ namespace Basalt
 {
 	Timer::Timer()
 	{
-		lastTime = steady_clock::now();
+		startTime = high_resolution_clock::now();
+		lastTime = high_resolution_clock::now();
 	}
 
-	float Timer::Mark()
+	float Timer::GetTime() const
 	{
-		const auto old = lastTime;
-		lastTime = steady_clock::now();
-		const duration<float> frameTime = lastTime - old;
-		return frameTime.count();
+		return duration<float>(high_resolution_clock::now() - startTime).count();
 	}
 
-	float Timer::Peek() const
+	float Timer::GetDeltaTime() const
 	{
-		return duration<float>(steady_clock::now() - lastTime).count();
+		return duration<float>(high_resolution_clock::now() - lastTime).count();
+	}
+
+	void Timer::Mark()
+	{
+		lastTime = high_resolution_clock::now();
 	}
 }
