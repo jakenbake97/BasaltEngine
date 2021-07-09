@@ -26,15 +26,15 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	// Catch issues in creating application before the logger is created
 	catch (const Basalt::Exception& e)
 	{
-		BE_ERROR(e.GetException());
+		BE_CORE_LOG(Basalt::ELogSeverity::Critical, e.GetException());
 	}
 	catch (const std::exception& e)
 	{
-		BE_ERROR(e.what());
+		BE_CORE_LOG(Basalt::ELogSeverity::Critical, e.what());
 	}
 	catch (...)
 	{
-		BE_ERROR("Unknown Exception | No exception details available");
+		BE_CORE_LOG(Basalt::ELogSeverity::Critical, "Unknown Exception | No exception details available");
 	}
 	system("pause");
 	return -1;

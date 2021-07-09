@@ -15,6 +15,16 @@
 
 	// target Windows 7 or later
 	#include <winsdkver.h>
+	#ifdef WINVER
+		#undef WINVER
+	#endif
+
+	#ifdef _WIN32_WINNT
+		#undef _WIN32_WINNT
+	#endif
+
+	#define WINVER 0x601
+	#define _WIN32_WINNT 0x601
 	#include <sdkddkver.h>
 	#include <Windows.h>
 #endif

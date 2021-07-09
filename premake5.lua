@@ -56,8 +56,6 @@ project "Basalt"
 		defines
 		{
 			"BE_PLATFORM_WINDOWS",
-			"_WIN32_WINNT=0x0601",
-			"WINVER=0x0601"
 		}
 
 		links

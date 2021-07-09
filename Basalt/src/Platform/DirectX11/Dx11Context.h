@@ -2,11 +2,31 @@
 #include "BEpch.h"
 #include "Basalt/Renderer/RenderContext.h"
 #include <d3d11.h>
+#include "Basalt/Exception.h"
 
 namespace Basalt
 {
 	class Dx11Context : public RenderContext
-	{	
+	{
+	public:
+		class HResultException : public Exception
+		{
+		private:
+			HRESULT errorCode;
+		public:
+			HResultException(int line, String file, HRESULT hresult);
+			String GetException() const override;
+			String GetType() const override;
+			HRESULT GetErrorCode() const;
+			String GetErrorString() const;
+			String GetErrorDescription() const;
+		};
+		class DeviceRemovedException : public HResultException
+		{
+			using HResultException::HResultException;
+		public:
+			String GetType() const override;
+		};
 	private:
 		HWND windowHandle;
 		
@@ -25,5 +45,13 @@ namespace Basalt
 
 		void SwapBuffers() override;
 		void ClearColor(Color color) override;
+	private:
+		void DxRemovedCheck(HRESULT hresult, const int line, const String& file) const;
 	};
+
+	static constexpr void DxCheck(HRESULT hresult, const int line, const String& file)
+	{
+		if (!FAILED(hresult)) return;
+		throw Dx11Context::HResultException(line, file, hresult);
+	}
 }

@@ -7,12 +7,11 @@ public:
 
 	void OnUpdate(const float deltaTime) override
 	{
-		BE_TRACE("WindowLayer - DeltaTime: {0}", deltaTime);
 	}
 
 	void OnEvent(std::shared_ptr<Basalt::Event>& event) override
 	{
-		if (event->GetCategories() == static_cast<int>(Basalt::EventCategory::Window))
+		if (event->IsInCategory(Basalt::EventCategory::Window))
 		{
 			BE_TRACE("ExampleLayer::Event {0}", *event);
 			event->handled = true;
@@ -31,8 +30,7 @@ public:
 
 	void OnEvent(std::shared_ptr<Basalt::Event>& event) override
 	{
-		if (event->GetCategories() == static_cast<int>(Basalt::EventCategory::Keyboard) || 
-			event->GetCategories() == static_cast<int>(Basalt::EventCategory::Mouse))
+		if (event->IsInCategory(Basalt::EventCategory::Mouse) || event->IsInCategory(Basalt::EventCategory::Keyboard))
 		{
 			BE_INFO("InputLayer::Event {0}", *event);
 			event->handled = true;

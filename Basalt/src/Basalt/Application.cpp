@@ -20,7 +20,7 @@ namespace Basalt
 
 		const String className(L"Basalt Engine");
 
-		BE_WARN("Class Name: {0}, App Name: {1}", className, applicationName);
+		BE_TRACE("Class Name: {0}, App Name: {1}", className, applicationName);
 
 		const String windowName = className + L" - " + applicationName;
 		
@@ -47,8 +47,6 @@ namespace Basalt
 			const float c = sin(timer.GetTime()) / 2.0f + 0.5f;
 			window->GetRenderContext().ClearColor({ 1.0f, c, 1.0f, 1.0f });
 			window->GetRenderContext().SwapBuffers();
-
-			BE_WARN("Total Time: {0}", timer.GetTime());
 		}		
 	}
 
