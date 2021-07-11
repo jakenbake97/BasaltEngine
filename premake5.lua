@@ -67,6 +67,11 @@ project "Basalt"
 		defines "BE_DEBUG"
 		runtime "Debug"
 		symbols "on"
+
+		links
+		{
+			"dxguid.lib"
+		}
 		
 	filter "configurations:Release"
 		defines "BE_RELEASE"

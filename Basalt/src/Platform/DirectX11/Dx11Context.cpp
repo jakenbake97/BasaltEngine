@@ -1,30 +1,44 @@
 #include "BEpch.h"
 #include "Dx11Context.h"
 
+#include <sstream>
 #include <utility>
 
 #include "DxError/dxerr.h"
 
 namespace Basalt
 {
-#define DX_CHECK(hresult) DxCheck(hresult, __LINE__, __FILE__)
-#define DX_DEVICE_REMOVED_CHECK(hresult) DxRemovedCheck(hresult, __LINE__, __FILE__)
 	
 	std::unique_ptr<RenderContext> RenderContext::CreateRenderContext(void* handle)
 	{
 		return std::make_unique<Dx11Context>(static_cast<HWND>(handle));
 	}
 
-	Dx11Context::HResultException::HResultException(int line, String file, HRESULT hresult)
+	Dx11Context::HResultException::HResultException(int line, String file, HRESULT hresult, std::vector<String> errors)
 		: Exception(line, std::move(file)), errorCode(hresult)
 	{
+		for( const auto& message : errors)
+		{
+			info += message;
+			info.PushBack('\n');
+		}
+		if (!info.Empty())
+		{
+			info.PopBack();
+		}
 	}
 
 	String Dx11Context::HResultException::GetException() const
 	{
-		return GetType() + L" [ERROR CODE]: " + GetErrorCode()
-			+ L" [ERROR NAME]: " + GetErrorString()
-			+ L" [ERROR DESCRIPTION]: " + GetErrorDescription() + GetOriginString();
+	
+		String exceptionString = GetType() + L"[ERROR CODE]: " + GetErrorCode() + L"\n"
+			+ L"[ERROR NAME]: " + GetErrorString() + L"\n"
+			+ L"[ERROR DESCRIPTION]: " + GetErrorDescription() + L"\n";
+		if (!info.Empty())
+		{
+			exceptionString += L"[ERROR INFO]: " + GetErrorInfo() + "\n";
+		}
+		return exceptionString + GetOriginString();
 	}
 
 	String Dx11Context::HResultException::GetType() const
@@ -32,9 +46,11 @@ namespace Basalt
 		return L"DX11 Graphics Exception";
 	}
 
-	HRESULT Dx11Context::HResultException::GetErrorCode() const
+	String Dx11Context::HResultException::GetErrorCode() const
 	{
-		return errorCode;
+		std::stringstream ss;
+		ss << "0x" << std::hex << std::uppercase << errorCode << std::dec << " (" << (unsigned long)errorCode << ")";
+		return ss.str();
 	}
 
 	String Dx11Context::HResultException::GetErrorString() const
@@ -47,6 +63,11 @@ namespace Basalt
 		WCHAR buf[512];
 		DXGetErrorDescription(errorCode, buf, 512);
 		return buf;
+	}
+
+	String Dx11Context::HResultException::GetErrorInfo() const
+	{
+		return info;
 	}
 
 	String Dx11Context::DeviceRemovedException::GetType() const
@@ -69,7 +90,7 @@ namespace Basalt
 		swapDesc.SampleDesc.Quality = 0;
 		swapDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
 		swapDesc.BufferCount = 1;
-		swapDesc.OutputWindow = (HWND)12345;//windowHandle;
+		swapDesc.OutputWindow = windowHandle;
 		swapDesc.Windowed = TRUE;
 		swapDesc.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
 		swapDesc.Flags = 0;
@@ -79,13 +100,13 @@ namespace Basalt
 		layerFlags |= D3D11_CREATE_DEVICE_DEBUG;
 #endif
 		
-		DX_CHECK(D3D11CreateDeviceAndSwapChain(nullptr, D3D_DRIVER_TYPE_HARDWARE, nullptr, layerFlags, nullptr, 0, 
+		DX_INFO_CHECK(D3D11CreateDeviceAndSwapChain(nullptr, D3D_DRIVER_TYPE_HARDWARE, nullptr, layerFlags, nullptr, 0, 
 			D3D11_SDK_VERSION, &swapDesc, &swapChain, &device, nullptr, &context));
 
 		// gain access to texture subresource in swap chain
 		ID3D11Resource* backBuffer = nullptr;
-		DX_CHECK(swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void**>(&backBuffer)));
-		DX_CHECK(device->CreateRenderTargetView(backBuffer, nullptr, &renderTarget));
+		DX_INFO_CHECK(swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void**>(&backBuffer)));
+		DX_INFO_CHECK(device->CreateRenderTargetView(backBuffer, nullptr, &renderTarget));
 		backBuffer->Release();
 	}
 
@@ -127,6 +148,34 @@ namespace Basalt
 		{
 			throw DeviceRemovedException(line, file, device->GetDeviceRemovedReason());
 		}
+		DxCheck(hresult, line, file);
+	}
+
+	void Dx11Context::DxInfoCheck(HRESULT hresult, const int line, const String& file)
+	{
+#ifdef BE_DEBUG
+		auto messages = infoManager.GetMessages();
+		infoManager.Set();
+
+		std::vector<String> errorDescriptions{};
+
+		for (auto& message : messages)
+		{
+			if (message.severity == DXGI_INFO_QUEUE_MESSAGE_SEVERITY_WARNING)
+			{
+				BE_WARN("DXGI: {0}", message.description);
+			}
+			
+			if (message.severity == DXGI_INFO_QUEUE_MESSAGE_SEVERITY_ERROR)
+			{
+				if (!FAILED(hresult))
+					BE_ERROR("DXGI: {0}", message.description);
+				errorDescriptions.emplace_back(message.description);
+			}
+		}
+		if (!FAILED(hresult)) return;
+		throw HResultException(line, file, hresult, errorDescriptions);
+#endif
 		DxCheck(hresult, line, file);
 	}
 }

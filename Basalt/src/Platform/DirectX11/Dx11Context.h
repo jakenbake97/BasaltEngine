@@ -3,9 +3,14 @@
 #include "Basalt/Renderer/RenderContext.h"
 #include <d3d11.h>
 #include "Basalt/Exception.h"
+#include "DxError/DXGIInfoManager.h"
 
 namespace Basalt
 {
+#define DX_CHECK(hresult) DxCheck(hresult, __LINE__, __FILE__)
+#define DX_INFO_CHECK(hresult) DxInfoCheck(hresult, __LINE__, __FILE__)
+#define DX_DEVICE_REMOVED_CHECK(hresult) DxRemovedCheck(hresult, __LINE__, __FILE__)
+	
 	class Dx11Context : public RenderContext
 	{
 	public:
@@ -13,16 +18,20 @@ namespace Basalt
 		{
 		private:
 			HRESULT errorCode;
+			String info;
 		public:
-			HResultException(int line, String file, HRESULT hresult);
+			HResultException(int line, String file, HRESULT hresult, std::vector<String> errors = {});
 			String GetException() const override;
 			String GetType() const override;
-			HRESULT GetErrorCode() const;
+			String GetErrorCode() const;
 			String GetErrorString() const;
 			String GetErrorDescription() const;
+			String GetErrorInfo() const;
 		};
 		class DeviceRemovedException : public HResultException
 		{
+		private:
+			String reason;
 			using HResultException::HResultException;
 		public:
 			String GetType() const override;
@@ -34,6 +43,11 @@ namespace Basalt
 		IDXGISwapChain* swapChain = nullptr;
 		ID3D11DeviceContext* context = nullptr;
 		ID3D11RenderTargetView* renderTarget = nullptr;
+
+#ifdef BE_DEBUG
+		DXGIInfoManager infoManager;
+#endif
+		
 		
 	public:
 		Dx11Context(HWND hwnd);
@@ -47,10 +61,12 @@ namespace Basalt
 		void ClearColor(Color color) override;
 	private:
 		void DxRemovedCheck(HRESULT hresult, const int line, const String& file) const;
+		void DxInfoCheck(HRESULT hresult, const int line, const String& file);
 	};
 
 	static constexpr void DxCheck(HRESULT hresult, const int line, const String& file)
 	{
+		
 		if (!FAILED(hresult)) return;
 		throw Dx11Context::HResultException(line, file, hresult);
 	}

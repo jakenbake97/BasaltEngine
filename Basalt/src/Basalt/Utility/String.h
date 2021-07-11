@@ -193,6 +193,16 @@ namespace Basalt
 			data.push_back(character);
 		}
 
+		bool Empty() const
+		{
+			return data.empty();
+		}
+
+		void PopBack()
+		{
+			data.pop_back();
+		}
+
 		friend std::ostream& operator<<(std::ostream& os, const String& s)
 		{
 			return os << s.Narrow();

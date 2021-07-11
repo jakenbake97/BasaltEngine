@@ -5,6 +5,8 @@ namespace Basalt
 {
 	using KeyCode = uint16_t;
 
+#pragma warning( disable : 26812 )
+	
 	namespace Key
 	{
 		enum : KeyCode

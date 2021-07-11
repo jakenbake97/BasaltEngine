@@ -10,11 +10,20 @@
     <Filter Include="src\Basalt\Events">
       <UniqueIdentifier>{77D75755-E3ED-55EB-2C65-E10C98BA2673}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Basalt\Renderer">
+      <UniqueIdentifier>{F99FA601-6501-840F-EE6E-CAC15ACFBACE}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\Basalt\Utility">
       <UniqueIdentifier>{365C93CB-2240-5421-8BA0-4E7477A33EA3}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\Platform">
       <UniqueIdentifier>{21CA02E5-0D2D-9289-B6B2-CA3FA2F45D0C}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Platform\DirectX11">
+      <UniqueIdentifier>{2549C2B7-1143-EB09-FAAF-811AE6485176}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Platform\DirectX11\DxError">
+      <UniqueIdentifier>{DAF3919B-C619-5C02-AF5F-E1CD9B2481CE}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\Platform\Windows">
       <UniqueIdentifier>{5B054582-4794-CE4B-F0B2-E246DC20DFF1}</UniqueIdentifier>
@@ -96,11 +105,26 @@
     <ClInclude Include="src\Basalt\MouseCodes.h">
       <Filter>src\Basalt</Filter>
     </ClInclude>
+    <ClInclude Include="src\Basalt\Renderer\RenderContext.h">
+      <Filter>src\Basalt\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Basalt\Timer.h">
+      <Filter>src\Basalt</Filter>
+    </ClInclude>
     <ClInclude Include="src\Basalt\Utility\Math.h">
       <Filter>src\Basalt\Utility</Filter>
     </ClInclude>
     <ClInclude Include="src\Basalt\Utility\String.h">
       <Filter>src\Basalt\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\DirectX11\Dx11Context.h">
+      <Filter>src\Platform\DirectX11</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\DirectX11\DxError\DXGIInfoManager.h">
+      <Filter>src\Platform\DirectX11\DxError</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\DirectX11\DxError\dxerr.h">
+      <Filter>src\Platform\DirectX11\DxError</Filter>
     </ClInclude>
     <ClInclude Include="src\Platform\Windows\Window.h">
       <Filter>src\Platform\Windows</Filter>
@@ -1353,9 +1377,6 @@
     <ClInclude Include="vendor\glm\glm\vector_relational.hpp">
       <Filter>vendor\glm\glm</Filter>
     </ClInclude>
-    <ClInclude Include="src\Basalt\Renderer\RenderContext.h" />
-    <ClInclude Include="src\Platform\DirectX11\Dx11Context.h" />
-    <ClInclude Include="src\Basalt\Timer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\BEpch.cpp">
@@ -1373,13 +1394,23 @@
     <ClCompile Include="src\Basalt\Log.cpp">
       <Filter>src\Basalt</Filter>
     </ClCompile>
+    <ClCompile Include="src\Basalt\Timer.cpp">
+      <Filter>src\Basalt</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\DirectX11\Dx11Context.cpp">
+      <Filter>src\Platform\DirectX11</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\DirectX11\DxError\DXGIInfoManager.cpp">
+      <Filter>src\Platform\DirectX11\DxError</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\DirectX11\DxError\dxerr.cpp">
+      <Filter>src\Platform\DirectX11\DxError</Filter>
+    </ClCompile>
     <ClCompile Include="src\Platform\Windows\Window.cpp">
       <Filter>src\Platform\Windows</Filter>
     </ClCompile>
     <ClCompile Include="src\Platform\Windows\WindowsInput.cpp">
       <Filter>src\Platform\Windows</Filter>
     </ClCompile>
-    <ClCompile Include="src\Platform\DirectX11\Dx11Context.cpp" />
-    <ClCompile Include="src\Basalt\Timer.cpp" />
   </ItemGroup>
 </Project>

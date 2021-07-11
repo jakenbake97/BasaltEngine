@@ -76,22 +76,19 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>BEpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;BE_STATIC_LIB;BE_PLATFORM_WINDOWS;_WIN32_WINNT=0x0601;WINVER=0x0601;BE_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;BE_STATIC_LIB;BE_PLATFORM_WINDOWS;BE_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
-      <TreatAngleIncludeAsExternal>true</TreatAngleIncludeAsExternal>
-      <DisableAnalyzeExternal>true</DisableAnalyzeExternal>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>d3d11.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3d11.lib;dxguid.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -99,7 +96,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>BEpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;BE_STATIC_LIB;BE_PLATFORM_WINDOWS;_WIN32_WINNT=0x0601;WINVER=0x0601;BE_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;BE_STATIC_LIB;BE_PLATFORM_WINDOWS;BE_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -123,7 +120,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>BEpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;BE_STATIC_LIB;BE_PLATFORM_WINDOWS;_WIN32_WINNT=0x0601;WINVER=0x0601;BE_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;BE_STATIC_LIB;BE_PLATFORM_WINDOWS;BE_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -143,9 +140,6 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\Basalt\Timer.h" />
-    <ClInclude Include="src\Platform\DirectX11\Dx11Context.h" />
-    <ClInclude Include="src\Basalt\Renderer\RenderContext.h" />
     <ClInclude Include="src\BEpch.h" />
     <ClInclude Include="src\Basalt.h" />
     <ClInclude Include="src\Basalt\Application.h" />
@@ -164,8 +158,13 @@
     <ClInclude Include="src\Basalt\LayerStack.h" />
     <ClInclude Include="src\Basalt\Log.h" />
     <ClInclude Include="src\Basalt\MouseCodes.h" />
+    <ClInclude Include="src\Basalt\Renderer\RenderContext.h" />
+    <ClInclude Include="src\Basalt\Timer.h" />
     <ClInclude Include="src\Basalt\Utility\Math.h" />
     <ClInclude Include="src\Basalt\Utility\String.h" />
+    <ClInclude Include="src\Platform\DirectX11\Dx11Context.h" />
+    <ClInclude Include="src\Platform\DirectX11\DxError\DXGIInfoManager.h" />
+    <ClInclude Include="src\Platform\DirectX11\DxError\dxerr.h" />
     <ClInclude Include="src\Platform\Windows\Window.h" />
     <ClInclude Include="src\Platform\Windows\WindowsInput.h" />
     <ClInclude Include="vendor\glm\glm\common.hpp" />
@@ -585,8 +584,6 @@
     <ClInclude Include="vendor\glm\glm\vector_relational.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Basalt\Timer.cpp" />
-    <ClCompile Include="src\Platform\DirectX11\Dx11Context.cpp" />
     <ClCompile Include="src\BEpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
@@ -594,6 +591,10 @@
     <ClCompile Include="src\Basalt\Exception.cpp" />
     <ClCompile Include="src\Basalt\LayerStack.cpp" />
     <ClCompile Include="src\Basalt\Log.cpp" />
+    <ClCompile Include="src\Basalt\Timer.cpp" />
+    <ClCompile Include="src\Platform\DirectX11\Dx11Context.cpp" />
+    <ClCompile Include="src\Platform\DirectX11\DxError\DXGIInfoManager.cpp" />
+    <ClCompile Include="src\Platform\DirectX11\DxError\dxerr.cpp" />
     <ClCompile Include="src\Platform\Windows\Window.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsInput.cpp" />
   </ItemGroup>
