@@ -38,9 +38,11 @@ project "Basalt"
 	}
 
 	defines
-	{
+	{	
 		"_CRT_SECURE_NO_WARNINGS",
-		"BE_STATIC_LIB"
+		"BE_STATIC_LIB",
+		"MAJOR_VERSION=%{os.getversion().majorversion}",
+		"MINOR_VERSION=%{os.getversion().minorversion}",
 	}
 
 	includedirs

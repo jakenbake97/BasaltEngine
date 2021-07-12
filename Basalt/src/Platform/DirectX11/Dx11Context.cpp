@@ -95,8 +95,14 @@ namespace Basalt
 		swapDesc.BufferCount = 2;
 		swapDesc.OutputWindow = windowHandle;
 		swapDesc.Windowed = TRUE;
-		// TODO: Use a windows version number to determine which swap effect to use
-		swapDesc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD;
+		if constexpr (MAJOR_VERSION < 10)
+		{
+			swapDesc.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
+		}
+		else
+		{
+			swapDesc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD;
+		}
 		swapDesc.Flags = 0;
 
 		UINT layerFlags = 0;
