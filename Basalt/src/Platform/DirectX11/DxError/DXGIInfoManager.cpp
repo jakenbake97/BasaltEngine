@@ -20,7 +20,7 @@ namespace Basalt
 		}
 
 		// get address of DXGIGetDebugInterface in dll
-		const auto DxgiGetDebugInterface = reinterpret_cast<DXGIGetDebugInterface>(
+		const auto DxgiGetDebugInterface = static_cast<DXGIGetDebugInterface>(
 			reinterpret_cast<void*>(GetProcAddress(hModDxgiDebug, "DXGIGetDebugInterface"))
 		);
 		if (DxgiGetDebugInterface == nullptr)
@@ -28,15 +28,7 @@ namespace Basalt
 			throw BE_WND_LAST_EXCEPT();
 		}
 
-		DX_CHECK(DxgiGetDebugInterface(__uuidof(IDXGIInfoQueue), reinterpret_cast<void**>(&pDxgiInfoQueue)));
-	}
-
-	DXGIInfoManager::~DXGIInfoManager()
-	{
-		if (pDxgiInfoQueue != nullptr)
-		{
-			pDxgiInfoQueue->Release();
-		}
+		DX_CHECK(DxgiGetDebugInterface(__uuidof(IDXGIInfoQueue), &pDxgiInfoQueue));
 	}
 
 

@@ -4,6 +4,7 @@
 #include <d3d11.h>
 #include "Basalt/Exception.h"
 #include "DxError/DXGIInfoManager.h"
+#include <wrl.h>
 
 namespace Basalt
 {
@@ -39,10 +40,10 @@ namespace Basalt
 	private:
 		HWND windowHandle;
 		
-		ID3D11Device* device = nullptr;
-		IDXGISwapChain* swapChain = nullptr;
-		ID3D11DeviceContext* context = nullptr;
-		ID3D11RenderTargetView* renderTarget = nullptr;
+		Microsoft::WRL::ComPtr<ID3D11Device> device;
+		Microsoft::WRL::ComPtr<IDXGISwapChain> swapChain;
+		Microsoft::WRL::ComPtr<ID3D11DeviceContext> context;
+		Microsoft::WRL::ComPtr<ID3D11RenderTargetView> renderTarget;
 
 #ifdef BE_DEBUG
 		DXGIInfoManager infoManager;
@@ -51,7 +52,7 @@ namespace Basalt
 		
 	public:
 		Dx11Context(HWND hwnd);
-		~Dx11Context() override;
+		~Dx11Context() override = default;
 		Dx11Context(const Dx11Context& other) = delete;
 		Dx11Context(Dx11Context&& other) noexcept = delete;
 		Dx11Context& operator=(const Dx11Context& other) = delete;

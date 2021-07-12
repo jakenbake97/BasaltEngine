@@ -6,6 +6,8 @@
 
 #include "DxError/dxerr.h"
 
+namespace wrl = Microsoft::WRL;
+
 namespace Basalt
 {
 	
@@ -104,30 +106,9 @@ namespace Basalt
 			D3D11_SDK_VERSION, &swapDesc, &swapChain, &device, nullptr, &context));
 
 		// gain access to texture subresource in swap chain
-		ID3D11Resource* backBuffer = nullptr;
-		DX_INFO_CHECK(swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void**>(&backBuffer)));
-		DX_INFO_CHECK(device->CreateRenderTargetView(backBuffer, nullptr, &renderTarget));
-		backBuffer->Release();
-	}
-
-	Dx11Context::~Dx11Context()
-	{
-		if (renderTarget != nullptr)
-		{
-			renderTarget->Release();
-		}
-		if (context != nullptr)
-		{
-			context->Release();
-		}
-		if (swapChain != nullptr)
-		{
-			swapChain->Release();
-		}
-		if (device != nullptr)
-		{
-			device->Release();
-		}
+		wrl::ComPtr<ID3D11Resource> backBuffer;
+		DX_INFO_CHECK(swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), &backBuffer));
+		DX_INFO_CHECK(device->CreateRenderTargetView(backBuffer.Get(), nullptr, &renderTarget));
 	}
 
 	void Dx11Context::SwapBuffers()
@@ -138,7 +119,7 @@ namespace Basalt
 	void Dx11Context::ClearColor(Color color)
 	{
 		const float clearColor[] = { color.r, color.g, color.b, color.a };
-		context->ClearRenderTargetView(renderTarget, clearColor);
+		context->ClearRenderTargetView(renderTarget.Get(), clearColor);
 	}
 
 	void Dx11Context::DxRemovedCheck(HRESULT hresult, const int line, const String& file) const

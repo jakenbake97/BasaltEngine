@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include <vector>
 #include <dxgidebug.h>
+#include <wrl.h>
 
 namespace Basalt
 {
@@ -17,10 +18,10 @@ namespace Basalt
 	private:
 		unsigned long long next = 0u;
 
-		IDXGIInfoQueue* pDxgiInfoQueue = nullptr;
+		Microsoft::WRL::ComPtr<IDXGIInfoQueue> pDxgiInfoQueue = nullptr;
 	public:
 		DXGIInfoManager();
-		~DXGIInfoManager();
+		~DXGIInfoManager() = default;
 		DXGIInfoManager(const DXGIInfoManager& other) = delete;
 		DXGIInfoManager(DXGIInfoManager&& other) noexcept = delete;
 		DXGIInfoManager& operator=(const DXGIInfoManager& other) = delete;
