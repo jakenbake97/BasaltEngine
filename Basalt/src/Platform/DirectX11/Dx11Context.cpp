@@ -80,7 +80,6 @@ namespace Basalt
 	Dx11Context::Dx11Context(HWND hwnd)
 		: windowHandle(hwnd)
 	{
-		
 		DXGI_SWAP_CHAIN_DESC swapDesc = {};
 		swapDesc.BufferDesc.Width = 0;
 		swapDesc.BufferDesc.Height = 0;
@@ -95,6 +94,7 @@ namespace Basalt
 		swapDesc.BufferCount = 2;
 		swapDesc.OutputWindow = windowHandle;
 		swapDesc.Windowed = TRUE;
+		
 		if constexpr (MAJOR_VERSION < 10)
 		{
 			swapDesc.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;

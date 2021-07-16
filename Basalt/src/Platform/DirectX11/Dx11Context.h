@@ -9,11 +9,11 @@
 namespace Basalt
 {
 #define DX_CHECK(hresult) DxCheck(hresult, __LINE__, __FILE__)
-#define DX_INFO_CHECK(hresult) DxInfoCheck(hresult, __LINE__, __FILE__)
-#define DX_DEVICE_REMOVED_CHECK(hresult) DxRemovedCheck(hresult, __LINE__, __FILE__)
 	
 	class Dx11Context : public RenderContext
 	{
+#define DX_INFO_CHECK(hresult) DxInfoCheck(hresult, __LINE__, __FILE__)
+#define DX_DEVICE_REMOVED_CHECK(hresult) DxRemovedCheck(hresult, __LINE__, __FILE__)
 	public:
 		class HResultException : public Exception
 		{

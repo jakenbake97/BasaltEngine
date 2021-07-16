@@ -10,7 +10,7 @@ namespace Basalt
 
 	String Exception::GetException() const
 	{
-		return {what()};
+		return String(what());
 	}
 
 	const char* Exception::what() const

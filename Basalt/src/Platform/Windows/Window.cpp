@@ -18,6 +18,49 @@ namespace Basalt
 	{
 		return std::make_unique<Window>(properties);
 	}
+
+	Window::WindowException::WindowException(const int line, String file, const HRESULT hr)
+		: Exception(line, std::move(file)), hr(hr)
+	{
+	}
+
+	String Window::WindowException::GetException() const
+	{
+		return GetType()
+			+ L"\n[Error Code] " + GetErrorCode()
+			+ L"\n[Description] " + GetErrorString()
+			+ GetOriginString();
+	}
+
+	String Window::WindowException::GetType() const
+	{
+		return "Basalt Window Exception";
+	}
+
+	String Window::WindowException::TranslateErrorCode(const HRESULT hr)
+	{
+		wchar_t* msgBuf = nullptr;
+
+		if (FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
+			nullptr, hr, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+			reinterpret_cast<LPWSTR>(&msgBuf), 0, nullptr) == 0)
+		{
+			return L"Unidentified error code";
+		}
+		String errorString = msgBuf;
+		LocalFree(msgBuf);
+		return errorString;
+	}
+
+	HRESULT Window::WindowException::GetErrorCode() const
+	{
+		return hr;
+	}
+
+	String Window::WindowException::GetErrorString() const
+	{
+		return TranslateErrorCode(hr);
+	}
 	
 	Window::WindowClass Window::WindowClass::wndClass;
 
@@ -89,55 +132,15 @@ namespace Basalt
 
 		graphicsContext = RenderContext::CreateRenderContext(handle);
 
-		BE_LOG(ELogger::Core, ELogSeverity::Trace, "{0} x {1} Window Successfully Created!", properties.width, properties.height);
+		BE_TRACE("{0} x {1} Window Successfully Created!", properties.width, properties.height);
 	}
 
 	Window::~Window()
 	{
-		DestroyWindow(handle);
-	}
-
-	Window::WindowException::WindowException(const int line, String file, const HRESULT hr)
-		: Exception(line, std::move(file)), hr(hr)
-	{
-	}
-
-	String Window::WindowException::GetException() const
-	{
-		return GetType()
-			+ L"\n[Error Code] " + GetErrorCode()
-			+ L"\n[Description] " + GetErrorString()
-			+ GetOriginString();
-	}
-
-	String Window::WindowException::GetType() const
-	{
-		return "Basalt Window Exception";
-	}
-
-	String Window::WindowException::TranslateErrorCode(const HRESULT hr)
-	{
-		wchar_t* msgBuf = nullptr;
-
-		if (FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
-		                  nullptr, hr, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-		                  reinterpret_cast<LPWSTR>(&msgBuf), 0, nullptr) == 0)
+		if (!DestroyWindow(handle))
 		{
-			return L"Unidentified error code";
+			BE_ERROR("Destroy Window failed [LINE] {0} in [FILE] {1}", __LINE__, __FILE__);
 		}
-		String errorString = msgBuf;
-		LocalFree(msgBuf);
-		return errorString;
-	}
-
-	HRESULT Window::WindowException::GetErrorCode() const
-	{
-		return hr;
-	}
-
-	String Window::WindowException::GetErrorString() const
-	{
-		return TranslateErrorCode(hr);
 	}
 
 	LRESULT WINAPI Window::HandleMsgSetup(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)

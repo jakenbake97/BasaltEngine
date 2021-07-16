@@ -39,13 +39,14 @@ namespace Basalt {
 		public:
 			static const wchar_t* GetName();
 			static HINSTANCE GetInstance();
-		private:
-			WindowClass();
-			~WindowClass();
+
 			WindowClass(const WindowClass& other) = delete;
 			WindowClass(WindowClass&& other) noexcept = delete;
 			WindowClass& operator=(const WindowClass& other) = delete;
 			WindowClass& operator=(WindowClass&& other) noexcept = delete;
+		private:
+			WindowClass();
+			~WindowClass();
 		};
 	public:
 		Window(const WindowProperties& properties);
@@ -72,7 +73,16 @@ namespace Basalt {
 		LRESULT HandleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 		static WPARAM MapLeftRightKeys(WPARAM vk, LPARAM lParam);
 	};
+	
+	static void constexpr HresultCheck(HRESULT hr, const int line, const Basalt::String& file)
+	{
+		if (!FAILED(hr)) return;
+		throw Basalt::Window::WindowException(line, file, hr);
+	}
+
+#define HR_CHECK(hr) HresultCheck(hr, __LINE__, __FILE__)
+
+#define BE_WND_LAST_EXCEPT() Basalt::Window::WindowException(__LINE__, __FILE__, GetLastError())
 }
 
-#define BE_WND_EXCEPT(hr) Basalt::Window::WindowException(__LINE__, __FILE__, hr)
-#define BE_WND_LAST_EXCEPT() Basalt::Window::WindowException(__LINE__, __FILE__, GetLastError())
+
