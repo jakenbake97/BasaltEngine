@@ -77,7 +77,7 @@ namespace Basalt {
 	static void constexpr HresultCheck(HRESULT hr, const int line, const Basalt::String& file)
 	{
 		if (!FAILED(hr)) return;
-		throw Basalt::Window::WindowException(line, file, hr);
+		throw Window::WindowException(line, file, hr);
 	}
 
 #define HR_CHECK(hr) HresultCheck(hr, __LINE__, __FILE__)

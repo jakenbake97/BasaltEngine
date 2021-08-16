@@ -2,7 +2,7 @@
 #include "Dx11Context.h"
 
 #include <sstream>
-#include <utility>
+#include <d3dcompiler.h>
 
 #include "DxError/dxerr.h"
 
@@ -16,8 +16,8 @@ namespace Basalt
 		return std::make_unique<Dx11Context>(static_cast<HWND>(handle));
 	}
 
-	Dx11Context::HResultException::HResultException(int line, String file, HRESULT hresult, std::vector<String> errors)
-		: Exception(line, std::move(file)), errorCode(hresult)
+	Dx11Context::HResultException::HResultException(int line, const String& file, HRESULT hresult, std::vector<String> errors)
+		: Exception(line, file), errorCode(hresult)
 	{
 		for( const auto& message : errors)
 		{
@@ -130,12 +130,115 @@ namespace Basalt
 		context->ClearRenderTargetView(renderTarget.Get(), clearColor);
 	}
 
-	void Dx11Context::DxRemovedCheck(HRESULT hresult, const int line, const String& file) const
+	void Dx11Context::DrawTestTriangle()
 	{
+		struct Vertex
+		{
+			float x, y;
+		};
+
+		// create vertex array (1 2d triangle at center of screen)
+		const std::vector<Vertex> vertices = 
+		{
+			{0.0f, 0.5f},
+			{0.5f, -0.5f},
+			{-0.5f, -0.5f}
+		};
+
+		wrl::ComPtr<ID3D11Buffer> vertexBuffer;
+		D3D11_BUFFER_DESC bufDesc = {};
+		bufDesc.Usage = D3D11_USAGE_DEFAULT;
+		bufDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+		bufDesc.CPUAccessFlags = 0u;
+		bufDesc.MiscFlags = 0u;
+		bufDesc.ByteWidth = (UINT)sizeof(Vertex) * (UINT)vertices.size();
+		bufDesc.StructureByteStride = sizeof(Vertex);
+
+		D3D11_SUBRESOURCE_DATA subresourceData = {};
+		subresourceData.pSysMem = vertices.data();
+
+		DX_INFO_CHECK(device->CreateBuffer(&bufDesc, &subresourceData, &vertexBuffer));
+
+		// Bind vertex buffer to pipeline
+		const UINT stride = sizeof(Vertex);
+		const UINT offset = 0u;
+		context->IASetVertexBuffers(0u, 1u, vertexBuffer.GetAddressOf(), &stride, &offset);
+
+		// create pixel shader
+		wrl::ComPtr<ID3D11PixelShader> pixelShader;
+		wrl::ComPtr<ID3DBlob> blob;
+		DX_INFO_CHECK(D3DReadFileToBlob(L"../Basalt/PixelShader.cso", &blob));
+		DX_INFO_CHECK(device->CreatePixelShader(blob->GetBufferPointer(), blob->GetBufferSize(), nullptr, &pixelShader));
+
+		//bind pixel shader
+		context->PSSetShader(pixelShader.Get(), nullptr, 0u);
+
+		// create vertex shader
+		wrl::ComPtr<ID3D11VertexShader> vertexShader;
+		DX_INFO_CHECK(D3DReadFileToBlob(L"../Basalt/VertexShader.cso", &blob));
+		DX_INFO_CHECK(device->CreateVertexShader(blob->GetBufferPointer(), blob->GetBufferSize(), nullptr, &vertexShader));
+
+		//bind vertex shader
+		context->VSSetShader(vertexShader.Get(), nullptr, 0u);
+
+		// input vertex layout (2d positions only)
+		wrl::ComPtr<ID3D11InputLayout> inputLayout;
+		const std::vector<D3D11_INPUT_ELEMENT_DESC> inElementDesc =
+		{
+			{"POSITION", 0u, DXGI_FORMAT_R32G32_FLOAT, 0u, 0u, D3D11_INPUT_PER_VERTEX_DATA, 0u},
+		};
+
+		DX_INFO_CHECK(device->CreateInputLayout(inElementDesc.data(), (UINT)inElementDesc.size(), blob->GetBufferPointer(), blob->GetBufferSize(), inputLayout.GetAddressOf()));
+
+		// bind vertex layout
+		context->IASetInputLayout(inputLayout.Get());
+
+		//bind render target
+		context->OMSetRenderTargets(1u, renderTarget.GetAddressOf(), nullptr);
+
+		//Set primitive topology to triangle list
+		context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+		// configure viewport
+		D3D11_VIEWPORT viewport = {};
+		viewport.Width = 800;
+		viewport.Height = 600;
+		viewport.MinDepth = 0;
+		viewport.MaxDepth = 1;
+		viewport.TopLeftX = 0;
+		viewport.TopLeftY = 0;
+		context->RSSetViewports(1u, &viewport);
+
+		context->Draw((UINT)std::size(vertices), 0u);
+	}
+
+	void Dx11Context::DxRemovedCheck(HRESULT hresult, const int line, const String& file)
+	{
+		std::vector<String> errorDescriptions{};
+#ifdef BE_DEBUG
+		auto messages = infoManager.GetMessages();
+		infoManager.Set();
+
+
+		for (auto& message : messages)
+		{
+			if (message.severity == DXGI_INFO_QUEUE_MESSAGE_SEVERITY_WARNING)
+			{
+				BE_WARN("DXGI: {0}", message.description);
+			}
+
+			if (message.severity == DXGI_INFO_QUEUE_MESSAGE_SEVERITY_ERROR)
+			{
+				if (!FAILED(hresult))
+					BE_ERROR("DXGI: {0}", message.description);
+				errorDescriptions.emplace_back(message.description);
+			}
+		}
+#endif
 		if (!FAILED(hresult)) return;
 		if (hresult == DXGI_ERROR_DEVICE_REMOVED)
 		{
-			throw DeviceRemovedException(line, file, device->GetDeviceRemovedReason());
+			throw DeviceRemovedException(line, file, device->GetDeviceRemovedReason(), errorDescriptions);
 		}
 		DxCheck(hresult, line, file);
 	}
@@ -154,7 +257,7 @@ namespace Basalt
 			{
 				BE_WARN("DXGI: {0}", message.description);
 			}
-			
+
 			if (message.severity == DXGI_INFO_QUEUE_MESSAGE_SEVERITY_ERROR)
 			{
 				if (!FAILED(hresult))

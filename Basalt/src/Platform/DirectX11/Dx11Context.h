@@ -21,7 +21,7 @@ namespace Basalt
 			HRESULT errorCode;
 			String info;
 		public:
-			HResultException(int line, String file, HRESULT hresult, std::vector<String> errors = {});
+			HResultException(int line, const String& file, HRESULT hresult, std::vector<String> errors = {});
 			String GetException() const override;
 			String GetType() const override;
 			String GetErrorCode() const;
@@ -60,8 +60,9 @@ namespace Basalt
 
 		void SwapBuffers() override;
 		void ClearColor(Color color) override;
+		void DrawTestTriangle() override;
 	private:
-		void DxRemovedCheck(HRESULT hresult, const int line, const String& file) const;
+		void DxRemovedCheck(HRESULT hresult, const int line, const String& file);
 		void DxInfoCheck(HRESULT hresult, const int line, const String& file);
 	};
 

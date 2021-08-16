@@ -62,7 +62,8 @@ project "Basalt"
 
 		links
 		{
-			"d3d11.lib"
+			"d3d11.lib",
+			"D3DCompiler.lib"
 		}
 
 	filter "configurations:Debug"
@@ -74,7 +75,7 @@ project "Basalt"
 		{
 			"dxguid.lib"
 		}
-		
+
 	filter "configurations:Release"
 		defines "BE_RELEASE"
 		runtime "Release"
