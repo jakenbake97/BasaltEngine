@@ -134,17 +134,31 @@ namespace Basalt
 	{
 		struct Vertex
 		{
-			float x, y;
+			Vector2 pos;
+			ByteColor color;
 		};
 
-		// create vertex array (1 2d triangle at center of screen)
+		// create vertex array
 		const std::vector<Vertex> vertices = 
 		{
-			{0.0f, 0.5f},
-			{0.5f, -0.5f},
-			{-0.5f, -0.5f}
+			{{0.0f, 0.5f}, {255, 0, 0, 255}},
+			{{0.5f, -0.5f}, {0, 255, 0, 255}},
+			{{-0.5f, -0.5f}, {0, 0, 255, 255}},
+			{{-0.3f, 0.3f}, {0, 255, 0, 255}},
+			{{0.3f, 0.3f}, {0,0,255,255}},
+			{{0.0f, -1.8f}, {255, 0, 0, 255}}
+		};
+		 
+		// index array
+		const std::vector<unsigned short> indices
+		{
+			0,1,2,
+			0,2,3,
+			0,4,1,
+			2,1,5,
 		};
 
+		// Create Vertex Buffer
 		wrl::ComPtr<ID3D11Buffer> vertexBuffer;
 		D3D11_BUFFER_DESC bufDesc = {};
 		bufDesc.Usage = D3D11_USAGE_DEFAULT;
@@ -157,12 +171,30 @@ namespace Basalt
 		D3D11_SUBRESOURCE_DATA subresourceData = {};
 		subresourceData.pSysMem = vertices.data();
 
-		DX_INFO_CHECK(device->CreateBuffer(&bufDesc, &subresourceData, &vertexBuffer));
+		DX_INFO_CHECK(device->CreateBuffer(&bufDesc, &subresourceData, vertexBuffer.GetAddressOf()));
 
 		// Bind vertex buffer to pipeline
 		const UINT stride = sizeof(Vertex);
 		const UINT offset = 0u;
 		context->IASetVertexBuffers(0u, 1u, vertexBuffer.GetAddressOf(), &stride, &offset);
+
+		// Create index Buffer
+		wrl::ComPtr<ID3D11Buffer> indexBuffer;
+		D3D11_BUFFER_DESC indBufDesc = {};
+		indBufDesc.Usage = D3D11_USAGE_DEFAULT;
+		indBufDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
+		indBufDesc.CPUAccessFlags = 0u;
+		indBufDesc.MiscFlags = 0u;
+		indBufDesc.ByteWidth = (UINT)sizeof(unsigned short) * (UINT)indices.size();
+		indBufDesc.StructureByteStride = sizeof(unsigned short);
+
+		D3D11_SUBRESOURCE_DATA indexSubresourceData = {};
+		indexSubresourceData.pSysMem = indices.data();
+
+		DX_INFO_CHECK(device->CreateBuffer(&indBufDesc, &indexSubresourceData, indexBuffer.GetAddressOf()));
+
+		// bind index buffer
+		context->IASetIndexBuffer(indexBuffer.Get(), DXGI_FORMAT_R16_UINT, 0u);
 
 		// create pixel shader
 		wrl::ComPtr<ID3D11PixelShader> pixelShader;
@@ -181,11 +213,12 @@ namespace Basalt
 		//bind vertex shader
 		context->VSSetShader(vertexShader.Get(), nullptr, 0u);
 
-		// input vertex layout (2d positions only)
+		// input vertex layout (2d positions only & Color)
 		wrl::ComPtr<ID3D11InputLayout> inputLayout;
 		const std::vector<D3D11_INPUT_ELEMENT_DESC> inElementDesc =
 		{
 			{"POSITION", 0u, DXGI_FORMAT_R32G32_FLOAT, 0u, 0u, D3D11_INPUT_PER_VERTEX_DATA, 0u},
+			{"COLOR", 0u, DXGI_FORMAT_R8G8B8A8_UNORM, 0u, 8u, D3D11_INPUT_PER_VERTEX_DATA, 0u},
 		};
 
 		DX_INFO_CHECK(device->CreateInputLayout(inElementDesc.data(), (UINT)inElementDesc.size(), blob->GetBufferPointer(), blob->GetBufferSize(), inputLayout.GetAddressOf()));
@@ -201,15 +234,16 @@ namespace Basalt
 
 		// configure viewport
 		D3D11_VIEWPORT viewport = {};
-		viewport.Width = 800;
-		viewport.Height = 600;
+		viewport.Width = 1280;
+		viewport.Height = 720;
 		viewport.MinDepth = 0;
 		viewport.MaxDepth = 1;
 		viewport.TopLeftX = 0;
 		viewport.TopLeftY = 0;
 		context->RSSetViewports(1u, &viewport);
 
-		context->Draw((UINT)std::size(vertices), 0u);
+		//context->Draw((UINT)vertices.size(), 0u);
+		context->DrawIndexed((UINT)indices.size(), 0u, 0u);
 	}
 
 	void Dx11Context::DxRemovedCheck(HRESULT hresult, const int line, const String& file)

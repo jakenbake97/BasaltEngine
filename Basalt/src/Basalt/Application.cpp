@@ -45,7 +45,7 @@ namespace Basalt
 			
 			// Frame Update
 			const float c = sin(timer.GetTime()) / 2.0f + 0.5f;
-			window->GetRenderContext().ClearColor({ 1.0f, c, 1.0f, 1.0f });
+			window->GetRenderContext().ClearColor({ 0.25f, c * 0.25f, 0.25f, 1.0f });
 			window->GetRenderContext().DrawTestTriangle();
 			window->GetRenderContext().SwapBuffers();
 		}		

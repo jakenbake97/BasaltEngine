@@ -1,6 +1,6 @@
 #pragma once
 
-#include <codeanalysis\warnings.h>
+#include <CodeAnalysis/Warnings.h>
 #pragma warning( push )
 #pragma warning ( disable : ALL_CODE_ANALYSIS_WARNINGS )
 #include "glm/vec2.hpp"
@@ -21,6 +21,7 @@ using Vector3 = glm::vec3;
 using Vector3Int = glm::ivec3;
 using Vector4 = glm::vec4;
 using Color = Vector4;
+using ByteColor = glm::vec<4, char>;
 using Vector4Int = glm::ivec4;
 using Mat2x2 = glm::mat2;
 using Mat3x3 = glm::mat3;
@@ -54,6 +55,11 @@ namespace std
 	}
 
 	inline std::ostream& operator<<(std::ostream& os, const glm::ivec4& vec)
+	{
+		return os << "(" << vec.x << ", " << vec.y << ", " << vec.z << ", " << vec.w << ")";
+	}
+
+	inline std::ostream& operator<<(std::ostream& os, const glm::vec<4, char> vec)
 	{
 		return os << "(" << vec.x << ", " << vec.y << ", " << vec.z << ", " << vec.w << ")";
 	}
