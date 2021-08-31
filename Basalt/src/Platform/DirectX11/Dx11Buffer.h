@@ -16,7 +16,6 @@ namespace Basalt
 		void Unbind() override;
 
 	private:
-		uint32 rendererId;
 		Microsoft::WRL::ComPtr<ID3D11Buffer> vertexBuffer;
 	};
 
@@ -32,7 +31,6 @@ namespace Basalt
 		uint32 GetCount() const override;
 
 	private:
-		uint32 rendererId;
 		Microsoft::WRL::ComPtr<ID3D11Buffer> indexBuffer;
 		uint32 count;
 	};

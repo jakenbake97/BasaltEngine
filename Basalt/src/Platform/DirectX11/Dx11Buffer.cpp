@@ -25,6 +25,8 @@ namespace Basalt
 		subresourceData.pSysMem = vertices.data();
 
 		DX_INFO_CHECK(static_cast<ID3D11Device*>(Renderer::GetRenderContext().GetDevice())->CreateBuffer(&bufDesc, &subresourceData, vertexBuffer.GetAddressOf()));
+
+		Dx11VertexBuffer::Bind();
 	}
 
 	Dx11VertexBuffer::~Dx11VertexBuffer()= default;
@@ -56,6 +58,8 @@ namespace Basalt
 		indexSubresourceData.pSysMem = indices.data();
 
 		DX_INFO_CHECK(static_cast<ID3D11Device*>(Renderer::GetRenderContext().GetDevice())->CreateBuffer(&indBufDesc, &indexSubresourceData, indexBuffer.GetAddressOf()));
+
+		Dx11IndexBuffer::Bind();
 	}
 
 	Dx11IndexBuffer::~Dx11IndexBuffer() = default;

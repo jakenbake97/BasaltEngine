@@ -156,17 +156,11 @@ namespace Basalt
 			2,1,5,
 		};
 
-		// Create Vertex Buffer
+		// Create and bind the Vertex Buffer
 		const std::unique_ptr<VertexBuffer> vertexBuffer(VertexBuffer::Create(vertices));
 
-		// Bind vertex buffer to pipeline
-		vertexBuffer->Bind();
-
-		// Create index Buffer
+		// Create and bind the index Buffer
 		const std::unique_ptr<IndexBuffer> indexBuffer(IndexBuffer::Create(indices));
-
-		// bind index buffer
-		indexBuffer->Bind();
 
 		// create pixel shader
 		wrl::ComPtr<ID3D11PixelShader> pixelShader;
