@@ -4,6 +4,7 @@
 #include <sstream>
 #include <d3dcompiler.h>
 
+#include "Dx11Macros.h"
 #include "Basalt/Renderer/Buffer.h"
 #include "Basalt/Renderer/Renderer.h"
 #include "DxError/dxerr.h"
@@ -143,11 +144,11 @@ namespace Basalt
 			{{-0.5f, -0.5f}, {0, 0, 255, 255}},
 			{{-0.3f, 0.3f}, {0, 255, 0, 255}},
 			{{0.3f, 0.3f}, {0,0,255,255}},
-			{{0.0f, -1.8f}, {255, 0, 0, 255}}
+			{{0.0f, -1.8f}, {255, 0, 0, 255}},
 		};
 		 
 		// index array
-		const std::vector<unsigned short> indices
+		const std::vector<uint32> indices
 		{
 			0,1,2,
 			0,2,3,
@@ -156,28 +157,16 @@ namespace Basalt
 		};
 
 		// Create Vertex Buffer
-		VertexBuffer* testVertexBuffer = VertexBuffer::Create(vertices);
+		const std::unique_ptr<VertexBuffer> vertexBuffer(VertexBuffer::Create(vertices));
 
 		// Bind vertex buffer to pipeline
-		testVertexBuffer->Bind();
+		vertexBuffer->Bind();
 
 		// Create index Buffer
-		wrl::ComPtr<ID3D11Buffer> indexBuffer;
-		D3D11_BUFFER_DESC indBufDesc = {};
-		indBufDesc.Usage = D3D11_USAGE_DEFAULT;
-		indBufDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
-		indBufDesc.CPUAccessFlags = 0u;
-		indBufDesc.MiscFlags = 0u;
-		indBufDesc.ByteWidth = (uint32)sizeof(unsigned short) * (uint32)indices.size();
-		indBufDesc.StructureByteStride = sizeof(unsigned short);
-
-		D3D11_SUBRESOURCE_DATA indexSubresourceData = {};
-		indexSubresourceData.pSysMem = indices.data();
-
-		DX_INFO_CHECK(device->CreateBuffer(&indBufDesc, &indexSubresourceData, indexBuffer.GetAddressOf()));
+		const std::unique_ptr<IndexBuffer> indexBuffer(IndexBuffer::Create(indices));
 
 		// bind index buffer
-		context->IASetIndexBuffer(indexBuffer.Get(), DXGI_FORMAT_R16_UINT, 0u);
+		indexBuffer->Bind();
 
 		// create pixel shader
 		wrl::ComPtr<ID3D11PixelShader> pixelShader;
@@ -233,73 +222,8 @@ namespace Basalt
 	{
 		return device.Get();
 	}
-
-	Microsoft::WRL::ComPtr<ID3D11Device> Dx11Context::GetDxDevice() const
+	void* Dx11Context::GetDeviceContext()
 	{
-		return device;
-	}
-
-	Microsoft::WRL::ComPtr<ID3D11DeviceContext> Dx11Context::GetDxDeviceContext() const
-	{
-		return context;
-	}
-
-	void Dx11Context::DxRemovedCheck(HRESULT hresult, const int line, const String& file)
-	{
-		std::vector<String> errorDescriptions{};
-#ifdef BE_DEBUG
-		auto messages = infoManager.GetMessages();
-		infoManager.Set();
-
-
-		for (auto& message : messages)
-		{
-			if (message.severity == DXGI_INFO_QUEUE_MESSAGE_SEVERITY_WARNING)
-			{
-				BE_WARN("DXGI: {0}", message.description);
-			}
-
-			if (message.severity == DXGI_INFO_QUEUE_MESSAGE_SEVERITY_ERROR)
-			{
-				if (!FAILED(hresult))
-					BE_ERROR("DXGI: {0}", message.description);
-				errorDescriptions.emplace_back(message.description);
-			}
-		}
-#endif
-		if (!FAILED(hresult)) return;
-		if (hresult == DXGI_ERROR_DEVICE_REMOVED)
-		{
-			throw DeviceRemovedException(line, file, device->GetDeviceRemovedReason(), errorDescriptions);
-		}
-		DxCheck(hresult, line, file);
-	}
-
-	void Dx11Context::DxInfoCheck(HRESULT hresult, const int line, const String& file)
-	{
-#ifdef BE_DEBUG
-		auto messages = infoManager.GetMessages();
-		infoManager.Set();
-
-		std::vector<String> errorDescriptions{};
-
-		for (auto& message : messages)
-		{
-			if (message.severity == DXGI_INFO_QUEUE_MESSAGE_SEVERITY_WARNING)
-			{
-				BE_WARN("DXGI: {0}", message.description);
-			}
-
-			if (message.severity == DXGI_INFO_QUEUE_MESSAGE_SEVERITY_ERROR)
-			{
-				if (!FAILED(hresult))
-					BE_ERROR("DXGI: {0}", message.description);
-				errorDescriptions.emplace_back(message.description);
-			}
-		}
-		if (!FAILED(hresult)) return;
-		throw HResultException(line, file, hresult, errorDescriptions);
-#endif
-		DxCheck(hresult, line, file);
+		return context.Get();
 	}
 }

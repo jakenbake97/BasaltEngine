@@ -8,12 +8,8 @@
 
 namespace Basalt
 {
-#define DX_CHECK(hresult) DxCheck(hresult, __LINE__, __FILE__)
-	
 	class Dx11Context : public RenderContext
 	{
-#define DX_INFO_CHECK(hresult) DxInfoCheck(hresult, __LINE__, __FILE__)
-#define DX_DEVICE_REMOVED_CHECK(hresult) DxRemovedCheck(hresult, __LINE__, __FILE__)
 	public:
 		class HResultException : public Exception
 		{
@@ -44,10 +40,6 @@ namespace Basalt
 		Microsoft::WRL::ComPtr<IDXGISwapChain> swapChain;
 		Microsoft::WRL::ComPtr<ID3D11DeviceContext> context;
 		Microsoft::WRL::ComPtr<ID3D11RenderTargetView> renderTarget;
-
-#ifdef BE_DEBUG
-		DXGIInfoManager infoManager;
-#endif
 		
 		
 	public:
@@ -62,18 +54,8 @@ namespace Basalt
 		void ClearColor(Color color) override;
 		void DrawTestTriangle() override;
 		void* GetDevice() override;
-		Microsoft::WRL::ComPtr<ID3D11Device> GetDxDevice() const;
-		Microsoft::WRL::ComPtr<ID3D11DeviceContext> GetDxDeviceContext() const;
-
-	private:
-		void DxRemovedCheck(HRESULT hresult, const int line, const String& file);
-		void DxInfoCheck(HRESULT hresult, const int line, const String& file);
+		void* GetDeviceContext() override;
 	};
 
-	static constexpr void DxCheck(HRESULT hresult, const int line, const String& file)
-	{
-		
-		if (!FAILED(hresult)) return;
-		throw Dx11Context::HResultException(line, file, hresult);
-	}
+	
 }

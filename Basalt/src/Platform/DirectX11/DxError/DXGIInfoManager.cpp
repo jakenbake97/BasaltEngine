@@ -2,6 +2,7 @@
 #include "DXGIInfoManager.h"
 #include "Platform/Windows/WindowsWindow.h"
 #include "Platform/DirectX11/Dx11Context.h"
+#include "Platform/DirectX11/Dx11Macros.h"
 
 #pragma comment(lib, "dxguid.lib")
 

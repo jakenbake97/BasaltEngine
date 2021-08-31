@@ -167,6 +167,7 @@
     <ClInclude Include="src\Basalt\Utility\String.h" />
     <ClInclude Include="src\Platform\DirectX11\Dx11Buffer.h" />
     <ClInclude Include="src\Platform\DirectX11\Dx11Context.h" />
+    <ClInclude Include="src\Platform\DirectX11\Dx11Macros.h" />
     <ClInclude Include="src\Platform\DirectX11\DxError\DXGIInfoManager.h" />
     <ClInclude Include="src\Platform\DirectX11\DxError\dxerr.h" />
     <ClInclude Include="src\Platform\Windows\WindowsInput.h" />

@@ -33,6 +33,7 @@ namespace Basalt
 
 	private:
 		uint32 rendererId;
+		Microsoft::WRL::ComPtr<ID3D11Buffer> indexBuffer;
 		uint32 count;
 	};
 }
