@@ -135,7 +135,7 @@ namespace Basalt
 
 	WindowsWindow::~WindowsWindow()
 	{
-		if (!DestroyWindow(handle))
+		if (handle != nullptr && !DestroyWindow(handle))
 		{
 			BE_ERROR("Destroy Window failed [LINE] {0} in [FILE] {1}", __LINE__, __FILE__);
 		}
@@ -179,6 +179,7 @@ namespace Basalt
 			{
 				const auto event = std::make_shared<AppQuitEvent>((int)msg.wParam);
 				Application::OnEvent(event);
+				handle = nullptr;
 				return;
 			}
 
@@ -230,11 +231,14 @@ namespace Basalt
 			// -- Window Messages --
 		case WM_CLOSE:
 			{
-				PostQuitMessage(0);
 				const auto event = std::make_shared<WindowCloseEvent>(0);
 				Application::OnEvent(event);
 
 				break;
+			}
+		case WM_DESTROY:
+			{
+				PostQuitMessage(0);
 			}
 		case WM_SIZE:
 			{
