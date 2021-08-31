@@ -158,15 +158,19 @@
     <ClInclude Include="src\Basalt\LayerStack.h" />
     <ClInclude Include="src\Basalt\Log.h" />
     <ClInclude Include="src\Basalt\MouseCodes.h" />
+    <ClInclude Include="src\Basalt\Renderer\Buffer.h" />
     <ClInclude Include="src\Basalt\Renderer\RenderContext.h" />
+    <ClInclude Include="src\Basalt\Renderer\Renderer.h" />
+    <ClInclude Include="src\Basalt\Renderer\Shader.h" />
     <ClInclude Include="src\Basalt\Timer.h" />
     <ClInclude Include="src\Basalt\Utility\Math.h" />
     <ClInclude Include="src\Basalt\Utility\String.h" />
+    <ClInclude Include="src\Platform\DirectX11\Dx11Buffer.h" />
     <ClInclude Include="src\Platform\DirectX11\Dx11Context.h" />
     <ClInclude Include="src\Platform\DirectX11\DxError\DXGIInfoManager.h" />
     <ClInclude Include="src\Platform\DirectX11\DxError\dxerr.h" />
-    <ClInclude Include="src\Platform\Windows\Window.h" />
     <ClInclude Include="src\Platform\Windows\WindowsInput.h" />
+    <ClInclude Include="src\Platform\Windows\WindowsWindow.h" />
     <ClInclude Include="vendor\glm\glm\common.hpp" />
     <ClInclude Include="vendor\glm\glm\detail\_features.hpp" />
     <ClInclude Include="vendor\glm\glm\detail\_fixes.hpp" />
@@ -591,20 +595,16 @@
     <ClCompile Include="src\Basalt\Exception.cpp" />
     <ClCompile Include="src\Basalt\LayerStack.cpp" />
     <ClCompile Include="src\Basalt\Log.cpp" />
+    <ClCompile Include="src\Basalt\Renderer\Buffer.cpp" />
+    <ClCompile Include="src\Basalt\Renderer\Renderer.cpp" />
+    <ClCompile Include="src\Basalt\Renderer\Shader.cpp" />
     <ClCompile Include="src\Basalt\Timer.cpp" />
+    <ClCompile Include="src\Platform\DirectX11\Dx11Buffer.cpp" />
     <ClCompile Include="src\Platform\DirectX11\Dx11Context.cpp" />
     <ClCompile Include="src\Platform\DirectX11\DxError\DXGIInfoManager.cpp" />
     <ClCompile Include="src\Platform\DirectX11\DxError\dxerr.cpp" />
-    <ClCompile Include="src\Platform\Windows\Window.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsInput.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <FxCompile Include="src\Platform\DirectX11\Shaders\PixelShader.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
-    </FxCompile>
-    <FxCompile Include="src\Platform\DirectX11\Shaders\VertexShader.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
-    </FxCompile>
+    <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

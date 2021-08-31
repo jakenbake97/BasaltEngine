@@ -38,7 +38,7 @@ namespace Basalt
 		virtual void SetVSync(bool enabled) = 0;
 		virtual bool IsVSync() const = 0;
 
-		virtual RenderContext& GetRenderContext() = 0;
+		virtual void* GetWindowHandle() = 0;
 
 		static std::unique_ptr<IWindow> Create(const WindowProperties& properties = WindowProperties());
 

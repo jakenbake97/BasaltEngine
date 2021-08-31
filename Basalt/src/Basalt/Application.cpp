@@ -7,6 +7,7 @@
 #include "Events/KeyboardEvent.h"
 #include "Events/MouseEvent.h"
 #include "Events/WindowEvent.h"
+#include "Renderer/Renderer.h"
 
 namespace Basalt
 {
@@ -25,6 +26,7 @@ namespace Basalt
 		const String windowName = className + L" - " + applicationName;
 		
 		window = IWindow::Create({windowName});
+		Renderer::Initialize(window->GetWindowHandle());
 	}
 
 	Application::~Application() = default;
@@ -45,9 +47,9 @@ namespace Basalt
 			
 			// Frame Update
 			const float c = sin(timer.GetTime()) / 2.0f + 0.5f;
-			window->GetRenderContext().ClearColor({ 0.25f, c * 0.25f, 0.25f, 1.0f });
-			window->GetRenderContext().DrawTestTriangle();
-			window->GetRenderContext().SwapBuffers();
+			Renderer::GetRenderContext().ClearColor({ 0.25f, c * 0.25f, 0.25f, 1.0f });
+			Renderer::GetRenderContext().DrawTestTriangle();
+			Renderer::GetRenderContext().SwapBuffers();
 		}		
 	}
 

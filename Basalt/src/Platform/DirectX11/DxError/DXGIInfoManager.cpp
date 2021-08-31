@@ -1,6 +1,6 @@
 ﻿#include "BEpch.h"
 #include "DXGIInfoManager.h"
-#include "Platform/Windows/Window.h"
+#include "Platform/Windows/WindowsWindow.h"
 #include "Platform/DirectX11/Dx11Context.h"
 
 #pragma comment(lib, "dxguid.lib")

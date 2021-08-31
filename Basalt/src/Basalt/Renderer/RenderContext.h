@@ -16,6 +16,7 @@ namespace Basalt
 		virtual void SwapBuffers() = 0;
 		virtual void ClearColor(Color color) = 0;
 		virtual void DrawTestTriangle() = 0;
+		virtual void* GetDevice() = 0;
 
 		static std::unique_ptr<RenderContext> CreateRenderContext(void* handle);
 	};

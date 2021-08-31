@@ -61,6 +61,10 @@ namespace Basalt
 		void SwapBuffers() override;
 		void ClearColor(Color color) override;
 		void DrawTestTriangle() override;
+		void* GetDevice() override;
+		Microsoft::WRL::ComPtr<ID3D11Device> GetDxDevice() const;
+		Microsoft::WRL::ComPtr<ID3D11DeviceContext> GetDxDeviceContext() const;
+
 	private:
 		void DxRemovedCheck(HRESULT hresult, const int line, const String& file);
 		void DxInfoCheck(HRESULT hresult, const int line, const String& file);

@@ -15,17 +15,32 @@
 #include "spdlog/fmt/ostr.h"
 #pragma warning( pop )
 
-using Vector2 = glm::vec2;
-using Vector2Int = glm::ivec2;
-using Vector3 = glm::vec3;
-using Vector3Int = glm::ivec3;
-using Vector4 = glm::vec4;
-using Color = Vector4;
-using ByteColor = glm::vec<4, char>;
-using Vector4Int = glm::ivec4;
-using Mat2x2 = glm::mat2;
-using Mat3x3 = glm::mat3;
-using Mat4x4 = glm::mat4;
+namespace Basalt
+{
+	// Math Types
+	using Vector2 = glm::vec2;
+	using Vector2Int = glm::ivec2;
+	using Vector3 = glm::vec3;
+	using Vector3Int = glm::ivec3;
+	using Vector4 = glm::vec4;
+	using Color = Vector4;
+	using ByteColor = glm::vec<4, char>;
+	using Vector4Int = glm::ivec4;
+	using Mat2x2 = glm::mat2;
+	using Mat3x3 = glm::mat3;
+	using Mat4x4 = glm::mat4;
+
+	// Int Types
+	using uint8 = glm::uint8;
+	using uint16 = glm::uint16;
+	using uint32 = glm::uint32;
+	using uint64 = glm::uint64;
+
+	using int8 = glm::int8;
+	using int16 = glm::int16;
+	using int32 = glm::int32;
+	using int64 = glm::int64;
+}
 
 namespace std
 {

@@ -1,5 +1,5 @@
 #include "BEpch.h"
-#include "Window.h"
+#include "WindowsWindow.h"
 
 #include <utility>
 
@@ -16,15 +16,15 @@ namespace Basalt
 {
 	std::unique_ptr<IWindow> IWindow::Create(const WindowProperties& properties)
 	{
-		return std::make_unique<Window>(properties);
+		return std::make_unique<WindowsWindow>(properties);
 	}
 
-	Window::WindowException::WindowException(const int line, String file, const HRESULT hr)
+	WindowsWindow::WindowException::WindowException(const int line, String file, const HRESULT hr)
 		: Exception(line, std::move(file)), hr(hr)
 	{
 	}
 
-	String Window::WindowException::GetException() const
+	String WindowsWindow::WindowException::GetException() const
 	{
 		return GetType()
 			+ L"\n[Error Code] " + GetErrorCode()
@@ -32,12 +32,12 @@ namespace Basalt
 			+ GetOriginString();
 	}
 
-	String Window::WindowException::GetType() const
+	String WindowsWindow::WindowException::GetType() const
 	{
 		return "Basalt Window Exception";
 	}
 
-	String Window::WindowException::TranslateErrorCode(const HRESULT hr)
+	String WindowsWindow::WindowException::TranslateErrorCode(const HRESULT hr)
 	{
 		wchar_t* msgBuf = nullptr;
 
@@ -52,19 +52,19 @@ namespace Basalt
 		return errorString;
 	}
 
-	HRESULT Window::WindowException::GetErrorCode() const
+	HRESULT WindowsWindow::WindowException::GetErrorCode() const
 	{
 		return hr;
 	}
 
-	String Window::WindowException::GetErrorString() const
+	String WindowsWindow::WindowException::GetErrorString() const
 	{
 		return TranslateErrorCode(hr);
 	}
 	
-	Window::WindowClass Window::WindowClass::wndClass;
+	WindowsWindow::WindowClass WindowsWindow::WindowClass::wndClass;
 
-	Window::WindowClass::WindowClass()
+	WindowsWindow::WindowClass::WindowClass()
 		: hInst(GetModuleHandle(nullptr))
 	{
 		// Register Window Class
@@ -85,22 +85,22 @@ namespace Basalt
 		RegisterClassEx(&wc);
 	}
 
-	Window::WindowClass::~WindowClass()
+	WindowsWindow::WindowClass::~WindowClass()
 	{
 		UnregisterClass(GetName(), GetInstance());
 	}
 
-	const wchar_t* Window::WindowClass::GetName()
+	const wchar_t* WindowsWindow::WindowClass::GetName()
 	{
 		return L"Basalt Engine";
 	}
 
-	HINSTANCE Window::WindowClass::GetInstance()
+	HINSTANCE WindowsWindow::WindowClass::GetInstance()
 	{
 		return wndClass.hInst;
 	}
 
-	Window::Window(const WindowProperties& properties)
+	WindowsWindow::WindowsWindow(const WindowProperties& properties)
 		: properties(properties), vSync(false)
 	{
 		RECT windowRect;
@@ -130,12 +130,10 @@ namespace Basalt
 
 		ShowWindow(handle, SW_SHOWDEFAULT);
 
-		graphicsContext = RenderContext::CreateRenderContext(handle);
-
 		BE_TRACE("{0} x {1} Window Successfully Created!", properties.width, properties.height);
 	}
 
-	Window::~Window()
+	WindowsWindow::~WindowsWindow()
 	{
 		if (!DestroyWindow(handle))
 		{
@@ -143,18 +141,18 @@ namespace Basalt
 		}
 	}
 
-	LRESULT WINAPI Window::HandleMsgSetup(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
+	LRESULT WINAPI WindowsWindow::HandleMsgSetup(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	{
 		// use the create parameter passed in from CreateWindow() to store window class pointer
 		if (msg == WM_NCCREATE)
 		{
 			// extract ptr to window class from creation data
 			const CREATESTRUCTW* const pCreate = reinterpret_cast<CREATESTRUCTW*>(lParam);
-			Window* const pWindow = static_cast<Window*>(pCreate->lpCreateParams);
+			WindowsWindow* const pWindow = static_cast<WindowsWindow*>(pCreate->lpCreateParams);
 			// set WinAPI-managed user data to store ptr to window class
 			SetWindowLongPtr(hWnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(pWindow));
 			// set message proc to normal (non-setup) handler now that setup is finished
-			SetWindowLongPtr(hWnd, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(&Window::HandleMsgAdapter));
+			SetWindowLongPtr(hWnd, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(&WindowsWindow::HandleMsgAdapter));
 			// forward message to window class message handler
 			return pWindow->HandleMsg(hWnd, msg, wParam, lParam);
 		}
@@ -162,16 +160,16 @@ namespace Basalt
 		return DefWindowProc(hWnd, msg, wParam, lParam);
 	}
 
-	LRESULT WINAPI Window::HandleMsgAdapter(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
+	LRESULT WINAPI WindowsWindow::HandleMsgAdapter(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	{
 		// retrieve ptr to window class
-		auto* const pWindow = reinterpret_cast<Window*>(GetWindowLongPtr(hWnd, GWLP_USERDATA));
+		auto* const pWindow = reinterpret_cast<WindowsWindow*>(GetWindowLongPtr(hWnd, GWLP_USERDATA));
 
 		// forward message to the window class message handler
 		return pWindow->HandleMsg(hWnd, msg, wParam, lParam);
 	}
 
-	void Window::OnUpdate()
+	void WindowsWindow::OnUpdate()
 	{
 		MSG msg;
 		while (PeekMessage(&msg, nullptr, 0,0,PM_REMOVE))
@@ -189,32 +187,32 @@ namespace Basalt
 		}
 	}
 
-	unsigned Window::GetWidth() const
+	unsigned WindowsWindow::GetWidth() const
 	{
 		return properties.width;
 	}
 
-	unsigned Window::GetHeight() const
+	unsigned WindowsWindow::GetHeight() const
 	{
 		return properties.height;
 	}
 
-	RenderContext& Window::GetRenderContext()
+	void* WindowsWindow::GetWindowHandle()
 	{
-		return *graphicsContext;
+		return handle;
 	}
 
-	void Window::SetVSync(const bool enabled)
+	void WindowsWindow::SetVSync(const bool enabled)
 	{
 		vSync = enabled;
 	}
 
-	bool Window::IsVSync() const
+	bool WindowsWindow::IsVSync() const
 	{
 		return vSync;
 	}
 
-	void Window::HandleWindowResize(HWND hWnd, UINT width, UINT height)
+	void WindowsWindow::HandleWindowResize(HWND hWnd, UINT width, UINT height)
 	{
 		RECT clientRect, windowRect;
 		POINT pointDiff;
@@ -225,7 +223,7 @@ namespace Basalt
 		MoveWindow(hWnd, windowRect.left, windowRect.top, width + pointDiff.x, height + pointDiff.y, TRUE);
 	}
 
-	LRESULT Window::HandleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
+	LRESULT WindowsWindow::HandleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	{
 		switch (msg)
 		{
@@ -418,7 +416,7 @@ namespace Basalt
 			DefWindowProc(hWnd, msg, wParam, lParam);
 	}
 
-	WPARAM Window::MapLeftRightKeys(const WPARAM vk, const LPARAM lParam)
+	WPARAM WindowsWindow::MapLeftRightKeys(const WPARAM vk, const LPARAM lParam)
 	{
 		WPARAM newVK;
 		const UINT scanCode = (lParam & 0x00ff0000) >> 16;
