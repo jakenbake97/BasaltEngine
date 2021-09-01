@@ -11,6 +11,9 @@ namespace wrl = Microsoft::WRL;
 
 namespace Basalt
 {
+	/******************************
+	 ***********Vertex Buffer******
+	 ******************************/
 	Dx11VertexBuffer::Dx11VertexBuffer(const std::vector<Vertex>& vertices)
 	{
 		D3D11_BUFFER_DESC bufDesc = {};
@@ -42,6 +45,10 @@ namespace Basalt
 	{
 		static_cast<ID3D11DeviceContext*>(Renderer::GetRenderContext().GetDeviceContext())->IASetVertexBuffers(0u, 0u, nullptr, nullptr, nullptr);
 	}
+
+	/******************************
+	 ***********Index Buffer*******
+	 ******************************/
 
 	Dx11IndexBuffer::Dx11IndexBuffer(std::vector<uint32>& indices)
 		: count((uint32)indices.size())

@@ -15,7 +15,7 @@ namespace Basalt
 		
 		virtual void SwapBuffers() = 0;
 		virtual void ClearColor(Color color) = 0;
-		virtual void DrawTestTriangle() = 0;
+		virtual void DrawTestTriangle(float angle) = 0;
 		virtual void* GetDevice() = 0;
 		virtual void* GetDeviceContext() = 0;
 

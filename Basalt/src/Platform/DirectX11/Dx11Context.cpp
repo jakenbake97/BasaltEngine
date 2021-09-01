@@ -133,7 +133,7 @@ namespace Basalt
 		context->ClearRenderTargetView(renderTarget.Get(), clearColor);
 	}
 
-	void Dx11Context::DrawTestTriangle()
+	void Dx11Context::DrawTestTriangle(float angle)
 	{
 
 		// create vertex array
@@ -144,7 +144,7 @@ namespace Basalt
 			{{-0.5f, -0.5f}, {0, 0, 255, 255}},
 			{{-0.3f, 0.3f}, {0, 255, 0, 255}},
 			{{0.3f, 0.3f}, {0,0,255,255}},
-			{{0.0f, -1.8f}, {255, 0, 0, 255}},
+			{{0.0f, -1.0f}, {255, 0, 0, 255}},
 		};
 		 
 		// index array
@@ -161,6 +161,38 @@ namespace Basalt
 
 		// Create and bind the index Buffer
 		const std::unique_ptr<IndexBuffer> indexBuffer(IndexBuffer::Create(indices));
+
+		// create constant buffer for transformation matrix
+		struct ConstantBuffer
+		{
+			Mat4x4 transformation;
+		};
+
+		const ConstantBuffer cb =
+		{
+			{
+				(3.0f / 4.0f) * std::cos(angle), std::sin(angle), 0.0f, 0.0f,
+				(3.0f / 4.0f) * -std::sin(angle), std::cos(angle), 0.0f, 0.0f,
+				0.0f, 0.0f, 1.0f, 0.0f,
+				0.0f, 0.0f, 0.0f, 1.0f,
+			}
+		};
+
+		wrl::ComPtr<ID3D11Buffer> constantBuf;
+		D3D11_BUFFER_DESC bufDesc = {};
+		bufDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+		bufDesc.Usage = D3D11_USAGE_DYNAMIC;
+		bufDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+		bufDesc.MiscFlags = 0u;
+		bufDesc.ByteWidth = sizeof(cb);
+		bufDesc.StructureByteStride = 0u;
+
+		D3D11_SUBRESOURCE_DATA subresourceData = {};
+		subresourceData.pSysMem = &cb;
+
+		DX_INFO_CHECK(device->CreateBuffer(&bufDesc, &subresourceData, &constantBuf));
+
+		context->VSSetConstantBuffers(0u, 1u, constantBuf.GetAddressOf());
 
 		// create pixel shader
 		wrl::ComPtr<ID3D11PixelShader> pixelShader;

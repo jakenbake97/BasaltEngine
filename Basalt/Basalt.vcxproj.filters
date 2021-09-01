@@ -1438,4 +1438,8 @@
       <Filter>src\Platform\Windows</Filter>
     </ClCompile>
   </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="src\Platform\DirectX11\Shaders\VertexShader.hlsl" />
+    <FxCompile Include="src\Platform\DirectX11\Shaders\PixelShader.hlsl" />
+  </ItemGroup>
 </Project>
