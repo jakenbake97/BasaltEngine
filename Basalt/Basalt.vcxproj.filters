@@ -25,6 +25,9 @@
     <Filter Include="src\Platform\DirectX11\DxError">
       <UniqueIdentifier>{DAF3919B-C619-5C02-AF5F-E1CD9B2481CE}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Platform\DirectX11\Shaders">
+      <UniqueIdentifier>{FEC2DBFA-EAE8-A561-D32E-2B2DBFF3CA2D}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\Platform\Windows">
       <UniqueIdentifier>{5B054582-4794-CE4B-F0B2-E246DC20DFF1}</UniqueIdentifier>
     </Filter>
@@ -130,6 +133,9 @@
       <Filter>src\Platform\DirectX11</Filter>
     </ClInclude>
     <ClInclude Include="src\Platform\DirectX11\Dx11Context.h">
+      <Filter>src\Platform\DirectX11</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\DirectX11\Dx11Macros.h">
       <Filter>src\Platform\DirectX11</Filter>
     </ClInclude>
     <ClInclude Include="src\Platform\DirectX11\DxError\DXGIInfoManager.h">
@@ -1389,7 +1395,6 @@
     <ClInclude Include="vendor\glm\glm\vector_relational.hpp">
       <Filter>vendor\glm\glm</Filter>
     </ClInclude>
-    <ClInclude Include="src\Platform\DirectX11\Dx11Macros.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\BEpch.cpp">
@@ -1439,7 +1444,11 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="src\Platform\DirectX11\Shaders\VertexShader.hlsl" />
-    <FxCompile Include="src\Platform\DirectX11\Shaders\PixelShader.hlsl" />
+    <FxCompile Include="src\Platform\DirectX11\Shaders\FirstShader-p.hlsl">
+      <Filter>src\Platform\DirectX11\Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="src\Platform\DirectX11\Shaders\FirstShader-v.hlsl">
+      <Filter>src\Platform\DirectX11\Shaders</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

@@ -608,11 +608,11 @@
     <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="src\Platform\DirectX11\Shaders\PixelShader.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+    <FxCompile Include="src\Platform\DirectX11\Shaders\FirstShader-p.hlsl">
+      <ShaderType>Pixel</ShaderType>
     </FxCompile>
-    <FxCompile Include="src\Platform\DirectX11\Shaders\VertexShader.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+    <FxCompile Include="src\Platform\DirectX11\Shaders\FirstShader-v.hlsl">
+      <ShaderType>Vertex</ShaderType>
     </FxCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

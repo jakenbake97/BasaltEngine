@@ -35,6 +35,7 @@ project "Basalt"
 		"%{prj.name}/src/**.cpp",
 		"%{prj.name}/vendor/glm/glm/**.hpp",
 		"%{prj.name}/vendor/glm/glm/**.inl",
+		"%{prj.name}/src/**.hlsl",
 	}
 
 	defines
@@ -86,6 +87,12 @@ project "Basalt"
 		runtime "Release"
 		optimize "on"
 
+	filter {"files:**-p.hlsl"}
+		shadertype "Pixel"
+
+	filter {"files:**-v.hlsl"}
+		shadertype "Vertex"
+
 project "Sandbox"
 	location "Sandbox"
 	kind "WindowedApp"
@@ -100,6 +107,7 @@ project "Sandbox"
 	{
 		"%{prj.name}/src/**.h",
 		"%{prj.name}/src/**.cpp",
+		"%{prj.name}/src/**.hlsl",
 	}
 
 	includedirs
