@@ -61,21 +61,12 @@ project "Basalt"
 			"BE_PLATFORM_WINDOWS",
 		}
 
-		links
-		{
-			"d3d11.lib",
-			"D3DCompiler.lib"
-		}
+	
 
 	filter "configurations:Debug"
 		defines "BE_DEBUG"
 		runtime "Debug"
 		symbols "on"
-
-		links
-		{
-			"dxguid.lib"
-		}
 
 	filter "configurations:Release"
 		defines "BE_RELEASE"
@@ -129,6 +120,19 @@ project "Sandbox"
 		{
 			"BE_PLATFORM_WINDOWS"
 		}
+
+		links
+		{
+			"d3d11.lib",
+			"D3DCompiler.lib"
+		}
+
+		filter "configurations:Debug"
+
+			links
+			{
+				"dxguid.lib"
+			}
 
 	filter "configurations:Debug"
 		defines "BE_DEBUG"
