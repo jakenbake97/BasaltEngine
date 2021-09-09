@@ -139,21 +139,26 @@ namespace Basalt
 		// create vertex array
 		const std::vector<Vertex> vertices = 
 		{
-			{{0.0f, 0.5f}, {255, 0, 0, 255}},
-			{{0.5f, -0.5f}, {0, 255, 0, 255}},
-			{{-0.5f, -0.5f}, {0, 0, 255, 255}},
-			{{-0.3f, 0.3f}, {0, 255, 0, 255}},
-			{{0.3f, 0.3f}, {0,0,255,255}},
-			{{0.0f, -1.0f}, {255, 0, 0, 255}},
+			{{0.0f, 0.5f}, {255, 25, 255, 255}},
+			{{0.5f, -0.5f}, {25, 50, 255, 255}},
+			{{-0.5f, -0.5f}, {255, 255, 25, 255}},
+			//{{-0.3f, 0.3f}, {0, 255, 0, 255}},
+			//{{0.3f, 0.3f}, {0,0,255,255}},
+			//{{0.0f, -1.0f}, {255, 0, 0, 255}},
 		};
 		 
 		// index array
 		const std::vector<uint32> indices
 		{
 			0,1,2,
-			0,2,3,
-			0,4,1,
-			2,1,5,
+			//0,2,3,
+			//0,4,1,
+			//2,1,5,
+		};
+
+		BufferLayout layout = {
+			{"Position", ShaderDataType::Float3},
+			{"Color", ShaderDataType::Float4}
 		};
 
 		// Create and bind the Vertex Buffer
@@ -213,7 +218,8 @@ namespace Basalt
 
 		// input vertex layout (2d positions only & Color)
 		wrl::ComPtr<ID3D11InputLayout> inputLayout;
-		const std::vector<D3D11_INPUT_ELEMENT_DESC> inElementDesc =
+
+		std::vector<D3D11_INPUT_ELEMENT_DESC> inElementDesc =
 		{
 			{"POSITION", 0u, DXGI_FORMAT_R32G32_FLOAT, 0u, 0u, D3D11_INPUT_PER_VERTEX_DATA, 0u},
 			{"COLOR", 0u, DXGI_FORMAT_R8G8B8A8_UNORM, 0u, 8u, D3D11_INPUT_PER_VERTEX_DATA, 0u},

@@ -46,6 +46,25 @@ namespace Basalt
 		static_cast<ID3D11DeviceContext*>(Renderer::GetRenderContext().GetDeviceContext())->IASetVertexBuffers(0u, 0u, nullptr, nullptr, nullptr);
 	}
 
+	void Dx11VertexBuffer::SetLayout(const BufferLayout& layout)
+	{
+		bufLayout = layout;
+
+		wrl::ComPtr<ID3D11InputLayout> inputLayout;
+		wrl::ComPtr<ID3DBlob> blob;
+		std::vector<D3D11_INPUT_ELEMENT_DESC> inElementDesc{};
+		for (const auto& element : layout)
+		{
+			inElementDesc.push_back({ element.name.Narrow().data(), 0u, ShaderDataTypeToDx11Type(element.type), 0u, element.offset, D3D11_INPUT_PER_VERTEX_DATA, 0u});
+		}
+		//DX_INFO_CHECK(static_cast<ID3D11Device*>(Renderer::GetRenderContext().GetDevice())->CreateInputLayout(inElementDesc.data(), (uint32)inElementDesc.size(), blob->GetBufferPointer(), blob->GetBufferSize()))
+	}
+
+	const BufferLayout& Dx11VertexBuffer::GetLayout() const
+	{
+		return bufLayout;
+	}
+
 	/******************************
 	 ***********Index Buffer*******
 	 ******************************/
