@@ -47,7 +47,7 @@ namespace Basalt
 		{
 			InitCoreLog();
 		}
-		clientLogger = spdlog::stdout_color_mt(clientName.Narrow());
+		clientLogger = spdlog::stdout_color_mt(clientName);
 		clientLogger->set_level(spdlog::level::trace);
 	}
 }

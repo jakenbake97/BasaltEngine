@@ -11,6 +11,7 @@
 #include "Basalt/Events/ApplicationEvent.h"
 #include "Basalt/Events/WindowEvent.h"
 #include "Basalt/Events/KeyboardEvent.h"
+#include "atlstr.h"
 
 namespace Basalt
 {
@@ -27,8 +28,8 @@ namespace Basalt
 	String WindowsWindow::WindowException::GetException() const
 	{
 		return GetType()
-			+ L"\n[Error Code] " + GetErrorCode()
-			+ L"\n[Description] " + GetErrorString()
+			+ "\n[Error Code] " + GetErrorCode()
+			+ "\n[Description] " + GetErrorString()
 			+ GetOriginString();
 	}
 
@@ -45,7 +46,7 @@ namespace Basalt
 			nullptr, hr, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
 			reinterpret_cast<LPWSTR>(&msgBuf), 0, nullptr) == 0)
 		{
-			return L"Unidentified error code";
+			return "Unidentified error code";
 		}
 		String errorString = msgBuf;
 		LocalFree(msgBuf);
@@ -116,7 +117,8 @@ namespace Basalt
 			throw BE_WND_LAST_EXCEPT();
 		}
 
-		handle = CreateWindow(WindowClass::GetName(), properties.title.CStr(),
+
+		handle = CreateWindow(WindowClass::GetName(), CString(properties.title.CStr()),
 		                      styles, CW_USEDEFAULT, CW_USEDEFAULT,
 		                      windowRect.right - windowRect.left, windowRect.bottom - windowRect.top,
 		                      nullptr, nullptr,

@@ -36,19 +36,19 @@ namespace Basalt
 	String Dx11Context::HResultException::GetException() const
 	{
 	
-		String exceptionString = GetType() + L"[ERROR CODE]: " + GetErrorCode() + L"\n"
-			+ L"[ERROR NAME]: " + GetErrorString() + L"\n"
-			+ L"[ERROR DESCRIPTION]: " + GetErrorDescription() + L"\n";
+		String exceptionString = GetType() + "[ERROR CODE]: " + GetErrorCode() + "\n"
+			+ "[ERROR NAME]: " + GetErrorString() + "\n"
+			+ "[ERROR DESCRIPTION]: " + GetErrorDescription() + "\n";
 		if (!info.Empty())
 		{
-			exceptionString += L"[ERROR INFO]: " + GetErrorInfo() + "\n";
+			exceptionString += "[ERROR INFO]: " + GetErrorInfo() + "\n";
 		}
 		return exceptionString + GetOriginString();
 	}
 
 	String Dx11Context::HResultException::GetType() const
 	{
-		return L"DX11 Graphics Exception";
+		return "DX11 Graphics Exception";
 	}
 
 	String Dx11Context::HResultException::GetErrorCode() const
@@ -77,7 +77,7 @@ namespace Basalt
 
 	String Dx11Context::DeviceRemovedException::GetType() const
 	{
-		return L"DX11 Graphics Exception [Device Removed] (DXGI_ERROR_DEVICE_REMOVED)";
+		return "DX11 Graphics Exception [Device Removed] (DXGI_ERROR_DEVICE_REMOVED)";
 	}
 
 	Dx11Context::Dx11Context(HWND hwnd)
@@ -217,16 +217,16 @@ namespace Basalt
 		context->VSSetShader(vertexShader.Get(), nullptr, 0u);
 
 		// input vertex layout (2d positions only & Color)
-		wrl::ComPtr<ID3D11InputLayout> inputLayout;
-
+		BufferLayout layout = {
+			{"Position", ShaderDataType::Float3},
 		std::vector<D3D11_INPUT_ELEMENT_DESC> inElementDesc =
 		{
 			{"POSITION", 0u, DXGI_FORMAT_R32G32_FLOAT, 0u, 0u, D3D11_INPUT_PER_VERTEX_DATA, 0u},
 			{"COLOR", 0u, DXGI_FORMAT_R8G8B8A8_UNORM, 0u, 8u, D3D11_INPUT_PER_VERTEX_DATA, 0u},
 		};
 
-		DX_INFO_CHECK(device->CreateInputLayout(inElementDesc.data(), (uint32)inElementDesc.size(), blob->GetBufferPointer(), blob->GetBufferSize(), inputLayout.GetAddressOf()));
-
+		// Create and bind vertex layout
+		vertexBuffer->SetLayout(layout);
 		// bind vertex layout
 		context->IASetInputLayout(inputLayout.Get());
 

@@ -13,7 +13,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	try
 	{
 		// Initialize engine application
-		auto app = Basalt::CreateApplication();
+		const auto app = Basalt::CreateApplication();
 
 		// Initialize the logger
 		Basalt::Log::InitClientLog(app->GetAppName());

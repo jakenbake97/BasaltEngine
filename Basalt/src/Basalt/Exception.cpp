@@ -15,7 +15,7 @@ namespace Basalt
 
 	const char* Exception::what() const
 	{
-		whatBuffer = (GetType() + "\n" + GetOriginString()).Narrow();
+		whatBuffer = (GetType() + "\n" + GetOriginString());
 		return whatBuffer.c_str();
 	}
 
@@ -36,6 +36,6 @@ namespace Basalt
 
 	String Exception::GetOriginString() const
 	{
-		return  L"[File] " + file + L"\n[Line] " + line;
+		return  "[File] " + file + "\n[Line] " + line;
 	}
 }
