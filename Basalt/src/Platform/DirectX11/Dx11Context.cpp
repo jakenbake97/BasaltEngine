@@ -7,6 +7,7 @@
 #include "Dx11Macros.h"
 #include "Basalt/Renderer/Buffer.h"
 #include "Basalt/Renderer/Renderer.h"
+#include "Basalt/Renderer/Shader.h"
 #include "DxError/dxerr.h"
 
 namespace wrl = Microsoft::WRL;
@@ -156,11 +157,6 @@ namespace Basalt
 			//2,1,5,
 		};
 
-		BufferLayout layout = {
-			{"Position", ShaderDataType::Float3},
-			{"Color", ShaderDataType::Float4}
-		};
-
 		// Create and bind the Vertex Buffer
 		const std::unique_ptr<VertexBuffer> vertexBuffer(VertexBuffer::Create(vertices));
 
@@ -176,14 +172,11 @@ namespace Basalt
 		const ConstantBuffer cb =
 		{
 			{
-				(9.0f / 16.0f) * std::cos(angle), std::sin(angle), 0.0f, 0.0f,
-				(9.0f / 16.0f) * -std::sin(angle), std::cos(angle), 0.0f, 0.0f,
-				0.0f, 0.0f, 1.0f, 0.0f,
-				0.0f, 0.0f, 0.0f, 1.0f,
+				glm::scale(glm::rotate(Mat4x4(1.0f), angle, Vector3(0.0f, 0.0f, 1.0f)), Vector3(9.0f / 16.0f, 1.0f, 1.0f))
 			}
 		};
 
-		wrl::ComPtr<ID3D11Buffer> constantBuf;
+		wrl::ComPtr<ID3D11Buffer> constantBuf; 
 		D3D11_BUFFER_DESC bufDesc = {};
 		bufDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 		bufDesc.Usage = D3D11_USAGE_DYNAMIC;
@@ -199,36 +192,17 @@ namespace Basalt
 
 		context->VSSetConstantBuffers(0u, 1u, constantBuf.GetAddressOf());
 
-		// create pixel shader
-		wrl::ComPtr<ID3D11PixelShader> pixelShader;
-		wrl::ComPtr<ID3DBlob> blob;
-		DX_INFO_CHECK(D3DReadFileToBlob(L"../Basalt/PixelShader.cso", &blob));
-		DX_INFO_CHECK(device->CreatePixelShader(blob->GetBufferPointer(), blob->GetBufferSize(), nullptr, &pixelShader));
-
-		//bind pixel shader
-		context->PSSetShader(pixelShader.Get(), nullptr, 0u);
-
-		// create vertex shader
-		wrl::ComPtr<ID3D11VertexShader> vertexShader;
-		DX_INFO_CHECK(D3DReadFileToBlob(L"../Basalt/VertexShader.cso", &blob));
-		DX_INFO_CHECK(device->CreateVertexShader(blob->GetBufferPointer(), blob->GetBufferSize(), nullptr, &vertexShader));
-
-		//bind vertex shader
-		context->VSSetShader(vertexShader.Get(), nullptr, 0u);
+		auto firstShader = Shader::Create("../Basalt/VertexShader.cso", "../Basalt/PixelShader.cso");
+		firstShader->Bind();
 
 		// input vertex layout (2d positions only & Color)
-		BufferLayout layout = {
+		const BufferLayout layout = {
 			{"Position", ShaderDataType::Float3},
-		std::vector<D3D11_INPUT_ELEMENT_DESC> inElementDesc =
-		{
-			{"POSITION", 0u, DXGI_FORMAT_R32G32_FLOAT, 0u, 0u, D3D11_INPUT_PER_VERTEX_DATA, 0u},
-			{"COLOR", 0u, DXGI_FORMAT_R8G8B8A8_UNORM, 0u, 8u, D3D11_INPUT_PER_VERTEX_DATA, 0u},
+			{"Color", ShaderDataType::UChar4, true}
 		};
-
 		// Create and bind vertex layout
-		vertexBuffer->SetLayout(layout);
-		// bind vertex layout
-		context->IASetInputLayout(inputLayout.Get());
+		vertexBuffer->SetLayout(layout, firstShader);
+		vertexBuffer->Bind();
 
 		//bind render target
 		context->OMSetRenderTargets(1u, renderTarget.GetAddressOf(), nullptr);

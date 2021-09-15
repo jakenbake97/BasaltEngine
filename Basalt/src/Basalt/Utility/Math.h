@@ -3,6 +3,11 @@
 #include <CodeAnalysis/Warnings.h>
 #pragma warning( push )
 #pragma warning ( disable : ALL_CODE_ANALYSIS_WARNINGS )
+
+#include "glm/glm.hpp"
+#include "glm/gtc/matrix_transform.hpp"
+#include "glm/gtc/type_ptr.hpp"
+
 #include "glm/vec2.hpp"
 #include "glm/vec3.hpp"
 #include "glm/vec4.hpp"

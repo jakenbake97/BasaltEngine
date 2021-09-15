@@ -159,6 +159,7 @@
     <ClInclude Include="src\Platform\DirectX11\Dx11Buffer.h" />
     <ClInclude Include="src\Platform\DirectX11\Dx11Context.h" />
     <ClInclude Include="src\Platform\DirectX11\Dx11Macros.h" />
+    <ClInclude Include="src\Platform\DirectX11\Dx11Shader.h" />
     <ClInclude Include="src\Platform\DirectX11\DxError\DXGIInfoManager.h" />
     <ClInclude Include="src\Platform\DirectX11\DxError\dxerr.h" />
     <ClInclude Include="src\Platform\Windows\WindowsInput.h" />
@@ -593,6 +594,7 @@
     <ClCompile Include="src\Basalt\Timer.cpp" />
     <ClCompile Include="src\Platform\DirectX11\Dx11Buffer.cpp" />
     <ClCompile Include="src\Platform\DirectX11\Dx11Context.cpp" />
+    <ClCompile Include="src\Platform\DirectX11\Dx11Shader.cpp" />
     <ClCompile Include="src\Platform\DirectX11\DxError\DXGIInfoManager.cpp" />
     <ClCompile Include="src\Platform\DirectX11\DxError\dxerr.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsInput.cpp" />

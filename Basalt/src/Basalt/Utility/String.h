@@ -2,6 +2,11 @@
 #include <string>
 #include <utility>
 
+#ifdef BE_PLATFORM_WINDOWS
+#include <atlstr.h>
+#endif
+
+
 // This excludes all warnings raised inside External headers
 #include <CodeAnalysis\Warnings.h>
 #pragma warning( push )

@@ -1,30 +1,8 @@
 ﻿#pragma once
+#include "Shader.h"
 
 namespace Basalt
 {
-	enum class ShaderDataType
-	{
-		None = 0, Float, Float2, Float3, Float4, Mat3, Mat4, Int, Int2, Int3, Int4, Bool
-	};
-
-	static uint32 ShaderDataTypeSize(const ShaderDataType type)
-	{
-		switch (type)
-		{
-			case ShaderDataType::Float:		return 4;
-			case ShaderDataType::Float2:	return 4 * 2;
-			case ShaderDataType::Float3:	return 4 * 3;
-			case ShaderDataType::Float4:	return 4 * 4;
-			case ShaderDataType::Mat3:		return 4 * 3 * 3;
-			case ShaderDataType::Mat4:		return 4 * 4 * 4;
-			case ShaderDataType::Int:		return 4;
-			case ShaderDataType::Int2:		return 4 * 2;
-			case ShaderDataType::Int3:		return 4 * 3;
-			case ShaderDataType::Int4:		return 4 * 4;
-			case ShaderDataType::Bool:		return 1;
-			default: BE_ERROR("ShaderDataType {0} is unknown", type);return 0;
-		}
-	}
 
 	struct BufferAttribute
 	{
@@ -37,24 +15,6 @@ namespace Basalt
 		BufferAttribute() = default;
 		BufferAttribute(String name, ShaderDataType type, bool normalized = false);
 
-		uint32 GetComponentCount() const
-		{
-			switch (type)
-			{ 
-				case ShaderDataType::Float:		return 1;
-				case ShaderDataType::Float2:	return 2;
-				case ShaderDataType::Float3:	return 3;
-				case ShaderDataType::Float4:	return 4;
-				case ShaderDataType::Mat3:		return 3 * 3;
-				case ShaderDataType::Mat4:		return 4 * 4;
-				case ShaderDataType::Int:		return 1;
-				case ShaderDataType::Int2:		return 2;
-				case ShaderDataType::Int3:		return 3;
-				case ShaderDataType::Int4:		return 4;
-				case ShaderDataType::Bool:		return 1;
-				default: BE_ERROR("ShaderDataType {0} is unknown", type);return 0;
-			}
-		}
 	};
 
 	class BufferLayout
@@ -92,7 +52,7 @@ namespace Basalt
 		virtual void Bind() = 0;
 		virtual void Unbind() = 0;
 
-		virtual void SetLayout(const BufferLayout& layout) = 0;
+		virtual void SetLayout(const BufferLayout& layout, std::unique_ptr<Shader>& shader) = 0;
 		virtual const BufferLayout& GetLayout() const = 0;
 
 		static VertexBuffer* Create(const std::vector<struct Vertex>& vertices);

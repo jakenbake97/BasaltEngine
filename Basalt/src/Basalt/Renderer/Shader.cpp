@@ -1,12 +1,23 @@
 ﻿#include "BEpch.h"
 #include "Shader.h"
 
-#include "Renderer.h"
+#include <utility>
 
-Basalt::Shader::Shader(const String& fileName, const ShaderType type)
+#include "Renderer.h"
+#include "Platform/DirectX11/Dx11Shader.h"
+
+namespace Basalt
 {
-	switch (Renderer::GetRenderAPI())
+	std::unique_ptr<Shader> Shader::Create(const String& vertexSource,  const String& fragmentSource)
 	{
-	case RendererAPI::None: BE_ERROR("RendererAPI::None (headless) is currently not supported");
+		switch (Renderer::GetRenderAPI())
+		{
+		case RendererAPI::None: BE_ERROR("RendererAPI::None is not currently supported"); return nullptr;
+		case RendererAPI::DirectX11: return std::make_unique<Dx11Shader>(Dx11Shader(vertexSource,
+			fragmentSource));
+		}
+
+		BE_ERROR("Unknown RendererAPI");
+		return nullptr;
 	}
 }

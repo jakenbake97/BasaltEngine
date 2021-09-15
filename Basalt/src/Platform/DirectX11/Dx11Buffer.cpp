@@ -1,10 +1,8 @@
 ﻿#include "BEpch.h"
 #include "Dx11Buffer.h"
-
-
-
 #include "Dx11Context.h"
 #include "Dx11Macros.h"
+#include "Dx11Shader.h"
 #include "Basalt/Renderer/Renderer.h"
 
 namespace wrl = Microsoft::WRL;
@@ -28,15 +26,13 @@ namespace Basalt
 		subresourceData.pSysMem = vertices.data();
 
 		DX_INFO_CHECK(static_cast<ID3D11Device*>(Renderer::GetRenderContext().GetDevice())->CreateBuffer(&bufDesc, &subresourceData, vertexBuffer.GetAddressOf()));
-
-		Dx11VertexBuffer::Bind();
 	}
 
 	Dx11VertexBuffer::~Dx11VertexBuffer()= default;
 
 	void Dx11VertexBuffer::Bind()
 	{
-		constexpr uint32 stride = sizeof(Vertex);
+		const uint32 stride = bufLayout.GetStride();
 		constexpr uint32 offset = 0u;
 		static_cast<ID3D11DeviceContext*>(Renderer::GetRenderContext().GetDeviceContext())->IASetVertexBuffers(0u, 1u, vertexBuffer.GetAddressOf(), &stride, &offset);
 	}
@@ -46,18 +42,19 @@ namespace Basalt
 		static_cast<ID3D11DeviceContext*>(Renderer::GetRenderContext().GetDeviceContext())->IASetVertexBuffers(0u, 0u, nullptr, nullptr, nullptr);
 	}
 
-	void Dx11VertexBuffer::SetLayout(const BufferLayout& layout)
+	void Dx11VertexBuffer::SetLayout(const BufferLayout& layout, std::unique_ptr<Shader>& shader)
 	{
 		bufLayout = layout;
-
+		auto blob = dynamic_cast<Dx11Shader*>(shader.get())->GetVertexBytecode();
 		wrl::ComPtr<ID3D11InputLayout> inputLayout;
-		wrl::ComPtr<ID3DBlob> blob;
 		std::vector<D3D11_INPUT_ELEMENT_DESC> inElementDesc{};
 		for (const auto& element : layout)
 		{
-			inElementDesc.push_back({ element.name.Narrow().data(), 0u, ShaderDataTypeToDx11Type(element.type), 0u, element.offset, D3D11_INPUT_PER_VERTEX_DATA, 0u});
+			inElementDesc.push_back({element.name.CStr(), 0u, ShaderDataTypeToDx11Type(element.type, element.normalized), 0u, element.offset, D3D11_INPUT_PER_VERTEX_DATA, 0u});
 		}
-		//DX_INFO_CHECK(static_cast<ID3D11Device*>(Renderer::GetRenderContext().GetDevice())->CreateInputLayout(inElementDesc.data(), (uint32)inElementDesc.size(), blob->GetBufferPointer(), blob->GetBufferSize()))
+		DX_INFO_CHECK(static_cast<ID3D11Device*>(Renderer::GetRenderContext().GetDevice())->CreateInputLayout(inElementDesc.data(), (uint32)inElementDesc.size(), blob->GetBufferPointer(), blob->GetBufferSize(), inputLayout.GetAddressOf()));
+
+		static_cast<ID3D11DeviceContext*>(Renderer::GetRenderContext().GetDeviceContext())->IASetInputLayout(inputLayout.Get());
 	}
 
 	const BufferLayout& Dx11VertexBuffer::GetLayout() const
