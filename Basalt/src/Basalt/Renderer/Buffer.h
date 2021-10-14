@@ -24,7 +24,7 @@ namespace Basalt
 
 		const std::vector<BufferAttribute>& GetAttributes() const { return attributes; }
 		uint32 GetStride() const { return stride; }
-		uint32 GetAttributeCount() const { return attributes.size(); }
+		uint32 GetAttributeCount() const { return (uint32)attributes.size(); }
 
 		std::vector<BufferAttribute>::iterator begin() { return attributes.begin(); }
 		std::vector<BufferAttribute>::iterator end() { return attributes.end(); }

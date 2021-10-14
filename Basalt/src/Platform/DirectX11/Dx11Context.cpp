@@ -134,7 +134,7 @@ namespace Basalt
 		context->ClearRenderTargetView(renderTarget.Get(), clearColor);
 	}
 
-	void Dx11Context::DrawTestTriangle(float angle)
+	void Dx11Context::DrawTestTriangle(float angle, float aspectRatio)
 	{
 		struct Vertex
 		{
@@ -145,21 +145,21 @@ namespace Basalt
 		// create vertex array
 		const std::vector<Vertex> vertices = 
 		{
-			{{0.0f, 1.0f}, {255, 25, 255, 255}},
+			{{0.0f, 0.5f}, {255, 25, 255, 255}},
 			{{0.5f, -0.5f}, {25, 50, 255, 255}},
 			{{-0.5f, -0.5f}, {255, 255, 25, 255}},
-			//{{-0.3f, 0.3f}, {0, 255, 0, 255}},
-			//{{0.3f, 0.3f}, {0,0,255,255}},
-			//{{0.0f, -1.0f}, {255, 0, 0, 255}},
+			{{-0.3f, 0.3f}, {0, 255, 0, 255}},
+			{{0.3f, 0.3f}, {0,0,255,255}},
+			{{0.0f, -1.0f}, {255, 0, 0, 255}},
 		};
 		 
 		// index array
 		const std::vector<uint32> indices
 		{
 			0,1,2,
-			//0,2,3,
-			//0,4,1,
-			//2,1,5,
+			0,2,3,
+			0,4,1,
+			2,1,5,
 		};
 
 		// Create and bind the index Buffer
@@ -174,7 +174,7 @@ namespace Basalt
 		const ConstantBuffer cb =
 		{
 			{
-				glm::rotate(glm::scale(Mat4x4(1.0f), Vector3(9.0f/ 16.0f, 1.0f, 1.0f)), angle, Vector3(0.0f, 0.0f, 1.0f))
+				glm::rotate(glm::scale(Mat4x4(1.0f), Vector3(aspectRatio, 1.0f, 1.0f)), angle, Vector3(0.0f, 0.0f, 1.0f))
 			}
 		};
 
