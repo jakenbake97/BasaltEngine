@@ -12,21 +12,6 @@ namespace Basalt
 	/******************************
 	 ***********Vertex Buffer******
 	 ******************************/
-	Dx11VertexBuffer::Dx11VertexBuffer(const std::vector<Vertex>& vertices)
-	{
-		D3D11_BUFFER_DESC bufDesc = {};
-		bufDesc.Usage = D3D11_USAGE_DEFAULT;
-		bufDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-		bufDesc.CPUAccessFlags = 0u;
-		bufDesc.MiscFlags = 0u;
-		bufDesc.ByteWidth = (uint32)sizeof(Vertex) * (uint32)vertices.size();
-		bufDesc.StructureByteStride = sizeof(Vertex);
-
-		D3D11_SUBRESOURCE_DATA subresourceData = {};
-		subresourceData.pSysMem = vertices.data();
-
-		DX_INFO_CHECK(static_cast<ID3D11Device*>(Renderer::GetRenderContext().GetDevice())->CreateBuffer(&bufDesc, &subresourceData, vertexBuffer.GetAddressOf()));
-	}
 
 	Dx11VertexBuffer::~Dx11VertexBuffer()= default;
 
@@ -50,8 +35,12 @@ namespace Basalt
 		std::vector<D3D11_INPUT_ELEMENT_DESC> inElementDesc{};
 		for (const auto& element : layout)
 		{
-			inElementDesc.push_back({element.name.CStr(), 0u, ShaderDataTypeToDx11Type(element.type, element.normalized), 0u, element.offset, D3D11_INPUT_PER_VERTEX_DATA, 0u});
+			inElementDesc.push_back(
+				{element.name.CStr(), 0u,
+					Dx11Shader::ShaderDataTypeToDx11Type(element.type, element.normalized), 0u, element.offset, D3D11_INPUT_PER_VERTEX_DATA, 0u
+				});
 		}
+
 		DX_INFO_CHECK(static_cast<ID3D11Device*>(Renderer::GetRenderContext().GetDevice())->CreateInputLayout(inElementDesc.data(), (uint32)inElementDesc.size(), blob->GetBufferPointer(), blob->GetBufferSize(), inputLayout.GetAddressOf()));
 
 		static_cast<ID3D11DeviceContext*>(Renderer::GetRenderContext().GetDeviceContext())->IASetInputLayout(inputLayout.Get());
@@ -60,6 +49,22 @@ namespace Basalt
 	const BufferLayout& Dx11VertexBuffer::GetLayout() const
 	{
 		return bufLayout;
+	}
+
+	void Dx11VertexBuffer::CreateAndBindBuffer(const std::vector<char>& vertexData)
+	{
+		D3D11_BUFFER_DESC bufDesc = {};
+		bufDesc.Usage = D3D11_USAGE_DEFAULT;
+		bufDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+		bufDesc.CPUAccessFlags = 0u;
+		bufDesc.MiscFlags = 0u;
+		bufDesc.ByteWidth = (uint32)vertexData.size();
+		bufDesc.StructureByteStride = bufLayout.GetStride();
+
+		D3D11_SUBRESOURCE_DATA subresourceData = {};
+		subresourceData.pSysMem = vertexData.data();
+
+		DX_INFO_CHECK(static_cast<ID3D11Device*>(Renderer::GetRenderContext().GetDevice())->CreateBuffer(&bufDesc, &subresourceData, vertexBuffer.GetAddressOf()));
 	}
 
 	/******************************

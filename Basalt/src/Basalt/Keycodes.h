@@ -3,7 +3,7 @@
 
 namespace Basalt
 {
-	using KeyCode = uint16_t;
+	using KeyCode = uint16;
 
 #pragma warning( disable : 26812 )
 	

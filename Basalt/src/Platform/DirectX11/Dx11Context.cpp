@@ -136,11 +136,16 @@ namespace Basalt
 
 	void Dx11Context::DrawTestTriangle(float angle)
 	{
+		struct Vertex
+		{
+			Vector2 position;
+			ByteColor color;
+		};
 
 		// create vertex array
 		const std::vector<Vertex> vertices = 
 		{
-			{{0.0f, 0.5f}, {255, 25, 255, 255}},
+			{{0.0f, 1.0f}, {255, 25, 255, 255}},
 			{{0.5f, -0.5f}, {25, 50, 255, 255}},
 			{{-0.5f, -0.5f}, {255, 255, 25, 255}},
 			//{{-0.3f, 0.3f}, {0, 255, 0, 255}},
@@ -157,9 +162,6 @@ namespace Basalt
 			//2,1,5,
 		};
 
-		// Create and bind the Vertex Buffer
-		const std::unique_ptr<VertexBuffer> vertexBuffer(VertexBuffer::Create(vertices));
-
 		// Create and bind the index Buffer
 		const std::unique_ptr<IndexBuffer> indexBuffer(IndexBuffer::Create(indices));
 
@@ -172,7 +174,7 @@ namespace Basalt
 		const ConstantBuffer cb =
 		{
 			{
-				glm::scale(glm::rotate(Mat4x4(1.0f), angle, Vector3(0.0f, 0.0f, 1.0f)), Vector3(9.0f / 16.0f, 1.0f, 1.0f))
+				glm::rotate(glm::scale(Mat4x4(1.0f), Vector3(9.0f/ 16.0f, 1.0f, 1.0f)), angle, Vector3(0.0f, 0.0f, 1.0f))
 			}
 		};
 
@@ -197,11 +199,13 @@ namespace Basalt
 
 		// input vertex layout (2d positions only & Color)
 		const BufferLayout layout = {
-			{"Position", ShaderDataType::Float3},
+			{"Position", ShaderDataType::Float2},
 			{"Color", ShaderDataType::UChar4, true}
 		};
-		// Create and bind vertex layout
-		vertexBuffer->SetLayout(layout, firstShader);
+
+		// Create and bind the Vertex Buffer
+		const std::unique_ptr<VertexBuffer> vertexBuffer(VertexBuffer::Create<Vertex>(vertices, firstShader, layout));
+
 		vertexBuffer->Bind();
 
 		//bind render target

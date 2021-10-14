@@ -23,13 +23,15 @@
 namespace Basalt
 {
 	// Math Types
+	using Vector1 = glm::vec1;
+	using Vector1Int = glm::ivec1;
 	using Vector2 = glm::vec2;
 	using Vector2Int = glm::ivec2;
 	using Vector3 = glm::vec3;
 	using Vector3Int = glm::ivec3;
 	using Vector4 = glm::vec4;
 	using Color = Vector4;
-	using ByteColor = glm::vec<4, char>;
+	using ByteColor = glm::vec<4, glm::uint8>;
 	using Vector4Int = glm::ivec4;
 	using Mat2x2 = glm::mat2;
 	using Mat3x3 = glm::mat3;

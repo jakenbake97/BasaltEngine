@@ -22,10 +22,4 @@ namespace Basalt
 		static RendererAPI currentAPI;
 		static std::unique_ptr<RenderContext> context;
 	};
-
-	struct Vertex
-	{
-		Vector2 pos;
-		ByteColor color;
-	};
 }

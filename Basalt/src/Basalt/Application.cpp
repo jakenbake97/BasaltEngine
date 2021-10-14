@@ -50,6 +50,7 @@ namespace Basalt
 			Renderer::GetRenderContext().ClearColor({ 0.25f, c * 0.25f, 0.25f, 1.0f });
 			Renderer::GetRenderContext().DrawTestTriangle(timer.GetTime());
 			Renderer::GetRenderContext().SwapBuffers();
+
 		}		
 	}
 
