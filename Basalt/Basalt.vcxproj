@@ -603,6 +603,9 @@
   <ItemGroup>
     <FxCompile Include="src\Platform\DirectX11\Shaders\FirstShader-p.hlsl">
       <ShaderType>Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">4.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">4.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">4.0</ShaderModel>
     </FxCompile>
     <FxCompile Include="src\Platform\DirectX11\Shaders\FirstShader-v.hlsl">
       <ShaderType>Vertex</ShaderType>

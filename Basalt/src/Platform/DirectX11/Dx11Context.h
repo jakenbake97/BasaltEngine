@@ -33,17 +33,8 @@ namespace Basalt
 		public:
 			String GetType() const override;
 		};
-	private:
-		HWND windowHandle;
-		
-		Microsoft::WRL::ComPtr<ID3D11Device> device;
-		Microsoft::WRL::ComPtr<IDXGISwapChain> swapChain;
-		Microsoft::WRL::ComPtr<ID3D11DeviceContext> context;
-		Microsoft::WRL::ComPtr<ID3D11RenderTargetView> renderTarget;
-		
-		
-	public:
-		Dx11Context(HWND hwnd);
+
+		Dx11Context(std::unique_ptr<IWindow>& window);
 		~Dx11Context() override = default;
 		Dx11Context(const Dx11Context& other) = delete;
 		Dx11Context(Dx11Context&& other) noexcept = delete;
@@ -52,9 +43,18 @@ namespace Basalt
 
 		void SwapBuffers() override;
 		void ClearColor(Color color) override;
-		void DrawTestTriangle(float angle, float aspectRatio) override;
+		void DrawTestTriangle(float angle, uint32 width, uint32 height, Vector3 position) override;
 		void* GetDevice() override;
 		void* GetDeviceContext() override;
+
+	private:
+		HWND windowHandle;
+
+		Microsoft::WRL::ComPtr<ID3D11Device> device;
+		Microsoft::WRL::ComPtr<IDXGISwapChain> swapChain;
+		Microsoft::WRL::ComPtr<ID3D11DeviceContext> context;
+		Microsoft::WRL::ComPtr<ID3D11RenderTargetView> renderTarget;
+		Microsoft::WRL::ComPtr<ID3D11DepthStencilView> depthStencilView;
 	};
 
 	

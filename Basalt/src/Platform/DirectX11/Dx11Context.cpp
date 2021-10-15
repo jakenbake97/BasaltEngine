@@ -5,6 +5,7 @@
 #include <d3dcompiler.h>
 
 #include "Dx11Macros.h"
+#include "Basalt/IWindow.h"
 #include "Basalt/Renderer/Buffer.h"
 #include "Basalt/Renderer/Renderer.h"
 #include "Basalt/Renderer/Shader.h"
@@ -15,9 +16,9 @@ namespace wrl = Microsoft::WRL;
 namespace Basalt
 {
 	
-	std::unique_ptr<RenderContext> RenderContext::CreateRenderContext(void* handle)
+	std::unique_ptr<RenderContext> RenderContext::CreateRenderContext(std::unique_ptr<IWindow>& window)
 	{
-		return std::make_unique<Dx11Context>(static_cast<HWND>(handle));
+		return std::make_unique<Dx11Context>(window);
 	}
 
 	Dx11Context::HResultException::HResultException(int line, const String& file, HRESULT hresult, std::vector<String> errors)
@@ -81,9 +82,10 @@ namespace Basalt
 		return "DX11 Graphics Exception [Device Removed] (DXGI_ERROR_DEVICE_REMOVED)";
 	}
 
-	Dx11Context::Dx11Context(HWND hwnd)
-		: windowHandle(hwnd)
+	Dx11Context::Dx11Context(std::unique_ptr<IWindow>& window)
 	{
+		windowHandle = static_cast<HWND>(window->GetWindowHandle());
+
 		DXGI_SWAP_CHAIN_DESC swapDesc = {};
 		swapDesc.BufferDesc.Width = 0;
 		swapDesc.BufferDesc.Height = 0;
@@ -121,6 +123,41 @@ namespace Basalt
 		wrl::ComPtr<ID3D11Resource> backBuffer;
 		DX_INFO_CHECK(swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), &backBuffer));
 		DX_INFO_CHECK(device->CreateRenderTargetView(backBuffer.Get(), nullptr, &renderTarget));
+
+		// Create depth stencil state
+		D3D11_DEPTH_STENCIL_DESC depthDesc = {};
+		depthDesc.DepthEnable = TRUE;
+		depthDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
+		depthDesc.DepthFunc = D3D11_COMPARISON_LESS;
+		wrl::ComPtr<ID3D11DepthStencilState> depthStencilState;
+		DX_INFO_CHECK(device->CreateDepthStencilState(&depthDesc, &depthStencilState));
+
+		// bind depth state
+		context->OMSetDepthStencilState(depthStencilState.Get(), 1u);
+
+		// Create depth stencil texture
+		wrl::ComPtr<ID3D11Texture2D> depthStencil;
+		D3D11_TEXTURE2D_DESC depthTexDesc = {};
+		depthTexDesc.Width = window->GetWidth();
+		depthTexDesc.Height = window->GetHeight();
+		depthTexDesc.MipLevels = 1u;
+		depthTexDesc.ArraySize = 1u;
+		depthTexDesc.Format = DXGI_FORMAT_D32_FLOAT;
+		depthTexDesc.SampleDesc.Count = 1u;
+		depthTexDesc.SampleDesc.Quality = 0u;
+		depthTexDesc.Usage = D3D11_USAGE_DEFAULT;
+		depthTexDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+		DX_INFO_CHECK(device->CreateTexture2D(&depthTexDesc, nullptr, &depthStencil));
+
+		// create view of depth stencil texture
+		D3D11_DEPTH_STENCIL_VIEW_DESC depthStencilViewDesc = {};
+		depthStencilViewDesc.Format = DXGI_FORMAT_D32_FLOAT;
+		depthStencilViewDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
+		depthStencilViewDesc.Texture2D.MipSlice = 0u;
+		DX_INFO_CHECK(device->CreateDepthStencilView(depthStencil.Get(), &depthStencilViewDesc, &depthStencilView));
+
+		// bind depth stencil view to pipeline
+		context->OMSetRenderTargets(1u, renderTarget.GetAddressOf(), depthStencilView.Get());
 	}
 
 	void Dx11Context::SwapBuffers()
@@ -132,38 +169,13 @@ namespace Basalt
 	{
 		const float clearColor[] = { color.r, color.g, color.b, color.a };
 		context->ClearRenderTargetView(renderTarget.Get(), clearColor);
+		context->ClearDepthStencilView(depthStencilView.Get(), D3D11_CLEAR_DEPTH, 1.0f, 0u);
 	}
 
-	void Dx11Context::DrawTestTriangle(float angle, float aspectRatio)
+	void Dx11Context::DrawTestTriangle(float angle, uint32 width, uint32 height, Vector3 position)
 	{
-		struct Vertex
-		{
-			Vector2 position;
-			ByteColor color;
-		};
-
-		// create vertex array
-		const std::vector<Vertex> vertices = 
-		{
-			{{0.0f, 0.5f}, {255, 25, 255, 255}},
-			{{0.5f, -0.5f}, {25, 50, 255, 255}},
-			{{-0.5f, -0.5f}, {255, 255, 25, 255}},
-			{{-0.3f, 0.3f}, {0, 255, 0, 255}},
-			{{0.3f, 0.3f}, {0,0,255,255}},
-			{{0.0f, -1.0f}, {255, 0, 0, 255}},
-		};
-		 
-		// index array
-		const std::vector<uint32> indices
-		{
-			0,1,2,
-			0,2,3,
-			0,4,1,
-			2,1,5,
-		};
-
-		// Create and bind the index Buffer
-		const std::unique_ptr<IndexBuffer> indexBuffer(IndexBuffer::Create(indices));
+		auto firstShader = Shader::Create("../Basalt/FirstShader-v.cso", "../Basalt/FirstShader-p.cso");
+		firstShader->Bind();
 
 		// create constant buffer for transformation matrix
 		struct ConstantBuffer
@@ -171,10 +183,22 @@ namespace Basalt
 			Mat4x4 transformation;
 		};
 
+		const Mat4x4 projection = glm::perspectiveLH(glm::radians(45.0f), (float)width / (float)height , 0.1f, 100.0f);
+
+		const Mat4x4 view = glm::lookAtLH(
+		Vector3(0,0,-4),
+		Vector3(0,0,0),
+		Vector3(0,1,0));
+
+		const Mat4x4 model =
+			glm::translate(Mat4x4(1.0f), position) *
+			glm::rotate(Mat4x4(1.0f), angle, Vector3(0,0,1)) *
+			glm::rotate(Mat4x4(1.0f), angle, Vector3(1,0,0));
+
 		const ConstantBuffer cb =
 		{
 			{
-				glm::rotate(glm::scale(Mat4x4(1.0f), Vector3(aspectRatio, 1.0f, 1.0f)), angle, Vector3(0.0f, 0.0f, 1.0f))
+				glm::transpose(projection * view * model)
 			}
 		};
 
@@ -191,16 +215,76 @@ namespace Basalt
 		subresourceData.pSysMem = &cb;
 
 		DX_INFO_CHECK(device->CreateBuffer(&bufDesc, &subresourceData, &constantBuf));
-
+		//bind constant buffer to the vertex Shader
 		context->VSSetConstantBuffers(0u, 1u, constantBuf.GetAddressOf());
 
-		auto firstShader = Shader::Create("../Basalt/VertexShader.cso", "../Basalt/PixelShader.cso");
-		firstShader->Bind();
+		struct PixelConstantBuffer
+		{
+			Vector4 faceColors[6];
+		};
+
+		const PixelConstantBuffer pixelCB =
+		{
+			{
+				{1.0f, 0.0f, 1.0f, 1.0f},
+				{1.0f, 0.0f, 0.0f, 0.0f},
+				{0.0f, 1.0f, 0.0f, 1.0f},
+				{0.0f, 0.0f, 1.0f, 1.0f},
+				{1.0f, 1.0f, 0.0f, 1.0f},
+				{0.0f, 1.0f, 1.0f, 1.0f}
+			}
+		};
+
+		wrl::ComPtr<ID3D11Buffer> pixelConstBuf;
+		bufDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+		bufDesc.Usage = D3D11_USAGE_DEFAULT;
+		bufDesc.CPUAccessFlags = 0u;
+		bufDesc.MiscFlags = 0u;
+		bufDesc.ByteWidth = sizeof(pixelCB);
+		bufDesc.StructureByteStride = 0u;
+
+		D3D11_SUBRESOURCE_DATA pixelSubResource = {};
+		pixelSubResource.pSysMem = &pixelCB;
+
+		DX_INFO_CHECK(device->CreateBuffer(&bufDesc, &pixelSubResource, &pixelConstBuf));
+		//bind constant buffer to the vertex Shader
+		context->PSSetConstantBuffers(0u, 1u, pixelConstBuf.GetAddressOf());
+
+		struct Vertex
+		{
+			Vector3 position;
+		};
+
+		// create vertex array
+		const std::vector<Vertex> vertices =
+		{
+			{{-1.0f, -1.0f, -1.0f}},
+			{{1.0f, -1.0f, -1.0f}},
+			{{-1.0f, 1.0f, -1.0f}},
+			{{1.0f,1.0f,-1.0f}},
+			{{-1.0f, -1.0f, 1.0f}},
+			{{1.0f, -1.0f, 1.0f}},
+			{{-1.0f, 1.0f, 1.0f}},
+			{{1.0f, 1.0f, 1.0f}}
+		};
+
+		// index array
+		const std::vector<uint32> indices
+		{
+			0,2,1, 2,3,1,
+			1,3,5, 3,7,5,
+			2,6,3, 3,6,7,
+			4,5,7, 4,7,6,
+			0,4,2, 2,4,6,
+			0,1,4, 1,5,4,
+		};
+
+		// Create and bind the index Buffer
+		const std::unique_ptr<IndexBuffer> indexBuffer(IndexBuffer::Create(indices));
 
 		// input vertex layout (2d positions only & Color)
 		const BufferLayout layout = {
-			{"Position", ShaderDataType::Float2},
-			{"Color", ShaderDataType::UChar4, true}
+			{"Position", ShaderDataType::Float3},
 		};
 
 		// Create and bind the Vertex Buffer
@@ -208,23 +292,22 @@ namespace Basalt
 
 		vertexBuffer->Bind();
 
-		//bind render target
-		context->OMSetRenderTargets(1u, renderTarget.GetAddressOf(), nullptr);
-
 		//Set primitive topology to triangle list
 		context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
+		// bind depth stencil view to pipeline
+		context->OMSetRenderTargets(1u, renderTarget.GetAddressOf(), depthStencilView.Get());
+
 		// configure viewport
 		D3D11_VIEWPORT viewport = {};
-		viewport.Width = 1280;
-		viewport.Height = 720;
+		viewport.Width = (float)width;
+		viewport.Height = (float)height;
 		viewport.MinDepth = 0;
 		viewport.MaxDepth = 1;
 		viewport.TopLeftX = 0;
 		viewport.TopLeftY = 0;
 		context->RSSetViewports(1u, &viewport);
 
-		//context->Draw((uint32)vertices.size(), 0u);
 		context->DrawIndexed((uint32)indices.size(), 0u, 0u);
 	}
 

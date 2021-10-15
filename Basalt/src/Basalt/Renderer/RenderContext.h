@@ -2,6 +2,8 @@
 
 namespace Basalt
 {
+	class IWindow;
+
 	class RenderContext
 	{
 	protected:
@@ -15,10 +17,10 @@ namespace Basalt
 		
 		virtual void SwapBuffers() = 0;
 		virtual void ClearColor(Color color) = 0;
-		virtual void DrawTestTriangle(float angle, float aspectRatio) = 0;
+		virtual void DrawTestTriangle(float angle, uint32 width, uint32 height, Vector3 position) = 0;
 		virtual void* GetDevice() = 0;
 		virtual void* GetDeviceContext() = 0;
 
-		static std::unique_ptr<RenderContext> CreateRenderContext(void* handle);
+		static std::unique_ptr<RenderContext> CreateRenderContext(std::unique_ptr<IWindow>& window);
 	};
 }

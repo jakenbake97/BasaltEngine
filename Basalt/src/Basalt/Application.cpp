@@ -26,7 +26,7 @@ namespace Basalt
 		const String windowName = className + L" - " + applicationName;
 		
 		window = IWindow::Create({windowName});
-		Renderer::Initialize(window->GetWindowHandle());
+		Renderer::Initialize(window);
 	}
 
 	Application::~Application() = default;
@@ -48,7 +48,8 @@ namespace Basalt
 			// Frame Update
 			const float c = sin(timer.GetTime()) / 2.0f + 0.5f;
 			Renderer::GetRenderContext().ClearColor({ 0.25f, c * 0.25f, 0.25f, 1.0f });
-			Renderer::GetRenderContext().DrawTestTriangle(timer.GetTime(), (float)window->GetHeight() / (float)window->GetWidth());
+			Renderer::GetRenderContext().DrawTestTriangle(timer.GetTime(), window->GetWidth(), window->GetHeight(), Vector3(0,0,0));
+			Renderer::GetRenderContext().DrawTestTriangle(timer.GetTime() * 2, window->GetWidth(), window->GetHeight(), Vector3(0,0,(float)IInput::GetMousePosition().y / (window->GetHeight() - 1.0f)));
 			Renderer::GetRenderContext().SwapBuffers();
 
 		}		
