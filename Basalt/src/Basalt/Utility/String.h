@@ -21,8 +21,6 @@ namespace Basalt
 {
 	class String
 	{
-	private:
-		std::string data;
 	public:
 		String() = default;
 
@@ -220,6 +218,8 @@ namespace Basalt
 
 			return wide;
 		}
+
+		std::string data;
 	};
 
 	inline String operator+(const char* lhs, const String& rhs)

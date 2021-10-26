@@ -6,17 +6,17 @@
 
 namespace Basalt
 {
-	class IInput
+	class Input
 	{
-		friend class IWindow;
+		friend class Window;
 	protected:
-		IInput() = default;
+		Input() = default;
 	public:
-		IInput(const IInput& other) = delete;
-		IInput& operator=(const IInput& other) = delete;
-		IInput(IInput&& other) noexcept = delete;
-		IInput& operator=(IInput&& other) noexcept = delete;
-		virtual ~IInput() = default;
+		Input(const Input& other) = delete;
+		Input& operator=(const Input& other) = delete;
+		Input(Input&& other) noexcept = delete;
+		Input& operator=(Input&& other) noexcept = delete;
+		virtual ~Input() = default;
 	
 		static bool GetKey(const KeyCode keycode) { return instance->CheckKey(keycode); }
 
@@ -57,6 +57,6 @@ namespace Basalt
 		virtual void ClearInputStates() = 0;
 		
 	private:
-		static std::unique_ptr<IInput> instance;
+		static std::unique_ptr<Input> instance;
 	};
 }

@@ -5,9 +5,6 @@ namespace Basalt
 {
 	class LayerStack
 	{
-	private:
-		std::vector<std::shared_ptr<Layer>> layers;
-		unsigned int layerInsertionIndex = 0;
 	public:
 		LayerStack() = default;
 		~LayerStack();
@@ -26,5 +23,9 @@ namespace Basalt
 		std::vector<std::shared_ptr<Layer>>::const_iterator end() const { return layers.end(); }
 		std::vector<std::shared_ptr<Layer>>::const_reverse_iterator rbegin() const { return layers.rbegin(); }
 		std::vector<std::shared_ptr<Layer>>::const_reverse_iterator rend() const { return layers.rend(); }
+
+	private:
+		std::vector<std::shared_ptr<Layer>> layers;
+		unsigned int layerInsertionIndex = 0;
 	};
 }

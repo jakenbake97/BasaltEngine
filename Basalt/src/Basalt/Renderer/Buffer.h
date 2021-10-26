@@ -62,9 +62,22 @@ namespace Basalt
 		virtual const BufferLayout& GetLayout() const = 0;
 
 		template <typename T>
-		static std::unique_ptr<VertexBuffer> Create(const std::vector<T>& vertices,
-			const std::unique_ptr<Shader>& shader,
-			const BufferLayout& layout = { {"Position", ShaderDataType::Float3} });
+		static std::unique_ptr<VertexBuffer> Create(const std::vector<T>& vertices, const std::unique_ptr<Shader>& shader, const BufferLayout& layout = { {"Position", ShaderDataType::Float3} })
+		{
+			switch (Renderer::GetRenderAPI())
+			{
+			case RendererAPI::None:
+				BE_ERROR("RendererAPI::None (headless) is not currently supported");
+				return nullptr;
+#if BE_PLATFORM_WINDOWS
+			case RendererAPI::DirectX11: return std::make_unique<class Dx11VertexBuffer>(
+				vertices, shader, layout);
+#endif
+			}
+			BE_ERROR("RenderAPI ({0}) is currently set to an unknown or unsupported API on the current platform",
+				Renderer::GetRenderAPI());
+			return nullptr;
+		}
 	};
 
 	class IndexBuffer
@@ -86,8 +99,10 @@ namespace Basalt
 		static std::unique_ptr<IndexBuffer> Create(std::vector<uint32> indices);
 	};
 
+#if BE_PLATFORM_WINDOWS
 	template <typename T>
 	class Dx11ConstantBuffer;
+#endif
 
 	template <typename T>
 	class ConstantBuffer
@@ -104,13 +119,9 @@ namespace Basalt
 		virtual void Bind(ShaderType type) const = 0;
 		virtual void UpdateData(const T& data) = 0;
 
-#if BE_PLATFORM_WINDOWS
-#endif
-
 		static std::unique_ptr<ConstantBuffer<T>> Create(const T& data);
 
 		static std::unique_ptr<ConstantBuffer<T>> Create();
 	};
 }
-
 #include "BufferTemplates.tpp"

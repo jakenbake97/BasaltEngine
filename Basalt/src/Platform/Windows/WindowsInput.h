@@ -1,12 +1,12 @@
 ﻿#pragma once
 
 #include "Basalt/Core.h"
-#include "Basalt/IInput.h"
+#include "Basalt/Input.h"
 #include "Basalt/Keycodes.h"
 
 namespace Basalt
 {
-	class WindowsInput : public IInput
+	class WindowsInput : public Input
 	{
 	protected:
 		bool CheckKey(KeyCode keycode) override;

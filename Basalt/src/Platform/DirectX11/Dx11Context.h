@@ -13,9 +13,6 @@ namespace Basalt
 	public:
 		class HResultException : public Exception
 		{
-		private:
-			HRESULT errorCode;
-			String info;
 		public:
 			HResultException(int line, const String& file, HRESULT hresult, std::vector<String> errors = {});
 			String GetException() const override;
@@ -24,17 +21,20 @@ namespace Basalt
 			String GetErrorString() const;
 			String GetErrorDescription() const;
 			String GetErrorInfo() const;
+		private:
+			HRESULT errorCode;
+			String info;
 		};
 		class DeviceRemovedException : public HResultException
 		{
-		private:
-			String reason;
 			using HResultException::HResultException;
 		public:
 			String GetType() const override;
+		private:
+			String reason;
 		};
 
-		Dx11Context(std::unique_ptr<IWindow>& window);
+		Dx11Context(std::unique_ptr<Window>& window);
 		~Dx11Context() override = default;
 		Dx11Context(const Dx11Context& other) = delete;
 		Dx11Context(Dx11Context&& other) noexcept = delete;

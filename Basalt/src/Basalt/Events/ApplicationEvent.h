@@ -6,8 +6,6 @@ namespace Basalt
 {
 	class AppTickEvent : public Event
 	{
-	private:
-		float deltaTime;
 	public:
 		AppTickEvent(const float deltaTime) : deltaTime(deltaTime) {}
 
@@ -18,6 +16,8 @@ namespace Basalt
 		String GetName() const override { return "App Tick Event"; }
 		String ToString() const override { return GetName() + L" DeltaTime: " + deltaTime; }
 		int GetCategories() const override { return static_cast<int>(EventCategory::Application);}
+	private:
+		float deltaTime;
 	};
 
 	class AppUpdateEvent : public Event
@@ -46,8 +46,6 @@ namespace Basalt
 
 	class AppQuitEvent : public Event
 	{
-	private:
-		int code;
 	public:
 		AppQuitEvent(const int exitCode) : code(exitCode) {}
 
@@ -58,5 +56,7 @@ namespace Basalt
 		String GetName() const override { return "App Quit Event"; }
 		String ToString() const override { return GetName() + L" Exit Code: " + code; }
 		int GetCategories() const override { return static_cast<int>(EventCategory::Application); }
+	private:
+		int code;
 	};
 }

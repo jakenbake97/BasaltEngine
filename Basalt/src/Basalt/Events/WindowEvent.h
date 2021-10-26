@@ -1,17 +1,13 @@
 #pragma once
 #include "Event.h"
-#include "Basalt/IWindow.h"
+#include "Basalt/Window.h"
 
 namespace Basalt
 {
 	class WindowCloseEvent : public Event
 	{
-	private:
-		int code;
 	public:
-		WindowCloseEvent(const int exitCode) : code(exitCode)
-		{
-		}
+		WindowCloseEvent(const int exitCode) : code(exitCode){}
 
 		int GetExitCode() const { return code; }
 
@@ -20,17 +16,15 @@ namespace Basalt
 		String GetName() const override { return "Window Close Event"; }
 		int GetCategories() const override { return static_cast<int>(EventCategory::Window); }
 		String ToString() const override { return GetName(); }
+	private:
+		int code;
 	};
 
 	class WindowResizeEvent : public Event
 	{
-	private:
-		unsigned int width, height;
 	public:
 		WindowResizeEvent(unsigned int width, unsigned int height)
-			: width(width), height(height)
-		{
-		}
+			: width(width), height(height){}
 
 		unsigned int GetWidth() const { return width; }
 		unsigned int GetHeight() const { return height; }
@@ -41,6 +35,8 @@ namespace Basalt
 		EventType GetEventType() const override { return GetStaticType(); }
 		String GetName() const override { return "Window Resize Event"; }
 		int GetCategories() const override { return static_cast<int>(EventCategory::Window); }
+	private:
+		unsigned int width, height;
 	};
 
 	class WindowFocusEvent : public Event
@@ -65,9 +61,6 @@ namespace Basalt
 
 	class WindowMovedEvent : public Event
 	{
-	private:
-		int x, y;
-
 	public:
 		WindowMovedEvent(const int xPos, const int yPos) : x(xPos), y(yPos)
 		{
@@ -78,5 +71,7 @@ namespace Basalt
 		String GetName() const override { return "Window Moved Event"; }
 		int GetCategories() const override { return static_cast<int>(EventCategory::Window); }
 		String ToString() const override { return GetName() + ": Position(" + x + ", " + y + ")"; }
+	private:
+		int x, y;
 	};
 }

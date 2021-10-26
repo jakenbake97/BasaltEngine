@@ -7,11 +7,12 @@ namespace Basalt
 	class MouseButtonEvent : public Event
 	{
 	protected:
-		MouseCode button;
 		MouseButtonEvent(const MouseCode button) : button(button) {}
 	public:
 		int GetCategories() const override { return static_cast<int>(EventCategory::Mouse); }
 		MouseCode GetButton() const { return button; }
+	protected:
+		MouseCode button;
 	};
 	
 	class MouseButtonPressedEvent : public MouseButtonEvent
@@ -38,8 +39,6 @@ namespace Basalt
 
 	class MouseScrolledEvent : public Event
 	{
-	private:
-		int offset;
 	public:
 		MouseScrolledEvent(const int scrollOffset) : offset(scrollOffset) {}
 
@@ -50,12 +49,13 @@ namespace Basalt
 		String GetName() const override { return "Mouse Scrolled Event"; }
 		int GetCategories() const override { return static_cast<int>(EventCategory::Mouse); }
 		String ToString() const override { return GetName() + ": Scroll Offset[" + offset + "]"; }
+	private:
+		int offset;
 	};
 
 	class MousePositionEvent : public Event
 	{
 	protected:
-		int x, y;
 		MousePositionEvent(const int xPos, const int yPos) : x(xPos), y(yPos) {}
 
 	public:
@@ -64,6 +64,8 @@ namespace Basalt
 		std::pair<int, int> GetPosition() { return {x,y}; }
 
 		int GetCategories() const override { return static_cast<int>(EventCategory::Mouse); }
+	protected:
+		int x, y;
 	};
 	
 	class MouseMovedEvent : public MousePositionEvent

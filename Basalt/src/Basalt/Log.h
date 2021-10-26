@@ -13,9 +13,6 @@ namespace Basalt
 {
 	class Log
 	{
-	private:
-		static std::shared_ptr<spdlog::logger> coreLogger;
-		static std::shared_ptr<spdlog::logger> clientLogger;	
 	public:
 		static void Init(const class String& clientName);
 		static void InitCoreLog();
@@ -23,6 +20,9 @@ namespace Basalt
 
 		static std::shared_ptr<spdlog::logger>& GetCoreLogger() { return coreLogger; }
 		static std::shared_ptr<spdlog::logger>& GetClientLogger() { return clientLogger; }
+	private:
+		static std::shared_ptr<spdlog::logger> coreLogger;
+		static std::shared_ptr<spdlog::logger> clientLogger;
 	};
 
 	enum class ELogger

@@ -3,7 +3,6 @@
 #include "BEpch.h"
 #include "Application.h"
 #include "Exception.h"
-#include "IWindow.h"
 
 #ifdef BE_PLATFORM_WINDOWS
 

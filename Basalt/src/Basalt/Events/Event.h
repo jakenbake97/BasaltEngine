@@ -29,8 +29,6 @@ namespace Basalt
 	{
 		friend class EventDispatcher;
 	public:
-		bool handled = false;
-		
 		Event() = default;
 		Event(const Event & other) = default;
 		Event(Event && other) noexcept = default;
@@ -48,15 +46,19 @@ namespace Basalt
 		{
 			return GetCategories() & static_cast<int> (category);
 		}
+		bool IsHandled() const
+		{
+			return handled;
+		}
+
+	private:
+		bool handled = false;
 	};
 
 	class EventDispatcher
 	{
-	private:
 		template<typename T>
 		using EventFunc = std::function<bool(T&)>;
-
-		std::shared_ptr<Event> event;
 	public:
 		EventDispatcher(std::shared_ptr<Event>& event)
 			: event(event)
@@ -73,6 +75,8 @@ namespace Basalt
 			}
 			return false;
 		}
+	private:
+		std::shared_ptr<Event> event;
 	};
 
 	template<typename OStream>

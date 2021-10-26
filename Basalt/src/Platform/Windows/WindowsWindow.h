@@ -1,25 +1,17 @@
 #pragma once
 
 #include "Basalt/Exception.h"
-#include "Basalt/IWindow.h"
+#include "Basalt/Window.h"
 #include "Basalt/Renderer/RenderContext.h"
 
 namespace Basalt {
 	class String;
 
-	class WindowsWindow : public IWindow
+	class WindowsWindow : public Window
 	{
-	private:
-		WindowProperties properties;
-		HWND handle;
-		bool vSync;
-		bool focused = true;
-
 	public:
 		class WindowException : public Exception
 		{
-		private:
-			HRESULT hr;
 		public:
 			WindowException(int line, String file, HRESULT hr);
 			String GetException() const override;
@@ -27,14 +19,12 @@ namespace Basalt {
 			static String TranslateErrorCode(HRESULT hr);
 			HRESULT GetErrorCode() const;
 			String GetErrorString() const;
+		private:
+			HRESULT hr;
 		};
 	private:
 		class WindowClass
 		{
-		private:
-			static WindowClass wndClass;
-			HINSTANCE hInst;
-
 		public:
 			static const wchar_t* GetName();
 			static HINSTANCE GetInstance();
@@ -46,6 +36,10 @@ namespace Basalt {
 		private:
 			WindowClass();
 			~WindowClass();
+
+		private:
+			static WindowClass wndClass;
+			HINSTANCE hInst;
 		};
 	public:
 		WindowsWindow(const WindowProperties& properties);
@@ -71,6 +65,11 @@ namespace Basalt {
 		static LRESULT WINAPI HandleMsgAdapter(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 		LRESULT HandleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 		static WPARAM MapLeftRightKeys(WPARAM vk, LPARAM lParam);
+
+		WindowProperties properties;
+		HWND handle;
+		bool vSync;
+		bool focused = true;
 	};
 	
 	static void constexpr HresultCheck(HRESULT hr, const int line, const Basalt::String& file)

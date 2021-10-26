@@ -1,5 +1,4 @@
 ﻿#pragma once
-#include <dxgiformat.h>
 
 namespace Basalt
 {
@@ -44,7 +43,13 @@ namespace Basalt
 
 	class Shader
 	{
+	protected:
+		Shader() = default;
 	public:
+		Shader(const Shader& other) = delete;
+		Shader(Shader&& other) noexcept = delete;
+		Shader& operator=(const Shader& other) = delete;
+		Shader& operator=(Shader&& other) noexcept = delete;
 		virtual ~Shader() = default;
 
 		virtual void Bind() const = 0;
@@ -123,7 +128,5 @@ namespace Basalt
 				return 0;
 			}
 		}
-
-	private:
 	};
 }

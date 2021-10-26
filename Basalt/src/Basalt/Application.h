@@ -8,7 +8,7 @@
 
 namespace Basalt
 {
-	class IWindow;
+	class Window;
 	class AppQuitEvent;
 	class WindowCloseEvent;
 	class Timer;
@@ -38,12 +38,11 @@ namespace Basalt
 	private:
 		bool Quit(AppQuitEvent& event);
 
-	private:
 		String applicationName;
 		std::queue<std::shared_ptr<Event>> eventBuffer;
 		static Application* instance;
 		bool running = true;
-		std::unique_ptr<IWindow> window;
+		std::unique_ptr<Window> window;
 		int exitCode = 0;
 		Timer timer;
 

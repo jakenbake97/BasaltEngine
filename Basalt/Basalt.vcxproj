@@ -142,8 +142,8 @@
     <ClInclude Include="src\Basalt\Events\MouseEvent.h" />
     <ClInclude Include="src\Basalt\Events\WindowEvent.h" />
     <ClInclude Include="src\Basalt\Exception.h" />
-    <ClInclude Include="src\Basalt\IInput.h" />
-    <ClInclude Include="src\Basalt\IWindow.h" />
+    <ClInclude Include="src\Basalt\Input.h" />
+    <ClInclude Include="src\Basalt\Window.h" />
     <ClInclude Include="src\Basalt\Keycodes.h" />
     <ClInclude Include="src\Basalt\Layer.h" />
     <ClInclude Include="src\Basalt\LayerStack.h" />

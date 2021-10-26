@@ -9,8 +9,6 @@ namespace Basalt
 {
 	class Layer
 	{
-	protected:
-		String debugName;
 	public:
 		Layer(String name = "Layer") : debugName(std::move(name)) {}
 		virtual ~Layer() = default;
@@ -22,5 +20,7 @@ namespace Basalt
 		virtual void OnEvent(std::shared_ptr<Event>& event) {}
 
 		const String& GetName() const { return debugName; }
+	protected:
+		String debugName;
 	};
 }

@@ -5,7 +5,7 @@
 
 #include "WindowsInput.h"
 #include "Basalt/Application.h"
-#include "Basalt/IInput.h"
+#include "Basalt/Input.h"
 #include "Basalt/Utility/String.h"
 #include "Basalt/Log.h"
 #include "Basalt/Events/ApplicationEvent.h"
@@ -15,7 +15,7 @@
 
 namespace Basalt
 {
-	std::unique_ptr<IWindow> IWindow::Create(const WindowProperties& properties)
+	std::unique_ptr<Window> Window::Create(const WindowProperties& properties)
 	{
 		return std::make_unique<WindowsWindow>(properties);
 	}
@@ -284,7 +284,7 @@ namespace Basalt
 				if (!(lParam & 0x40000000))
 				{
 					const WPARAM virtualCode = MapLeftRightKeys(wParam, lParam);
-					const KeyCode basaltCode = Key::ConvertToBasaltKeyCode.at(static_cast<unsigned char>(virtualCode));
+					const KeyCode basaltCode = Key::WindowsToBasaltKeyCode.at(static_cast<unsigned char>(virtualCode));
 					OnKeyDown(basaltCode);
 				}
 				break;
@@ -293,7 +293,7 @@ namespace Basalt
 		case WM_KEYUP:
 			{
 				const WPARAM virtualCode = MapLeftRightKeys(wParam, lParam);
-				const KeyCode basaltCode = Key::ConvertToBasaltKeyCode.at(static_cast<unsigned char>(virtualCode));
+				const KeyCode basaltCode = Key::WindowsToBasaltKeyCode.at(static_cast<unsigned char>(virtualCode));
 				OnKeyUp(basaltCode);
 
 				break;
@@ -308,7 +308,7 @@ namespace Basalt
 				if (x >= 0 && x < (short)properties.width && y >= 0 && y < (short)properties.height)
 				{
 					OnMouseMoved(x, y);
-					if (!IInput::IsMouseInWindow())
+					if (!Input::IsMouseInWindow())
 					{
 						SetCapture(hWnd);
 						OnMouseEnter();
@@ -333,7 +333,7 @@ namespace Basalt
 		case WM_LBUTTONDOWN:
 			{
 				OnMouseButtonDown(Mouse::ButtonLeft);
-				if (IInput::IsMouseInWindow() && !focused)
+				if (Input::IsMouseInWindow() && !focused)
 				{
 					SetActiveWindow(hWnd);
 				}
@@ -347,7 +347,7 @@ namespace Basalt
 		case WM_RBUTTONDOWN:
 			{
 				OnMouseButtonDown(Mouse::ButtonRight);
-				if (IInput::IsMouseInWindow() && !focused)
+				if (Input::IsMouseInWindow() && !focused)
 				{
 					SetActiveWindow(hWnd);
 				}
@@ -361,7 +361,7 @@ namespace Basalt
 		case WM_MBUTTONDOWN:
 			{
 				OnMouseButtonDown(Mouse::ButtonMiddle);
-				if (IInput::IsMouseInWindow() && !focused)
+				if (Input::IsMouseInWindow() && !focused)
 				{
 					SetActiveWindow(hWnd);
 				}
@@ -388,7 +388,7 @@ namespace Basalt
 					BE_ERROR("Button {0} is unknown XButton", button);
 				}
 
-				if (IInput::IsMouseInWindow() && !focused)
+				if (Input::IsMouseInWindow() && !focused)
 				{
 					SetActiveWindow(hWnd);
 				}

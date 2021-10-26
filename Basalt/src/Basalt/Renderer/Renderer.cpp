@@ -2,7 +2,7 @@
 #include "Renderer.h"
 
 #include "RenderContext.h"
-#include "Basalt/IWindow.h"
+#include "Basalt/Window.h"
 
 namespace Basalt
 {
@@ -11,7 +11,7 @@ namespace Basalt
 
 	std::unique_ptr<RenderContext> Renderer::context;
 
-	void Renderer::Initialize(std::unique_ptr<IWindow>& window)
+	void Renderer::Initialize(std::unique_ptr<Window>& window)
 	{
 		context = RenderContext::CreateRenderContext(window);
 	}

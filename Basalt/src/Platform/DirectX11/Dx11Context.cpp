@@ -5,7 +5,7 @@
 #include <d3dcompiler.h>
 
 #include "Dx11Macros.h"
-#include "Basalt/IWindow.h"
+#include "Basalt/Window.h"
 #include "Basalt/Renderer/Buffer.h"
 #include "Basalt/Renderer/Renderer.h"
 #include "Basalt/Renderer/Shader.h"
@@ -16,7 +16,7 @@ namespace wrl = Microsoft::WRL;
 namespace Basalt
 {
 	
-	std::unique_ptr<RenderContext> RenderContext::CreateRenderContext(std::unique_ptr<IWindow>& window)
+	std::unique_ptr<RenderContext> RenderContext::CreateRenderContext(std::unique_ptr<Window>& window)
 	{
 		return std::make_unique<Dx11Context>(window);
 	}
@@ -82,7 +82,7 @@ namespace Basalt
 		return "DX11 Graphics Exception [Device Removed] (DXGI_ERROR_DEVICE_REMOVED)";
 	}
 
-	Dx11Context::Dx11Context(std::unique_ptr<IWindow>& window)
+	Dx11Context::Dx11Context(std::unique_ptr<Window>& window)
 	{
 		windowHandle = static_cast<HWND>(window->GetWindowHandle());
 

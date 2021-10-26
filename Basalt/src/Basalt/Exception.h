@@ -6,11 +6,6 @@ namespace Basalt
 {
 	class Exception : public std::exception
 	{
-	protected:
-		mutable std::string whatBuffer;
-	private:
-		int line;
-		String file;
 	public:
 		Exception(int line, String file);
 		virtual String GetException() const;
@@ -20,5 +15,11 @@ namespace Basalt
 		String GetOriginString() const;
 	private:
 		const char* what() const override;
+
+	protected:
+		mutable std::string whatBuffer;
+	private:
+		int line;
+		String file;
 	};
 }

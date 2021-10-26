@@ -87,10 +87,10 @@
     <ClInclude Include="src\Basalt\Exception.h">
       <Filter>src\Basalt</Filter>
     </ClInclude>
-    <ClInclude Include="src\Basalt\IInput.h">
+    <ClInclude Include="src\Basalt\Input.h">
       <Filter>src\Basalt</Filter>
     </ClInclude>
-    <ClInclude Include="src\Basalt\IWindow.h">
+    <ClInclude Include="src\Basalt\Window.h">
       <Filter>src\Basalt</Filter>
     </ClInclude>
     <ClInclude Include="src\Basalt\Keycodes.h">

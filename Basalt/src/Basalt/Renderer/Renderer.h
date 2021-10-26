@@ -4,8 +4,7 @@
 
 namespace Basalt
 {
-	class IWindow;
-	//class RenderContext;
+	class Window;
 
 	enum class RendererAPI
 	{
@@ -16,7 +15,7 @@ namespace Basalt
 	class Renderer
 	{
 	public:
-		static void Initialize(std::unique_ptr<IWindow>& window);
+		static void Initialize(std::unique_ptr<Window>& window);
 		static RendererAPI GetRenderAPI() { return currentAPI; }
 		static RenderContext& GetRenderContext();
 	private:

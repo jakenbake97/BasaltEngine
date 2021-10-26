@@ -147,7 +147,7 @@ namespace Basalt
 			Menu = 348
 		};
 
-		const std::unordered_map<unsigned char, KeyCode> ConvertToBasaltKeyCode
+		const std::unordered_map<unsigned char, KeyCode> WindowsToBasaltKeyCode
 		{
 			{VK_SPACE, Space},
 			{VK_OEM_7, Apostrophe},

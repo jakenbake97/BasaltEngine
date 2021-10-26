@@ -1,7 +1,7 @@
 #include "BEpch.h"
 #include "Application.h"
 
-#include "IInput.h"
+#include "Input.h"
 #include "Events/Event.h"
 #include "Events/ApplicationEvent.h"
 #include "Events/KeyboardEvent.h"
@@ -27,7 +27,7 @@ namespace Basalt
 
 		const String windowName = className + L" - " + applicationName;
 		
-		window = IWindow::Create({windowName});
+		window = Window::Create({windowName});
 		Renderer::Initialize(window);
 
 		firstShader = Shader::Create("../Basalt/FirstShader-v.cso", "../Basalt/FirstShader-p.cso");
@@ -137,13 +137,11 @@ namespace Basalt
 			Renderer::GetRenderContext().ClearColor({ 0.25f, c * 0.25f, 0.25f, 1.0f });
 			Renderer::GetRenderContext().DrawIndexed(indexBuffer->GetCount());
 
-			float time = timer.GetTime();
-
 			position = Vector3(1,1,1);
 			model =
 				glm::translate(Mat4x4(1.0f), position) *
-				glm::rotate(Mat4x4(1.0f), time * 4.0f, Vector3(0, 0, 1)) *
-				glm::rotate(Mat4x4(1.0f), -time* 8.0f, Vector3(1, 0, 0));
+				glm::rotate(Mat4x4(1.0f), timer.GetTime() * 4.0f, Vector3(0, 0, 1)) *
+				glm::rotate(Mat4x4(1.0f), -timer.GetTime() * 8.0f, Vector3(1, 0, 0));
 
 			cb.transformation = glm::transpose(projection * view * model);
 			vertexConstantBuffer->UpdateData(cb);
@@ -170,7 +168,7 @@ namespace Basalt
 
 			for (auto iterator = layerStack.rbegin(); iterator != layerStack.rend(); ++iterator)
 			{
-				if (event->handled)
+				if (event->IsHandled())
 					break;
 				(*iterator)->OnEvent(event);
 			}
