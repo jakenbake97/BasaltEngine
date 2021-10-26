@@ -51,22 +51,6 @@ namespace Basalt
 		return bufLayout;
 	}
 
-	void Dx11VertexBuffer::CreateAndBindBuffer(const std::vector<char>& vertexData)
-	{
-		D3D11_BUFFER_DESC bufDesc = {};
-		bufDesc.Usage = D3D11_USAGE_DEFAULT;
-		bufDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-		bufDesc.CPUAccessFlags = 0u;
-		bufDesc.MiscFlags = 0u;
-		bufDesc.ByteWidth = (uint32)vertexData.size();
-		bufDesc.StructureByteStride = bufLayout.GetStride();
-
-		D3D11_SUBRESOURCE_DATA subresourceData = {};
-		subresourceData.pSysMem = vertexData.data();
-
-		DX_INFO_CHECK(static_cast<ID3D11Device*>(Renderer::GetRenderContext().GetDevice())->CreateBuffer(&bufDesc, &subresourceData, vertexBuffer.GetAddressOf()));
-	}
-
 	/******************************
 	 ***********Index Buffer*******
 	 ******************************/
@@ -86,8 +70,6 @@ namespace Basalt
 		indexSubresourceData.pSysMem = indices.data();
 
 		DX_INFO_CHECK(static_cast<ID3D11Device*>(Renderer::GetRenderContext().GetDevice())->CreateBuffer(&indBufDesc, &indexSubresourceData, indexBuffer.GetAddressOf()));
-
-		Dx11IndexBuffer::Bind();
 	}
 
 	Dx11IndexBuffer::~Dx11IndexBuffer() = default;

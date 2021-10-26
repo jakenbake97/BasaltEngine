@@ -64,6 +64,7 @@ namespace Basalt
 
 		// Create and bind the index Buffer
 		indexBuffer = IndexBuffer::Create(indices);
+		indexBuffer->Bind();
 
 		// input vertex layout (2d positions only & Color)
 		const BufferLayout layout = {
@@ -72,6 +73,7 @@ namespace Basalt
 
 		// Create and bind the Vertex Buffer
 		const auto vertexBuffer(VertexBuffer::Create<Vertex>(vertices, firstShader, layout));
+		vertexBuffer->Bind();
 
 		vertexConstantBuffer = ConstantBuffer<VertexCBuffData>::Create();
 		vertexConstantBuffer->Bind(ShaderType::Vertex);
@@ -120,8 +122,8 @@ namespace Basalt
 
 			Mat4x4 model =
 				glm::translate(Mat4x4(1.0f), position) *
-				glm::rotate(Mat4x4(1.0f), glm::radians(timer.GetTime()), Vector3(0, 0, 1)) *
-				glm::rotate(Mat4x4(1.0f), glm::radians(timer.GetTime() / 2.0f), Vector3(1, 0, 0));
+				glm::rotate(Mat4x4(1.0f), timer.GetTime(), Vector3(0, 0, 1)) *
+				glm::rotate(Mat4x4(1.0f), timer.GetTime() / 2.0f, Vector3(1, 0, 0));
 
 			VertexCBuffData cb =
 			{
@@ -135,11 +137,13 @@ namespace Basalt
 			Renderer::GetRenderContext().ClearColor({ 0.25f, c * 0.25f, 0.25f, 1.0f });
 			Renderer::GetRenderContext().DrawIndexed(indexBuffer->GetCount());
 
-			position.z = IInput::GetMousePosition().y / (float)window->GetHeight();
+			float time = timer.GetTime();
+
+			position = Vector3(1,1,1);
 			model =
 				glm::translate(Mat4x4(1.0f), position) *
-				glm::rotate(Mat4x4(1.0f), glm::radians(timer.GetTime()), Vector3(0, 0, 1)) *
-				glm::rotate(Mat4x4(1.0f), glm::radians(timer.GetTime() / 2.0f), Vector3(1, 0, 0));
+				glm::rotate(Mat4x4(1.0f), time * 4.0f, Vector3(0, 0, 1)) *
+				glm::rotate(Mat4x4(1.0f), -time* 8.0f, Vector3(1, 0, 0));
 
 			cb.transformation = glm::transpose(projection * view * model);
 			vertexConstantBuffer->UpdateData(cb);

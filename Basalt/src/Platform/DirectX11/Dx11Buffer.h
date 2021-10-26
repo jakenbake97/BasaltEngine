@@ -29,7 +29,18 @@ namespace Basalt
 				*reinterpret_cast<T*>(currentElement) = vertices[i];
 			}
 
-			CreateAndBindBuffer(byteBuffer);
+			D3D11_BUFFER_DESC bufDesc = {};
+			bufDesc.Usage = D3D11_USAGE_DEFAULT;
+			bufDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+			bufDesc.CPUAccessFlags = 0u;
+			bufDesc.MiscFlags = 0u;
+			bufDesc.ByteWidth = (uint32)byteBuffer.size();
+			bufDesc.StructureByteStride = bufLayout.GetStride();
+
+			D3D11_SUBRESOURCE_DATA subresourceData = {};
+			subresourceData.pSysMem = byteBuffer.data();
+
+			DX_INFO_CHECK(static_cast<ID3D11Device*>(Renderer::GetRenderContext().GetDevice())->CreateBuffer(&bufDesc, &subresourceData, vertexBuffer.GetAddressOf()));
 		}
 
 		~Dx11VertexBuffer() override;
@@ -40,7 +51,6 @@ namespace Basalt
 		void SetLayout(const BufferLayout& layout, const std::unique_ptr<Shader>& shader) override;
 		void SetData(const std::vector<char>& vertices);
 		const BufferLayout& GetLayout() const override;
-		void CreateAndBindBuffer(const std::vector<char>& vertexData);
 
 	private:
 		Microsoft::WRL::ComPtr<ID3D11Buffer> vertexBuffer;
