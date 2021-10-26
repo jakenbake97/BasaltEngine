@@ -3,6 +3,13 @@
 
 namespace Basalt
 {
+		enum class ShaderType
+		{
+			None = 0,
+			Vertex,
+			Fragment
+		};
+
 		enum class ShaderDataType
 		{
 			None = 0,

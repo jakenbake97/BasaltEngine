@@ -34,7 +34,7 @@ namespace Basalt
 	}
 
 
-	IndexBuffer* IndexBuffer::Create(std::vector<uint32> indices)
+	std::unique_ptr<IndexBuffer> IndexBuffer::Create(std::vector<uint32> indices)
 	{
 		switch (Renderer::GetRenderAPI())
 		{
@@ -42,7 +42,7 @@ namespace Basalt
 			BE_ERROR("RendererAPI::None (headless) is not currently supported File:{0}, Line:{1}", __FILE__, __LINE__);
 			return nullptr;
 #if BE_PLATFORM_WINDOWS
-		case RendererAPI::DirectX11: return new Dx11IndexBuffer(indices);
+		case RendererAPI::DirectX11: return std::make_unique<Dx11IndexBuffer>(indices);
 #endif
 		}
 

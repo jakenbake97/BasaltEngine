@@ -31,7 +31,8 @@ public:
 class Sandbox : public Basalt::Application
 {
 public:
-	Sandbox(): Application("SANDBOX")
+	Sandbox()
+	: Application("SANDBOX")
 	{
 		PushLayer(std::make_shared<WindowLayer>());
 		PushLayer(std::make_shared<InputLayer>());

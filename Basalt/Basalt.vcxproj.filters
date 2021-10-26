@@ -1453,4 +1453,7 @@
       <Filter>src\Platform\DirectX11\Shaders</Filter>
     </FxCompile>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="src\Basalt\Renderer\BufferTemplates.tpp" />
+  </ItemGroup>
 </Project>

@@ -32,19 +32,17 @@ namespace Basalt
 		std::vector<BufferAttribute>::const_iterator begin() const { return attributes.begin(); }
 		std::vector<BufferAttribute>::const_iterator end() const { return attributes.end(); }
 
-		BufferAttribute operator[] (const int i)
+		BufferAttribute operator[](const int i)
 		{
 			return attributes[i];
 		}
-		
+
 	private:
 		void CalculateOffsetsAndStride();
 
 		std::vector<BufferAttribute> attributes;
 		uint32 stride = 0;
 	};
-
-	class Dx11VertexBuffer;
 
 	class VertexBuffer
 	{
@@ -60,11 +58,13 @@ namespace Basalt
 		virtual void Bind() = 0;
 		virtual void Unbind() = 0;
 
-		virtual void SetLayout(const BufferLayout& layout, std::unique_ptr<Shader>& shader) = 0;
+		virtual void SetLayout(const BufferLayout& layout, const std::unique_ptr<Shader>& shader) = 0;
 		virtual const BufferLayout& GetLayout() const = 0;
 
 		template <typename T>
-		static VertexBuffer* Create(const std::vector<T>& vertices, std::unique_ptr<Shader>& shader, const BufferLayout& layout = { {"Position", ShaderTypes::ShaderDataType::Float3} });
+		static std::unique_ptr<VertexBuffer> Create(const std::vector<T>& vertices,
+			const std::unique_ptr<Shader>& shader,
+			const BufferLayout& layout = { {"Position", ShaderDataType::Float3} });
 	};
 
 	class IndexBuffer
@@ -83,7 +83,34 @@ namespace Basalt
 
 		virtual uint32 GetCount() const = 0;
 
-		static IndexBuffer* Create(std::vector<uint32> indices);
+		static std::unique_ptr<IndexBuffer> Create(std::vector<uint32> indices);
+	};
+
+	template <typename T>
+	class Dx11ConstantBuffer;
+
+	template <typename T>
+	class ConstantBuffer
+	{
+	protected:
+		ConstantBuffer() = default;
+	public:
+		ConstantBuffer(const ConstantBuffer& other) = delete;
+		ConstantBuffer(ConstantBuffer&& other) noexcept = delete;
+		ConstantBuffer& operator=(const ConstantBuffer& other) = delete;
+		ConstantBuffer& operator=(ConstantBuffer&& other) noexcept = delete;
+		virtual ~ConstantBuffer() = default;
+
+		virtual void Bind(ShaderType type) const = 0;
+		virtual void UpdateData(const T& data) = 0;
+
+#if BE_PLATFORM_WINDOWS
+#endif
+
+		static std::unique_ptr<ConstantBuffer<T>> Create(const T& data);
+
+		static std::unique_ptr<ConstantBuffer<T>> Create();
 	};
 }
-#include "BufferTemplates.cpp"
+
+#include "BufferTemplates.tpp"

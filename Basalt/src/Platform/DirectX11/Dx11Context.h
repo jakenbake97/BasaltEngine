@@ -43,7 +43,7 @@ namespace Basalt
 
 		void SwapBuffers() override;
 		void ClearColor(Color color) override;
-		void DrawTestTriangle(float angle, uint32 width, uint32 height, Vector3 position) override;
+		void DrawIndexed(uint32 indexCount) override;
 		void* GetDevice() override;
 		void* GetDeviceContext() override;
 

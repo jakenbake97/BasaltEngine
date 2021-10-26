@@ -7,7 +7,9 @@
 #include "Events/KeyboardEvent.h"
 #include "Events/MouseEvent.h"
 #include "Events/WindowEvent.h"
+#include "Renderer/Buffer.h"
 #include "Renderer/Renderer.h"
+#include "Renderer/Shader.h"
 
 namespace Basalt
 {
@@ -27,6 +29,66 @@ namespace Basalt
 		
 		window = IWindow::Create({windowName});
 		Renderer::Initialize(window);
+
+		firstShader = Shader::Create("../Basalt/FirstShader-v.cso", "../Basalt/FirstShader-p.cso");
+		firstShader->Bind();
+
+		struct Vertex
+		{
+			Vector3 position;
+		};
+
+		// create vertex array
+		const std::vector<Vertex> vertices =
+		{
+			{{-1.0f, -1.0f, -1.0f}},
+			{{1.0f, -1.0f, -1.0f}},
+			{{-1.0f, 1.0f, -1.0f}},
+			{{1.0f,1.0f,-1.0f}},
+			{{-1.0f, -1.0f, 1.0f}},
+			{{1.0f, -1.0f, 1.0f}},
+			{{-1.0f, 1.0f, 1.0f}},
+			{{1.0f, 1.0f, 1.0f}}
+		};
+
+		// index array
+		const std::vector<uint32> indices
+		{
+			0,2,1, 2,3,1,
+			1,3,5, 3,7,5,
+			2,6,3, 3,6,7,
+			4,5,7, 4,7,6,
+			0,4,2, 2,4,6,
+			0,1,4, 1,5,4,
+		};
+
+		// Create and bind the index Buffer
+		indexBuffer = IndexBuffer::Create(indices);
+
+		// input vertex layout (2d positions only & Color)
+		const BufferLayout layout = {
+			{"Position", ShaderDataType::Float3},
+		};
+
+		// Create and bind the Vertex Buffer
+		const auto vertexBuffer(VertexBuffer::Create<Vertex>(vertices, firstShader, layout));
+
+		vertexConstantBuffer = ConstantBuffer<VertexCBuffData>::Create();
+		vertexConstantBuffer->Bind(ShaderType::Vertex);
+
+		const PixelCBuffData pixelCB =
+		{
+			{
+				{1.0f, 0.0f, 1.0f, 1.0f},
+				{1.0f, 0.0f, 0.0f, 0.0f},
+				{0.0f, 1.0f, 0.0f, 1.0f},
+				{0.0f, 0.0f, 1.0f, 1.0f},
+				{1.0f, 1.0f, 0.0f, 1.0f},
+				{0.0f, 1.0f, 1.0f, 1.0f}
+			}
+		};
+		pixelConstantBuffer = ConstantBuffer<PixelCBuffData>::Create(pixelCB);
+		pixelConstantBuffer->Bind(ShaderType::Fragment);
 	}
 
 	Application::~Application() = default;
@@ -46,12 +108,44 @@ namespace Basalt
 			EventUpdate();
 			
 			// Frame Update
+
+			Vector3 position(0, 0, 0);
+
+			const Mat4x4 projection = glm::perspectiveLH(glm::radians(45.0f), (float)window->GetWidth() / (float)window->GetHeight(), 0.1f, 100.0f);
+
+			const Mat4x4 view = glm::lookAtLH(
+				Vector3(0, 0, -4),
+				Vector3(0, 0, 0),
+				Vector3(0, 1, 0));
+
+			Mat4x4 model =
+				glm::translate(Mat4x4(1.0f), position) *
+				glm::rotate(Mat4x4(1.0f), glm::radians(timer.GetTime()), Vector3(0, 0, 1)) *
+				glm::rotate(Mat4x4(1.0f), glm::radians(timer.GetTime() / 2.0f), Vector3(1, 0, 0));
+
+			VertexCBuffData cb =
+			{
+				{
+					glm::transpose(projection * view * model)
+				}
+			};
+
+			vertexConstantBuffer->UpdateData(cb);
 			const float c = sin(timer.GetTime()) / 2.0f + 0.5f;
 			Renderer::GetRenderContext().ClearColor({ 0.25f, c * 0.25f, 0.25f, 1.0f });
-			Renderer::GetRenderContext().DrawTestTriangle(timer.GetTime(), window->GetWidth(), window->GetHeight(), Vector3(0,0,0));
-			Renderer::GetRenderContext().DrawTestTriangle(timer.GetTime() * 2, window->GetWidth(), window->GetHeight(), Vector3(0,0,(float)IInput::GetMousePosition().y / (window->GetHeight() - 1.0f)));
-			Renderer::GetRenderContext().SwapBuffers();
+			Renderer::GetRenderContext().DrawIndexed(indexBuffer->GetCount());
 
+			position.z = IInput::GetMousePosition().y / (float)window->GetHeight();
+			model =
+				glm::translate(Mat4x4(1.0f), position) *
+				glm::rotate(Mat4x4(1.0f), glm::radians(timer.GetTime()), Vector3(0, 0, 1)) *
+				glm::rotate(Mat4x4(1.0f), glm::radians(timer.GetTime() / 2.0f), Vector3(1, 0, 0));
+
+			cb.transformation = glm::transpose(projection * view * model);
+			vertexConstantBuffer->UpdateData(cb);
+
+			Renderer::GetRenderContext().DrawIndexed(indexBuffer->GetCount());
+			Renderer::GetRenderContext().SwapBuffers();
 		}		
 	}
 
