@@ -90,9 +90,6 @@
     <ClInclude Include="src\Basalt\Input.h">
       <Filter>src\Basalt</Filter>
     </ClInclude>
-    <ClInclude Include="src\Basalt\Window.h">
-      <Filter>src\Basalt</Filter>
-    </ClInclude>
     <ClInclude Include="src\Basalt\Keycodes.h">
       <Filter>src\Basalt</Filter>
     </ClInclude>
@@ -129,6 +126,9 @@
     <ClInclude Include="src\Basalt\Utility\String.h">
       <Filter>src\Basalt\Utility</Filter>
     </ClInclude>
+    <ClInclude Include="src\Basalt\Window.h">
+      <Filter>src\Basalt</Filter>
+    </ClInclude>
     <ClInclude Include="src\Platform\DirectX11\Dx11Buffer.h">
       <Filter>src\Platform\DirectX11</Filter>
     </ClInclude>
@@ -136,6 +136,9 @@
       <Filter>src\Platform\DirectX11</Filter>
     </ClInclude>
     <ClInclude Include="src\Platform\DirectX11\Dx11Macros.h">
+      <Filter>src\Platform\DirectX11</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\DirectX11\Dx11Shader.h">
       <Filter>src\Platform\DirectX11</Filter>
     </ClInclude>
     <ClInclude Include="src\Platform\DirectX11\DxError\DXGIInfoManager.h">
@@ -1395,7 +1398,6 @@
     <ClInclude Include="vendor\glm\glm\vector_relational.hpp">
       <Filter>vendor\glm\glm</Filter>
     </ClInclude>
-    <ClInclude Include="src\Platform\DirectX11\Dx11Shader.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\BEpch.cpp">
@@ -1431,6 +1433,9 @@
     <ClCompile Include="src\Platform\DirectX11\Dx11Context.cpp">
       <Filter>src\Platform\DirectX11</Filter>
     </ClCompile>
+    <ClCompile Include="src\Platform\DirectX11\Dx11Shader.cpp">
+      <Filter>src\Platform\DirectX11</Filter>
+    </ClCompile>
     <ClCompile Include="src\Platform\DirectX11\DxError\DXGIInfoManager.cpp">
       <Filter>src\Platform\DirectX11\DxError</Filter>
     </ClCompile>
@@ -1443,7 +1448,6 @@
     <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp">
       <Filter>src\Platform\Windows</Filter>
     </ClCompile>
-    <ClCompile Include="src\Platform\DirectX11\Dx11Shader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="src\Platform\DirectX11\Shaders\FirstShader-p.hlsl">
@@ -1452,8 +1456,5 @@
     <FxCompile Include="src\Platform\DirectX11\Shaders\FirstShader-v.hlsl">
       <Filter>src\Platform\DirectX11\Shaders</Filter>
     </FxCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="src\Basalt\Renderer\BufferTemplates.tpp" />
   </ItemGroup>
 </Project>

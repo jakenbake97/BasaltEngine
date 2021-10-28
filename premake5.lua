@@ -15,6 +15,9 @@ outputDir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 IncludeDir = {}
 IncludeDir["spdlog"] = "Basalt/vendor/spdlog/include"
 IncludeDir["glm"] = "Basalt/vendor/glm"
+IncludeDir["ImGui"] = "Basalt/vendor/imgui"
+
+include "Basalt/vendor/imgui"
 
 project "Basalt"
 	location "Basalt"
@@ -50,7 +53,13 @@ project "Basalt"
 	{
 		"%{prj.name}/src",
 		"%{IncludeDir.spdlog}",
-		"%{IncludeDir.glm}"
+		"%{IncludeDir.glm}",
+		"%{IncludeDir.ImGui}"
+	}
+
+	links
+	{
+		"ImGui"
 	}
 
 	filter "system:windows"

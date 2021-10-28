@@ -77,7 +77,7 @@
       <PrecompiledHeaderFile>BEpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;BE_STATIC_LIB;MAJOR_VERSION=10.0;MINOR_VERSION=0.0;BE_PLATFORM_WINDOWS;BE_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\glm;vendor\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -94,7 +94,7 @@
       <PrecompiledHeaderFile>BEpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;BE_STATIC_LIB;MAJOR_VERSION=10.0;MINOR_VERSION=0.0;BE_PLATFORM_WINDOWS;BE_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\glm;vendor\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -115,7 +115,7 @@
       <PrecompiledHeaderFile>BEpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;BE_STATIC_LIB;MAJOR_VERSION=10.0;MINOR_VERSION=0.0;BE_PLATFORM_WINDOWS;BE_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\glm;vendor\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -143,7 +143,6 @@
     <ClInclude Include="src\Basalt\Events\WindowEvent.h" />
     <ClInclude Include="src\Basalt\Exception.h" />
     <ClInclude Include="src\Basalt\Input.h" />
-    <ClInclude Include="src\Basalt\Window.h" />
     <ClInclude Include="src\Basalt\Keycodes.h" />
     <ClInclude Include="src\Basalt\Layer.h" />
     <ClInclude Include="src\Basalt\LayerStack.h" />
@@ -156,6 +155,7 @@
     <ClInclude Include="src\Basalt\Timer.h" />
     <ClInclude Include="src\Basalt\Utility\Math.h" />
     <ClInclude Include="src\Basalt\Utility\String.h" />
+    <ClInclude Include="src\Basalt\Window.h" />
     <ClInclude Include="src\Platform\DirectX11\Dx11Buffer.h" />
     <ClInclude Include="src\Platform\DirectX11\Dx11Context.h" />
     <ClInclude Include="src\Platform\DirectX11\Dx11Macros.h" />
@@ -603,16 +603,15 @@
   <ItemGroup>
     <FxCompile Include="src\Platform\DirectX11\Shaders\FirstShader-p.hlsl">
       <ShaderType>Pixel</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">4.0</ShaderModel>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">4.0</ShaderModel>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">4.0</ShaderModel>
     </FxCompile>
     <FxCompile Include="src\Platform\DirectX11\Shaders\FirstShader-v.hlsl">
       <ShaderType>Vertex</ShaderType>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="src\Basalt\Renderer\BufferTemplates.tpp" />
+    <ProjectReference Include="vendor\imgui\ImGui.vcxproj">
+      <Project>{C0FF640D-2C14-8DBE-F595-301E616989EF}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
