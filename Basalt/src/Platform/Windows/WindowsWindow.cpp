@@ -12,6 +12,9 @@
 #include "Basalt/Events/WindowEvent.h"
 #include "Basalt/Events/KeyboardEvent.h"
 #include "atlstr.h"
+#include <backends/imgui_impl_win32.h>
+
+extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 namespace Basalt
 {
@@ -228,6 +231,11 @@ namespace Basalt
 
 	LRESULT WindowsWindow::HandleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	{
+		if (ImGui_ImplWin32_WndProcHandler(hWnd, msg, wParam, lParam))
+		{
+			return true;
+		}
+
 		switch (msg)
 		{
 			// -- Window Messages --

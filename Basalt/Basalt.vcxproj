@@ -142,6 +142,7 @@
     <ClInclude Include="src\Basalt\Events\MouseEvent.h" />
     <ClInclude Include="src\Basalt\Events\WindowEvent.h" />
     <ClInclude Include="src\Basalt\Exception.h" />
+    <ClInclude Include="src\Basalt\ImGui\ImGuiLayer.h" />
     <ClInclude Include="src\Basalt\Input.h" />
     <ClInclude Include="src\Basalt\Keycodes.h" />
     <ClInclude Include="src\Basalt\Layer.h" />
@@ -586,6 +587,8 @@
     </ClCompile>
     <ClCompile Include="src\Basalt\Application.cpp" />
     <ClCompile Include="src\Basalt\Exception.cpp" />
+    <ClCompile Include="src\Basalt\ImGui\ImGuiBuild.cpp" />
+    <ClCompile Include="src\Basalt\ImGui\ImGuiLayer.cpp" />
     <ClCompile Include="src\Basalt\LayerStack.cpp" />
     <ClCompile Include="src\Basalt\Log.cpp" />
     <ClCompile Include="src\Basalt\Renderer\Buffer.cpp" />
@@ -603,10 +606,15 @@
   <ItemGroup>
     <FxCompile Include="src\Platform\DirectX11\Shaders\FirstShader-p.hlsl">
       <ShaderType>Pixel</ShaderType>
+      <ShaderModel>4.0</ShaderModel>
     </FxCompile>
     <FxCompile Include="src\Platform\DirectX11\Shaders\FirstShader-v.hlsl">
       <ShaderType>Vertex</ShaderType>
+      <ShaderModel>4.0</ShaderModel>
     </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\Basalt\Renderer\BufferTemplates.tpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="vendor\imgui\ImGui.vcxproj">

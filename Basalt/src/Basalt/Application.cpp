@@ -30,6 +30,9 @@ namespace Basalt
 		window = Window::Create({windowName});
 		Renderer::Initialize(window);
 
+		imGuiLayer = std::make_shared<ImGuiLayer>();
+		PushOverlay(imGuiLayer);
+
 		firstShader = Shader::Create("../Basalt/FirstShader-v.cso", "../Basalt/FirstShader-p.cso");
 		firstShader->Bind();
 
@@ -106,7 +109,12 @@ namespace Basalt
 
 			for (const auto& layer : layerStack)
 				layer->OnUpdate(timer.GetDeltaTime());
-			
+
+			imGuiLayer->Begin();
+			for (const auto& layer : layerStack)
+				layer->OnImGuiRender();
+			imGuiLayer->End();
+
 			EventUpdate();
 			
 			// Frame Update
@@ -185,11 +193,13 @@ namespace Basalt
 	void Application::PushLayer(const std::shared_ptr<Layer>& layer)
 	{
 		layerStack.PushLayer(layer);
+		layer->OnAttach();
 	}
 
 	void Application::PushOverlay(const std::shared_ptr<Layer>& overlay)
 	{
 		layerStack.PushOverlay(overlay);
+		overlay->OnAttach();
 	}
 
 	void Application::OnEvent(const std::shared_ptr<Event>& event)

@@ -5,6 +5,7 @@
 
 #include "LayerStack.h"
 #include "Events/Event.h"
+#include "ImGui/ImGuiLayer.h"
 
 namespace Basalt
 {
@@ -25,28 +26,33 @@ namespace Basalt
 		Application& operator=(const Application& other) = delete;
 		Application& operator=(Application&& other) noexcept = delete;
 
-		void Update();
+		static Application& Get() { return *instance; }
+
 		String GetAppName() const;
 		void EventUpdate();
 		int GetExitCode() const;
-
+		static void OnEvent(const std::shared_ptr<Event>& event);
 		void PushLayer(const std::shared_ptr<Layer>& layer);
 		void PushOverlay(const std::shared_ptr<Layer>& overlay);
 
-		static void OnEvent(const std::shared_ptr<Event>& event);
-		static bool OnWindowClose(WindowCloseEvent& event);
+		Window& GetWindow() const { return *window; }
+		
 	private:
+		void Update();
+		
+		static bool OnWindowClose(WindowCloseEvent& event);
 		bool Quit(AppQuitEvent& event);
 
 		String applicationName;
 		std::queue<std::shared_ptr<Event>> eventBuffer;
-		static Application* instance;
 		bool running = true;
 		std::unique_ptr<Window> window;
+
 		int exitCode = 0;
 		Timer timer;
 
 		LayerStack layerStack;
+		std::shared_ptr<ImGuiLayer> imGuiLayer;
 
 		struct VertexCBuffData
 		{
@@ -62,6 +68,9 @@ namespace Basalt
 		std::unique_ptr<class IndexBuffer> indexBuffer;
 		std::unique_ptr<ConstantBuffer<VertexCBuffData>> vertexConstantBuffer;
 		std::unique_ptr<ConstantBuffer<PixelCBuffData>> pixelConstantBuffer;
+
+		static Application* instance;
+		friend int ::WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine, _In_ int nShowCmd);
 	};
 
 	extern std::unique_ptr<Application> CreateApplication();

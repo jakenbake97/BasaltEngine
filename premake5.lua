@@ -36,9 +36,10 @@ project "Basalt"
 	{
 		"%{prj.name}/src/**.h",
 		"%{prj.name}/src/**.cpp",
+		"%{prj.name}/src/**.tpp",
 		"%{prj.name}/vendor/glm/glm/**.hpp",
 		"%{prj.name}/vendor/glm/glm/**.inl",
-		"%{prj.name}/src/**.hlsl",
+		"%{prj.name}/src/**.hlsl"
 	}
 
 	defines
@@ -46,7 +47,7 @@ project "Basalt"
 		"_CRT_SECURE_NO_WARNINGS",
 		"BE_STATIC_LIB",
 		"MAJOR_VERSION=%{os.getversion().majorversion}",
-		"MINOR_VERSION=%{os.getversion().minorversion}",
+		"MINOR_VERSION=%{os.getversion().minorversion}"
 	}
 
 	includedirs
@@ -62,15 +63,21 @@ project "Basalt"
 		"ImGui"
 	}
 
+	filter {"files:**-p.hlsl"}
+		shadertype "Pixel"
+		shadermodel "4.0"
+
+	filter {"files:**-v.hlsl"}
+		shadertype "Vertex"
+		shadermodel "4.0"
+
 	filter "system:windows"
 		systemversion "latest"
 
 		defines
 		{
-			"BE_PLATFORM_WINDOWS",
+			"BE_PLATFORM_WINDOWS"
 		}
-
-	
 
 	filter "configurations:Debug"
 		defines "BE_DEBUG"
@@ -87,12 +94,6 @@ project "Basalt"
 		runtime "Release"
 		optimize "on"
 
-	filter {"files:**-p.hlsl"}
-		shadertype "Pixel"
-
-	filter {"files:**-v.hlsl"}
-		shadertype "Vertex"
-
 project "Sandbox"
 	location "Sandbox"
 	kind "WindowedApp"
@@ -107,14 +108,15 @@ project "Sandbox"
 	{
 		"%{prj.name}/src/**.h",
 		"%{prj.name}/src/**.cpp",
-		"%{prj.name}/src/**.hlsl",
+		"%{prj.name}/src/**.hlsl"
 	}
 
 	includedirs
 	{
 		"%{IncludeDir.spdlog}",
 		"Basalt/src",
-		"%{IncludeDir.glm}"
+		"%{IncludeDir.glm}",
+		"Basalt/vendor"
 	}
 
 	links

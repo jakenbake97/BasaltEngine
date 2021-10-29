@@ -10,6 +10,9 @@
     <Filter Include="src\Basalt\Events">
       <UniqueIdentifier>{77D75755-E3ED-55EB-2C65-E10C98BA2673}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Basalt\ImGui">
+      <UniqueIdentifier>{5DFAB986-49F3-D8D8-7225-BE5D5E7DB8E4}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\Basalt\Renderer">
       <UniqueIdentifier>{F99FA601-6501-840F-EE6E-CAC15ACFBACE}</UniqueIdentifier>
     </Filter>
@@ -86,6 +89,9 @@
     </ClInclude>
     <ClInclude Include="src\Basalt\Exception.h">
       <Filter>src\Basalt</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Basalt\ImGui\ImGuiLayer.h">
+      <Filter>src\Basalt\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="src\Basalt\Input.h">
       <Filter>src\Basalt</Filter>
@@ -1409,6 +1415,12 @@
     <ClCompile Include="src\Basalt\Exception.cpp">
       <Filter>src\Basalt</Filter>
     </ClCompile>
+    <ClCompile Include="src\Basalt\ImGui\ImGuiBuild.cpp">
+      <Filter>src\Basalt\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Basalt\ImGui\ImGuiLayer.cpp">
+      <Filter>src\Basalt\ImGui</Filter>
+    </ClCompile>
     <ClCompile Include="src\Basalt\LayerStack.cpp">
       <Filter>src\Basalt</Filter>
     </ClCompile>
@@ -1456,5 +1468,10 @@
     <FxCompile Include="src\Platform\DirectX11\Shaders\FirstShader-v.hlsl">
       <Filter>src\Platform\DirectX11\Shaders</Filter>
     </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\Basalt\Renderer\BufferTemplates.tpp">
+      <Filter>src\Basalt\Renderer</Filter>
+    </None>
   </ItemGroup>
 </Project>

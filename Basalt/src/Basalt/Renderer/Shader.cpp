@@ -15,8 +15,8 @@ namespace Basalt
 		{
 		case RendererAPI::None: BE_ERROR("RendererAPI::None is not currently supported"); return nullptr;
 #ifdef BE_PLATFORM_WINDOWS
-		case RendererAPI::DirectX11: return std::make_unique<Dx11Shader>(Dx11Shader(vertexSource,
-			fragmentSource));
+		case RendererAPI::DirectX11: return std::make_unique<Dx11Shader>(vertexSource,
+			fragmentSource);
 #endif
 		}
 
