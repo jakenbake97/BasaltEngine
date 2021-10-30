@@ -96,7 +96,10 @@ namespace Basalt
 		pixelConstantBuffer->Bind(ShaderType::Fragment);
 	}
 
-	Application::~Application() = default;
+	Application::~Application()
+	{
+		layerStack.PopOverlay(imGuiLayer);
+	}
 
 	void Application::Update()
 	{
@@ -109,11 +112,6 @@ namespace Basalt
 
 			for (const auto& layer : layerStack)
 				layer->OnUpdate(timer.GetDeltaTime());
-
-			imGuiLayer->Begin();
-			for (const auto& layer : layerStack)
-				layer->OnImGuiRender();
-			imGuiLayer->End();
 
 			EventUpdate();
 			
@@ -155,6 +153,14 @@ namespace Basalt
 			vertexConstantBuffer->UpdateData(cb);
 
 			Renderer::GetRenderContext().DrawIndexed(indexBuffer->GetCount());
+
+			// Draw ImGui
+			imGuiLayer->Begin();
+			for (const auto& layer : layerStack)
+				layer->OnImGuiRender();
+			imGuiLayer->End();
+
+			// End Frame
 			Renderer::GetRenderContext().SwapBuffers();
 		}		
 	}

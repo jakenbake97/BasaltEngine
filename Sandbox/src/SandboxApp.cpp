@@ -1,9 +1,10 @@
 #include "Basalt.h"
+#include "imgui/imgui.h"
 
-class WindowLayer : public Basalt::Layer
+class ExampleLayer : public Basalt::Layer
 {
 public:
-	WindowLayer() : Layer("Window") {}
+	ExampleLayer() : Layer("Example") {}
 
 	void OnUpdate(const float deltaTime) override
 	{
@@ -12,19 +13,12 @@ public:
 	void OnEvent(std::shared_ptr<Basalt::Event>& event) override
 	{
 	}
-};
 
-class InputLayer : public Basalt::Layer
-{
-public:
-	InputLayer() : Layer("Input") {}
-
-	void OnUpdate(float deltaTime) override
+	void OnImGuiRender() override
 	{
-	}
-
-	void OnEvent(std::shared_ptr<Basalt::Event>& event) override
-	{
+		ImGui::Begin("Test");
+		ImGui::Text("Hello World!");
+		ImGui::End();
 	}
 };
 
@@ -34,8 +28,7 @@ public:
 	Sandbox()
 	: Application("SANDBOX")
 	{
-		PushLayer(std::make_shared<WindowLayer>());
-		PushLayer(std::make_shared<InputLayer>());
+		PushLayer(std::make_shared<ExampleLayer>());
 	}
 
 	~Sandbox() override = default;
