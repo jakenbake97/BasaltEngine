@@ -107,11 +107,16 @@ namespace Basalt
 		{
 			timer.Mark();
 
+			// Update message loop
+			window->OnUpdate();
+			EventUpdate();
+
+			if(!running)return; // return early if the window was closed / application was quit
+
 			for (const auto& layer : layerStack)
 				layer->OnUpdate(timer.GetDeltaTime());
 			
 			// Frame Update
-
 			Vector3 position(0, 0, 0);
 
 			const Mat4x4 projection = glm::perspectiveLH(glm::radians(45.0f), (float)window->GetWidth() / (float)window->GetHeight(), 0.1f, 100.0f);
@@ -157,11 +162,6 @@ namespace Basalt
 
 			// End Frame
 			Renderer::GetRenderContext().SwapBuffers();
-
-			// Update message loop
-			window->OnUpdate();
-
-			EventUpdate();
 		}		
 	}
 
@@ -177,7 +177,7 @@ namespace Basalt
 			auto event = eventBuffer.front();
 			
 			EventDispatcher dispatcher(event);
-			dispatcher.Dispatch<WindowCloseEvent>([](WindowCloseEvent& closeEvent)->bool {return OnWindowClose(closeEvent); });
+			dispatcher.Dispatch<WindowCloseEvent>([this](WindowCloseEvent& closeEvent)->bool {return this->OnWindowClose(closeEvent); });
 			dispatcher.Dispatch<AppQuitEvent>([this](AppQuitEvent& quitEvent)->bool {return this->Quit(quitEvent); });
 
 			for (auto iterator = layerStack.rbegin(); iterator != layerStack.rend(); ++iterator)
@@ -215,10 +215,11 @@ namespace Basalt
 
 	bool Application::OnWindowClose(WindowCloseEvent& event)
 	{
+		running = false;
 		return true;
 	}
 
-	bool Application::Quit(AppQuitEvent& event)
+	bool Application::Quit(const AppQuitEvent& event)
 	{
 		running = false;
 		exitCode = event.GetExitCode();
@@ -231,7 +232,6 @@ namespace Basalt
 			BE_TRACE("Exited with Code {0}", exitCode);
 		}
 
-		system("pause");
 		return true;
 	}
 }

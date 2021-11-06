@@ -18,7 +18,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		Basalt::Log::InitClientLog(app->GetAppName());
 
 		app->Update();
-		
+
+		system("pause");
 		return app->GetExitCode();
 	}
 

@@ -40,8 +40,8 @@ namespace Basalt
 	private:
 		void Update();
 		
-		static bool OnWindowClose(WindowCloseEvent& event);
-		bool Quit(AppQuitEvent& event);
+		bool OnWindowClose(WindowCloseEvent& event);
+		bool Quit(const AppQuitEvent& event);
 
 		String applicationName;
 		std::queue<std::shared_ptr<Event>> eventBuffer;
