@@ -134,15 +134,15 @@ project "Sandbox"
 
 		links
 		{
-			"d3d11.lib",
-			"D3DCompiler.lib"
+			"d3d11",
+			"D3DCompiler"
 		}
 
 		filter "configurations:Debug"
 
 			links
 			{
-				"dxguid.lib"
+				"dxguid"
 			}
 
 	filter "configurations:Debug"
