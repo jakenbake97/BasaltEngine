@@ -135,8 +135,7 @@ project "Sandbox"
 		links
 		{
 			"d3d11",
-			"D3DCompiler",
-			"dxgi"
+			"D3DCompiler"
 		}
 
 		filter "configurations:Debug"
