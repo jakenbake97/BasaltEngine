@@ -117,6 +117,9 @@ namespace Basalt
 				layer->OnUpdate(timer.GetDeltaTime());
 			
 			// Frame Update
+			const float c = sin(timer.GetTime()) / 2.0f + 0.5f;
+			Renderer::GetRenderContext().ClearColor({ 0.25f, c * 0.25f, 0.25f, 1.0f });
+
 			Vector3 position(0, 0, 0);
 
 			const Mat4x4 projection = glm::perspectiveLH(glm::radians(45.0f), (float)window->GetWidth() / (float)window->GetHeight(), 0.1f, 100.0f);
@@ -139,8 +142,6 @@ namespace Basalt
 			};
 
 			vertexConstantBuffer->UpdateData(cb);
-			const float c = sin(timer.GetTime()) / 2.0f + 0.5f;
-			Renderer::GetRenderContext().ClearColor({ 0.25f, c * 0.25f, 0.25f, 1.0f });
 			Renderer::GetRenderContext().DrawIndexed(indexBuffer->GetCount());
 
 			position = Vector3(1,1,1);

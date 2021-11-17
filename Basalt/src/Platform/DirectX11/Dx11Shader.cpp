@@ -13,11 +13,11 @@ namespace Basalt
 	{
 		const auto device = static_cast<ID3D11Device*>(Renderer::GetRenderContext().GetDevice());
 
-		DX_INFO_CHECK(D3DReadFileToBlob(CString(vertexPath.CStr()), &vertexBlob));
+		DX_INFO_CHECK(D3DReadFileToBlob(CString(vertexPath.CStr()), vertexBlob.GetAddressOf()));
 		DX_INFO_CHECK(device->CreateVertexShader(vertexBlob->GetBufferPointer(), 
 			vertexBlob->GetBufferSize(), nullptr, &vertexShader));
 
-		DX_INFO_CHECK(D3DReadFileToBlob(CString(pixelPath.CStr()), &pixelBlob));
+		DX_INFO_CHECK(D3DReadFileToBlob(CString(pixelPath.CStr()), pixelBlob.GetAddressOf()));
 		DX_INFO_CHECK(device->CreatePixelShader(pixelBlob->GetBufferPointer(), 
 			pixelBlob->GetBufferSize(), nullptr, &pixelShader));
 	}
