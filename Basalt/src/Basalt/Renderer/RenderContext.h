@@ -17,7 +17,6 @@ namespace Basalt
 		
 		virtual void SwapBuffers() = 0;
 		virtual void ClearColor(Color color) = 0;
-		virtual void DrawIndexed(uint32 indexCount) = 0;
 		virtual void* GetDevice() = 0;
 		virtual void* GetDeviceContext() = 0;
 

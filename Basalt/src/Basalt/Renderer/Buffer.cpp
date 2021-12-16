@@ -34,18 +34,18 @@ namespace Basalt
 
 	std::unique_ptr<IndexBuffer> IndexBuffer::Create(std::vector<uint32> indices)
 	{
-		switch (Renderer::GetRenderAPI())
+		switch (Renderer::GetAPI())
 		{
-		case RendererAPI::None:
+		case RendererAPI::API::None:
 			BE_ERROR("RendererAPI::None (headless) is not currently supported");
 			return nullptr;
 #if BE_PLATFORM_WINDOWS
-		case RendererAPI::DirectX11: return std::make_unique<Dx11IndexBuffer>(indices);
+		case RendererAPI::API::DirectX11: return std::make_unique<Dx11IndexBuffer>(indices);
 #endif
 		}
 
 		BE_ERROR("RenderAPI ({0}) is currently set to an unknown or unsupported API on the current platform",
-		         Renderer::GetRenderAPI());
+		         Renderer::GetAPI());
 		return nullptr;
 	}
 }

@@ -114,10 +114,16 @@
     <ClInclude Include="src\Basalt\Renderer\Buffer.h">
       <Filter>src\Basalt\Renderer</Filter>
     </ClInclude>
+    <ClInclude Include="src\Basalt\Renderer\RenderCommand.h">
+      <Filter>src\Basalt\Renderer</Filter>
+    </ClInclude>
     <ClInclude Include="src\Basalt\Renderer\RenderContext.h">
       <Filter>src\Basalt\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Basalt\Renderer\Renderer.h">
+      <Filter>src\Basalt\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Basalt\Renderer\RendererAPI.h">
       <Filter>src\Basalt\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Basalt\Renderer\Shader.h">
@@ -142,6 +148,9 @@
       <Filter>src\Platform\DirectX11</Filter>
     </ClInclude>
     <ClInclude Include="src\Platform\DirectX11\Dx11Macros.h">
+      <Filter>src\Platform\DirectX11</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\DirectX11\Dx11RendererAPI.h">
       <Filter>src\Platform\DirectX11</Filter>
     </ClInclude>
     <ClInclude Include="src\Platform\DirectX11\Dx11Shader.h">
@@ -1430,7 +1439,13 @@
     <ClCompile Include="src\Basalt\Renderer\Buffer.cpp">
       <Filter>src\Basalt\Renderer</Filter>
     </ClCompile>
+    <ClCompile Include="src\Basalt\Renderer\RenderCommand.cpp">
+      <Filter>src\Basalt\Renderer</Filter>
+    </ClCompile>
     <ClCompile Include="src\Basalt\Renderer\Renderer.cpp">
+      <Filter>src\Basalt\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Basalt\Renderer\RendererAPI.cpp">
       <Filter>src\Basalt\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Basalt\Renderer\Shader.cpp">
@@ -1443,6 +1458,9 @@
       <Filter>src\Platform\DirectX11</Filter>
     </ClCompile>
     <ClCompile Include="src\Platform\DirectX11\Dx11Context.cpp">
+      <Filter>src\Platform\DirectX11</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\DirectX11\Dx11RendererAPI.cpp">
       <Filter>src\Platform\DirectX11</Filter>
     </ClCompile>
     <ClCompile Include="src\Platform\DirectX11\Dx11Shader.cpp">

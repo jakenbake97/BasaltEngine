@@ -6,9 +6,6 @@
 
 namespace Basalt
 {
-	// TODO: Set at runtime instead of hardcoding
-	RendererAPI Renderer::currentAPI = RendererAPI::DirectX11;
-
 	std::unique_ptr<RenderContext> Renderer::context;
 
 	void Renderer::Initialize(std::unique_ptr<Window>& window)
@@ -19,5 +16,14 @@ namespace Basalt
 	RenderContext& Renderer::GetRenderContext()
 	{
 		return *context;
+	}
+
+	void Renderer::BeginScene()
+	{
+
+	}
+
+	void Renderer::EndScene()
+	{
 	}
 }

@@ -11,16 +11,16 @@ namespace Basalt
 {
 	std::unique_ptr<Shader> Shader::Create(const String& vertexSource,  const String& fragmentSource)
 	{
-		switch (Renderer::GetRenderAPI())
+		switch (Renderer::GetAPI())
 		{
-		case RendererAPI::None: BE_ERROR("RendererAPI::None is not currently supported"); return nullptr;
+		case Renderer::API::None: BE_ERROR("RendererAPI::None is not currently supported"); return nullptr;
 #ifdef BE_PLATFORM_WINDOWS
-		case RendererAPI::DirectX11: return std::make_unique<Dx11Shader>(vertexSource,
+		case Renderer::API::DirectX11: return std::make_unique<Dx11Shader>(vertexSource,
 			fragmentSource);
 #endif
 		}
 
-		BE_ERROR("Unknown RendererAPI {0}", Renderer::GetRenderAPI());
+		BE_ERROR("Unknown RendererAPI {0}", Renderer::GetAPI());
 		return nullptr;
 	}
 }

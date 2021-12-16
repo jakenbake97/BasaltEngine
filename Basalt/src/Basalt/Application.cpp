@@ -2,7 +2,6 @@
 #include "Application.h"
 
 #include "Input.h"
-#include "Events/Event.h"
 #include "Events/ApplicationEvent.h"
 #include "Events/KeyboardEvent.h"
 #include "Events/MouseEvent.h"
@@ -118,7 +117,7 @@ namespace Basalt
 			
 			// Frame Update
 			const float c = sin(timer.GetTime()) / 2.0f + 0.5f;
-			Renderer::GetRenderContext().ClearColor({ 0.25f, c * 0.25f, 0.25f, 1.0f });
+			RenderCommand::Clear({ 0.25f, c * 0.25f, 0.25f, 1.0f });
 
 			Vector3 position(0, 0, 0);
 
@@ -142,7 +141,7 @@ namespace Basalt
 			};
 
 			vertexConstantBuffer->UpdateData(cb);
-			Renderer::GetRenderContext().DrawIndexed(indexBuffer->GetCount());
+			RenderCommand::DrawIndexed(indexBuffer->GetCount());
 
 			position = Vector3(1,1,1);
 			model =
@@ -153,7 +152,7 @@ namespace Basalt
 			cb.transformation = glm::transpose(projection * view * model);
 			vertexConstantBuffer->UpdateData(cb);
 
-			Renderer::GetRenderContext().DrawIndexed(indexBuffer->GetCount());
+			RenderCommand::DrawIndexed(indexBuffer->GetCount());
 
 			// Draw ImGui
 			imGuiLayer->Begin();

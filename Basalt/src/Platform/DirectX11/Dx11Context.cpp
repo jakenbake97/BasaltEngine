@@ -178,19 +178,13 @@ namespace Basalt
 		DX_DEVICE_REMOVED_CHECK(swapChain->Present(1u, 0u));
 	}
 
-	//TODO: Call from renderer
-	void Dx11Context::ClearColor(Color color)
+	void Dx11Context::ClearColor(const Color color)
 	{
 		context->OMSetRenderTargets(1u, renderTarget.GetAddressOf(), depthStencilView.Get());
 
 		const float clearColor[] = { color.r, color.g, color.b, color.a };
 		context->ClearRenderTargetView(renderTarget.Get(), clearColor);
 		context->ClearDepthStencilView(depthStencilView.Get(), D3D11_CLEAR_DEPTH, 1.0f, 0u);
-	}
-
-	void Dx11Context::DrawIndexed(uint32 indexCount)
-	{
-		context->DrawIndexed(indexCount, 0u, 0u);
 	}
 
 	void* Dx11Context::GetDevice()

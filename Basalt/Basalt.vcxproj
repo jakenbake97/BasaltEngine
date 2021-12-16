@@ -150,8 +150,10 @@
     <ClInclude Include="src\Basalt\Log.h" />
     <ClInclude Include="src\Basalt\MouseCodes.h" />
     <ClInclude Include="src\Basalt\Renderer\Buffer.h" />
+    <ClInclude Include="src\Basalt\Renderer\RenderCommand.h" />
     <ClInclude Include="src\Basalt\Renderer\RenderContext.h" />
     <ClInclude Include="src\Basalt\Renderer\Renderer.h" />
+    <ClInclude Include="src\Basalt\Renderer\RendererAPI.h" />
     <ClInclude Include="src\Basalt\Renderer\Shader.h" />
     <ClInclude Include="src\Basalt\Timer.h" />
     <ClInclude Include="src\Basalt\Utility\Math.h" />
@@ -160,6 +162,7 @@
     <ClInclude Include="src\Platform\DirectX11\Dx11Buffer.h" />
     <ClInclude Include="src\Platform\DirectX11\Dx11Context.h" />
     <ClInclude Include="src\Platform\DirectX11\Dx11Macros.h" />
+    <ClInclude Include="src\Platform\DirectX11\Dx11RendererAPI.h" />
     <ClInclude Include="src\Platform\DirectX11\Dx11Shader.h" />
     <ClInclude Include="src\Platform\DirectX11\DxError\DXGIInfoManager.h" />
     <ClInclude Include="src\Platform\DirectX11\DxError\dxerr.h" />
@@ -592,11 +595,14 @@
     <ClCompile Include="src\Basalt\LayerStack.cpp" />
     <ClCompile Include="src\Basalt\Log.cpp" />
     <ClCompile Include="src\Basalt\Renderer\Buffer.cpp" />
+    <ClCompile Include="src\Basalt\Renderer\RenderCommand.cpp" />
     <ClCompile Include="src\Basalt\Renderer\Renderer.cpp" />
+    <ClCompile Include="src\Basalt\Renderer\RendererAPI.cpp" />
     <ClCompile Include="src\Basalt\Renderer\Shader.cpp" />
     <ClCompile Include="src\Basalt\Timer.cpp" />
     <ClCompile Include="src\Platform\DirectX11\Dx11Buffer.cpp" />
     <ClCompile Include="src\Platform\DirectX11\Dx11Context.cpp" />
+    <ClCompile Include="src\Platform\DirectX11\Dx11RendererAPI.cpp" />
     <ClCompile Include="src\Platform\DirectX11\Dx11Shader.cpp" />
     <ClCompile Include="src\Platform\DirectX11\DxError\DXGIInfoManager.cpp" />
     <ClCompile Include="src\Platform\DirectX11\DxError\dxerr.cpp" />

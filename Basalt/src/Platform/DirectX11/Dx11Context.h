@@ -43,7 +43,6 @@ namespace Basalt
 
 		void SwapBuffers() override;
 		void ClearColor(Color color) override;
-		void DrawIndexed(uint32 indexCount) override;
 		void* GetDevice() override;
 		void* GetDeviceContext() override;
 

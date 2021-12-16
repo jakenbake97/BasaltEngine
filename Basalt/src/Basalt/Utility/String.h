@@ -67,7 +67,7 @@ namespace Basalt
 		String operator+(const String& object) const // Concatenation
 		{
 			const std::string temp = data + object.data;
-			return String(temp);
+			return {temp};
 		}
 
 		String& operator+=(const String& object)
