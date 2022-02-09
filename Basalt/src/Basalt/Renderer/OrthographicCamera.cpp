@@ -15,6 +15,11 @@ namespace Basalt
 		RecalculateViewMatrix();
 	}
 
+	Vector3 OrthographicCamera::GetPosition() const
+	{
+		return pos;
+	}
+
 	float OrthographicCamera::GetRotation() const
 	{
 		return rotation;

@@ -9,6 +9,7 @@ namespace Basalt
 		OrthographicCamera(float left, float right, float bottom, float top);
 
 		void SetPosition(const Vector3& position);
+		Vector3 GetPosition() const;
 
 		float GetRotation() const;
 		void SetRotation(float zRotation);

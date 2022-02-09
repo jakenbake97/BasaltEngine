@@ -1,6 +1,7 @@
 #include "BEpch.h"
 #include "Application.h"
 
+#include "imgui.h"
 #include "Input.h"
 #include "Events/ApplicationEvent.h"
 #include "Events/KeyboardEvent.h"
@@ -106,12 +107,31 @@ namespace Basalt
 		while (running)
 		{
 			timer.Mark();
+
+			Vector3 camPosition = cam.GetPosition();
+
+			// This should really be put on an input layer
+			if (Input::GetKey(Key::W))
+			{
+				camPosition.y += 1.0f * timer.GetDeltaTime();
+			}
+			if (Input::GetKey(Key::S))
+			{
+				camPosition.y -= 1.0f * timer.GetDeltaTime();
+			}
+			if (Input::GetKey(Key::A))
+			{
+				camPosition.x -= 1.0f * timer.GetDeltaTime();
+			}
+			if (Input::GetKey(Key::D))
+			{
+				camPosition.x += 1.0f * timer.GetDeltaTime();
+			}
 			
 			// Frame Update
 			RenderCommand::Clear({ 1.0f, 0.25f, 1.0f, 1.0f });
 
-			cam.SetPosition({ 0.5f, 0.5f, -5.0f });
-			cam.SetRotation(45.0f);
+			cam.SetPosition(camPosition);
 
 			Vector3 position(0, 0, 1);
 
@@ -145,9 +165,6 @@ namespace Basalt
 
 			RenderCommand::DrawIndexed(indexBuffer->GetCount());
 
-			// End Frame
-			Renderer::GetRenderContext().SwapBuffers();
-
 			// Update message loop
 			window->OnUpdate();
 			EventUpdate();
@@ -157,9 +174,18 @@ namespace Basalt
 
 			// Draw ImGui
 			imGuiLayer->Begin();
+
+			ImGui::Begin("Camera");
+			ImGui::Text("Camera Position: %f, %f, %f", camPosition.x, camPosition.y, camPosition.z);
+			ImGui::End();
+
 			for (const auto& layer : layerStack)
 				layer->OnImGuiRender();
+
 			imGuiLayer->End();
+
+			// End Frame
+			Renderer::GetRenderContext().SwapBuffers();
 		}		
 	}
 

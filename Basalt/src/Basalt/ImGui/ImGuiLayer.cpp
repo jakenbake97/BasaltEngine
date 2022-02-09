@@ -69,7 +69,7 @@ namespace Basalt
 	void ImGuiLayer::Begin()
 	{
 		// TODO: Update to use appropriate implementation based on platform (or potentially have a different ImGuiLayer per platform)
-		// Start the Dear ImGui frame
+		// Start the ImGui frame
 		ImGui_ImplDX11_NewFrame();
 		ImGui_ImplWin32_NewFrame();
 		ImGui::NewFrame();

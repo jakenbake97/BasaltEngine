@@ -6,6 +6,7 @@ using namespace std::chrono;
 namespace Basalt
 {
 	Timer::Timer()
+	: lastDeltaTime(0)
 	{
 		startTime = high_resolution_clock::now();
 		lastTime = high_resolution_clock::now();
@@ -18,11 +19,12 @@ namespace Basalt
 
 	float Timer::GetDeltaTime() const
 	{
-		return duration<float>(high_resolution_clock::now() - lastTime).count();
+		return lastDeltaTime;
 	}
 
 	void Timer::Mark()
 	{
+		lastDeltaTime = duration<float>(high_resolution_clock::now() - lastTime).count();
 		lastTime = high_resolution_clock::now();
 	}
 }
