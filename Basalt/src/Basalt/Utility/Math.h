@@ -16,6 +16,8 @@
 #include "glm/mat3x3.hpp"
 #include "glm/mat4x4.hpp"
 
+#include "glm/gtx/quaternion.hpp"
+
 #include "spdlog/spdlog.h"
 #include "spdlog/fmt/ostr.h"
 #pragma warning( pop )
@@ -36,6 +38,7 @@ namespace Basalt
 	using Mat2x2 = glm::mat2;
 	using Mat3x3 = glm::mat3;
 	using Mat4x4 = glm::mat4;
+	using Quaternion = glm::quat;
 
 	// Int Types
 	using uint8 = glm::uint8;

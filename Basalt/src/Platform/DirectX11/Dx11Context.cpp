@@ -21,7 +21,7 @@ namespace Basalt
 		return std::make_unique<Dx11Context>(window);
 	}
 
-	Dx11Context::HResultException::HResultException(int line, const String& file, HRESULT hresult, std::vector<String> errors)
+	Dx11Context::HResultException::HResultException(const int line, const String& file, const HRESULT hresult, const std::vector<String> errors)
 		: Exception(line, file), errorCode(hresult)
 	{
 		for( const auto& message : errors)
@@ -56,7 +56,7 @@ namespace Basalt
 	String Dx11Context::HResultException::GetErrorCode() const
 	{
 		std::stringstream ss;
-		ss << "0x" << std::hex << std::uppercase << errorCode << std::dec << " (" << (unsigned long)errorCode << ")";
+		ss << "0x" << std::hex << std::uppercase << errorCode << std::dec << " (" << static_cast<uint32>(errorCode) << ")";
 		return ss.str();
 	}
 
@@ -83,9 +83,8 @@ namespace Basalt
 	}
 
 	Dx11Context::Dx11Context(std::unique_ptr<Window>& window)
+	: windowHandle(static_cast<HWND>(window->GetWindowHandle()))
 	{
-		windowHandle = static_cast<HWND>(window->GetWindowHandle());
-
 		DXGI_SWAP_CHAIN_DESC swapDesc = {};
 		swapDesc.BufferDesc.Width = window->GetWidth();
 		swapDesc.BufferDesc.Height = window->GetHeight();
@@ -100,7 +99,7 @@ namespace Basalt
 		swapDesc.BufferCount = 2;
 		swapDesc.OutputWindow = windowHandle;
 		swapDesc.Windowed = TRUE;
-		
+
 		if constexpr (MAJOR_VERSION < 10)
 		{
 			swapDesc.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;

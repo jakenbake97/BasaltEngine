@@ -6,6 +6,7 @@
 #include "LayerStack.h"
 #include "Events/Event.h"
 #include "ImGui/ImGuiLayer.h"
+#include "Renderer/OrthographicCamera.h"
 
 namespace Basalt
 {
@@ -43,6 +44,9 @@ namespace Basalt
 		bool OnWindowClose(WindowCloseEvent& event);
 		bool Quit(const AppQuitEvent& event);
 
+		friend int ::WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine, _In_ int nShowCmd);
+
+	private:
 		String applicationName;
 		std::queue<std::shared_ptr<Event>> eventBuffer;
 		bool running = true;
@@ -70,7 +74,8 @@ namespace Basalt
 		std::unique_ptr<ConstantBuffer<PixelCBuffData>> pixelConstantBuffer;
 
 		static Application* instance;
-		friend int ::WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine, _In_ int nShowCmd);
+
+		OrthographicCamera cam;
 	};
 
 	extern std::unique_ptr<Application> CreateApplication();

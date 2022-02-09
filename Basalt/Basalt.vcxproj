@@ -131,6 +131,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Basalt\Renderer\OrthographicCamera.h" />
     <ClInclude Include="src\BEpch.h" />
     <ClInclude Include="src\Basalt.h" />
     <ClInclude Include="src\Basalt\Application.h" />
@@ -585,6 +586,7 @@
     <ClInclude Include="vendor\glm\glm\vector_relational.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Basalt\Renderer\OrthographicCamera.cpp" />
     <ClCompile Include="src\BEpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>

@@ -7,6 +7,7 @@
 #include "Events/MouseEvent.h"
 #include "Events/WindowEvent.h"
 #include "Renderer/Buffer.h"
+#include "Renderer/OrthographicCamera.h"
 #include "Renderer/Renderer.h"
 #include "Renderer/Shader.h"
 
@@ -16,14 +17,12 @@ namespace Basalt
 
 
 	Application::Application(String name)
-		: applicationName(std::move(name))
+		: applicationName(std::move(name)), cam(-1.6f, 1.6f, -0.9f, 0.9f)
 	{
 		instance = this;
 
 		const String className(L"Basalt Engine");
-
 		BE_TRACE("Class Name: {0}, App Name: {1}", className, applicationName);
-
 		const String windowName = className + L" - " + applicationName;
 		
 		window = Window::Create({windowName});
@@ -83,16 +82,18 @@ namespace Basalt
 		const PixelCBuffData pixelCB =
 		{
 			{
-				{1.0f, 0.0f, 1.0f, 1.0f},
-				{1.0f, 0.0f, 0.0f, 0.0f},
-				{0.0f, 1.0f, 0.0f, 1.0f},
-				{0.0f, 0.0f, 1.0f, 1.0f},
-				{1.0f, 1.0f, 0.0f, 1.0f},
-				{0.0f, 1.0f, 1.0f, 1.0f}
+				{0.8f, 0.2f, 0.3f, 1.0f},
+				{0.3f, 0.8f, 0.2f, 1.0f},
+				{0.2f, 0.3f, 0.8f, 1.0f},
+				{0.8f, 0.8f, 0.2f, 1.0f},
+				{0.8f, 0.2f, 0.8f, 1.0f},
+				{0.2f, 0.8f, 0.8f, 1.0f}
 			}
 		};
 		pixelConstantBuffer = ConstantBuffer<PixelCBuffData>::Create(pixelCB);
 		pixelConstantBuffer->Bind(ShaderType::Fragment);
+
+		cam.SetPosition({ 0,0,-5 });
 	}
 
 	Application::~Application()
@@ -105,38 +106,27 @@ namespace Basalt
 		while (running)
 		{
 			timer.Mark();
-
-			// Update message loop
-			window->OnUpdate();
-			EventUpdate();
-
-			if(!running)return; // return early if the window was closed / application was quit
-
-			for (const auto& layer : layerStack)
-				layer->OnUpdate(timer.GetDeltaTime());
 			
 			// Frame Update
-			const float c = sin(timer.GetTime()) / 2.0f + 0.5f;
-			RenderCommand::Clear({ 0.25f, c * 0.25f, 0.25f, 1.0f });
+			RenderCommand::Clear({ 1.0f, 0.25f, 1.0f, 1.0f });
 
-			Vector3 position(0, 0, 0);
+			cam.SetPosition({ 0.5f, 0.5f, -5.0f });
+			cam.SetRotation(45.0f);
 
-			const Mat4x4 projection = glm::perspectiveLH(glm::radians(45.0f), (float)window->GetWidth() / (float)window->GetHeight(), 0.1f, 100.0f);
-
-			const Mat4x4 view = glm::lookAtLH(
-				Vector3(0, 0, -4),
-				Vector3(0, 0, 0),
-				Vector3(0, 1, 0));
+			Vector3 position(0, 0, 1);
 
 			Mat4x4 model =
 				glm::translate(Mat4x4(1.0f), position) *
 				glm::rotate(Mat4x4(1.0f), timer.GetTime(), Vector3(0, 0, 1)) *
-				glm::rotate(Mat4x4(1.0f), timer.GetTime() / 2.0f, Vector3(1, 0, 0));
+				glm::rotate(Mat4x4(1.0f), timer.GetTime() / 2.0f, Vector3(0.5f, 0.5f, 0)) *
+				glm::scale(Mat4x4(1.0f), Vector3(0.5f, 0.5f, 0.5f));
+
+			Mat4x4 transposedMVP = cam.GetViewProjectionMatrix() * model;
 
 			VertexCBuffData cb =
 			{
 				{
-					glm::transpose(projection * view * model)
+					glm::transpose(transposedMVP)
 				}
 			};
 
@@ -147,21 +137,29 @@ namespace Basalt
 			model =
 				glm::translate(Mat4x4(1.0f), position) *
 				glm::rotate(Mat4x4(1.0f), timer.GetTime() * 4.0f, Vector3(0, 0, 1)) *
-				glm::rotate(Mat4x4(1.0f), -timer.GetTime() * 8.0f, Vector3(1, 0, 0));
+				glm::rotate(Mat4x4(1.0f), -timer.GetTime() * 8.0f, Vector3(0.5f, 0.5f, 0));
 
-			cb.transformation = glm::transpose(projection * view * model);
+			transposedMVP = cam.GetViewProjectionMatrix() * model;
+			cb.transformation = glm::transpose(transposedMVP);
 			vertexConstantBuffer->UpdateData(cb);
 
 			RenderCommand::DrawIndexed(indexBuffer->GetCount());
+
+			// End Frame
+			Renderer::GetRenderContext().SwapBuffers();
+
+			// Update message loop
+			window->OnUpdate();
+			EventUpdate();
+
+			for (const auto& layer : layerStack)
+				layer->OnUpdate(timer.GetDeltaTime());
 
 			// Draw ImGui
 			imGuiLayer->Begin();
 			for (const auto& layer : layerStack)
 				layer->OnImGuiRender();
 			imGuiLayer->End();
-
-			// End Frame
-			Renderer::GetRenderContext().SwapBuffers();
 		}		
 	}
 
