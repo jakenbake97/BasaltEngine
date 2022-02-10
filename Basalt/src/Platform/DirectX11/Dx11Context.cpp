@@ -16,7 +16,7 @@ namespace wrl = Microsoft::WRL;
 namespace Basalt
 {
 	
-	std::unique_ptr<RenderContext> RenderContext::CreateRenderContext(std::unique_ptr<Window>& window)
+	std::unique_ptr<RenderContext> RenderContext::CreateRenderContext(const Window& window)
 	{
 		return std::make_unique<Dx11Context>(window);
 	}
@@ -82,12 +82,13 @@ namespace Basalt
 		return "DX11 Graphics Exception [Device Removed] (DXGI_ERROR_DEVICE_REMOVED)";
 	}
 
-	Dx11Context::Dx11Context(std::unique_ptr<Window>& window)
-	: windowHandle(static_cast<HWND>(window->GetWindowHandle()))
+	Dx11Context::Dx11Context(const Window& window)
+	: windowHandle(static_cast<HWND>(window.GetWindowHandle()))
 	{
+
 		DXGI_SWAP_CHAIN_DESC swapDesc = {};
-		swapDesc.BufferDesc.Width = window->GetWidth();
-		swapDesc.BufferDesc.Height = window->GetHeight();
+		swapDesc.BufferDesc.Width = window.GetWidth();
+		swapDesc.BufferDesc.Height = window.GetHeight();
 		swapDesc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
 		swapDesc.BufferDesc.RefreshRate.Numerator = 0;
 		swapDesc.BufferDesc.RefreshRate.Denominator = 0;
@@ -137,8 +138,8 @@ namespace Basalt
 		// Create depth stencil texture
 		wrl::ComPtr<ID3D11Texture2D> depthStencil;
 		D3D11_TEXTURE2D_DESC depthTexDesc = {};
-		depthTexDesc.Width = window->GetWidth();
-		depthTexDesc.Height = window->GetHeight();
+		depthTexDesc.Width = window.GetWidth();
+		depthTexDesc.Height = window.GetHeight();
 		depthTexDesc.MipLevels = 1u;
 		depthTexDesc.ArraySize = 1u;
 		depthTexDesc.Format = DXGI_FORMAT_D32_FLOAT;
@@ -163,8 +164,8 @@ namespace Basalt
 
 		// configure viewport
 		D3D11_VIEWPORT viewport = {};
-		viewport.Width = (float)window->GetWidth();
-		viewport.Height = (float)window->GetHeight();
+		viewport.Width = (float)window.GetWidth();
+		viewport.Height = (float)window.GetHeight();
 		viewport.MinDepth = 0;
 		viewport.MaxDepth = 1;
 		viewport.TopLeftX = 0;

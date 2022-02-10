@@ -2,17 +2,16 @@
 #include "BEpch.h"
 
 #include "Input.h"
-#include "Renderer/RenderContext.h"
 
 namespace Basalt
 {
 	struct WindowProperties
 	{
 		String title;
-		unsigned int width;
-		unsigned int height;
+		uint32 width;
+		uint32 height;
 
-		WindowProperties(String title = "Basalt Engine", const unsigned int width = 1280, const unsigned int height = 720)
+		WindowProperties(String title = "Basalt Engine", const uint32 width = 1280, const uint32 height = 720)
 			: title(std::move(title)), width(width), height(height)
 		{}
 	};
@@ -26,21 +25,21 @@ namespace Basalt
 		Window(Window&& other) noexcept = delete;
 		Window& operator=(const Window& other) = delete;
 		Window& operator=(Window&& other) noexcept = delete;
-		
+
+		static std::unique_ptr<Window> Create(const WindowProperties& properties = WindowProperties());
+
 		virtual ~Window() = default;
 
 		virtual void OnUpdate() = 0;
 
-		virtual unsigned int GetWidth() const = 0;
-		virtual unsigned int GetHeight() const = 0;
-
 		// Window attributes
+		virtual uint32 GetWidth() const = 0;
+		virtual uint32 GetHeight() const = 0;
+
 		virtual void SetVSync(bool enabled) = 0;
 		virtual bool IsVSync() const = 0;
 
-		virtual void* GetWindowHandle() = 0;
-
-		static std::unique_ptr<Window> Create(const WindowProperties& properties = WindowProperties());
+		virtual void* GetWindowHandle() const = 0;
 
 	protected:
 		static void ClearInputState() { Input::ClearState(); }

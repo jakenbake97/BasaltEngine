@@ -203,7 +203,7 @@ namespace Basalt
 		return properties.height;
 	}
 
-	void* WindowsWindow::GetWindowHandle()
+	void* WindowsWindow::GetWindowHandle() const
 	{
 		return handle;
 	}

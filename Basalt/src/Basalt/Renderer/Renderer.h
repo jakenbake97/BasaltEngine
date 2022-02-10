@@ -13,7 +13,7 @@ namespace Basalt
 	{
 	public:
 		using API = RendererAPI::API;
-		static void Initialize(std::unique_ptr<Window>& window);
+		static void Initialize(const Window& window);
 
 		static API GetAPI(){return RendererAPI::GetAPI();}
 

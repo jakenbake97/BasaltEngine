@@ -12,7 +12,7 @@ namespace Basalt
 	std::unique_ptr<RenderContext> Renderer::context;
 	std::unique_ptr<Renderer::SceneData> Renderer::sceneData = std::make_unique<Renderer::SceneData>();
 
-	void Renderer::Initialize(std::unique_ptr<Window>& window)
+	void Renderer::Initialize(const Window& window)
 	{
 		context = RenderContext::CreateRenderContext(window);
 	}

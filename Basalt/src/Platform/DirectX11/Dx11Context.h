@@ -34,7 +34,7 @@ namespace Basalt
 			String reason;
 		};
 
-		Dx11Context(std::unique_ptr<Window>& window);
+		Dx11Context(const Window& window);
 		~Dx11Context() override = default;
 		Dx11Context(const Dx11Context& other) = delete;
 		Dx11Context(Dx11Context&& other) noexcept = delete;

@@ -53,7 +53,7 @@ namespace Basalt {
 		unsigned int GetWidth() const override;
 		unsigned int GetHeight() const override;
 
-		void* GetWindowHandle() override;
+		void* GetWindowHandle() const override;
 		
 		void SetVSync(bool enabled) override;
 		bool IsVSync() const override;

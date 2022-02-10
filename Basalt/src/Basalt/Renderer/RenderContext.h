@@ -20,6 +20,6 @@ namespace Basalt
 		virtual void* GetDevice() = 0;
 		virtual void* GetDeviceContext() = 0;
 
-		static std::unique_ptr<RenderContext> CreateRenderContext(std::unique_ptr<Window>& window);
+		static std::unique_ptr<RenderContext> CreateRenderContext(const Window& window);
 	};
 }

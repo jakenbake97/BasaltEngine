@@ -28,7 +28,7 @@ namespace Basalt
 		const String windowName = className + L" - " + applicationName;
 		
 		window = Window::Create({windowName});
-		Renderer::Initialize(window);
+		Renderer::Initialize(*window);
 
 		imGuiLayer = std::make_shared<ImGuiLayer>();
 		PushOverlay(imGuiLayer);
