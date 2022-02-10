@@ -1,4 +1,4 @@
-﻿#include "BEpch.h"
+#include "BEpch.h"
 #include "Buffer.h"
 
 #include <utility>
@@ -32,7 +32,7 @@ namespace Basalt
 		}
 	}
 
-	std::unique_ptr<IndexBuffer> IndexBuffer::Create(std::vector<uint32> indices)
+	std::shared_ptr<IndexBuffer> IndexBuffer::Create(std::vector<uint32> indices)
 	{
 		switch (Renderer::GetAPI())
 		{

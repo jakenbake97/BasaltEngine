@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include "Shader.h"
 #include "Renderer.h"
 
@@ -58,26 +58,11 @@ namespace Basalt
 		virtual void Bind() = 0;
 		virtual void Unbind() = 0;
 
-		virtual void SetLayout(const BufferLayout& layout, const std::unique_ptr<Shader>& shader) = 0;
+		virtual void SetLayout(const BufferLayout& layout, const std::shared_ptr<Shader>& shader) = 0;
 		virtual const BufferLayout& GetLayout() const = 0;
 
 		template <typename T>
-		static std::unique_ptr<VertexBuffer> Create(const std::vector<T>& vertices, const std::unique_ptr<Shader>& shader, const BufferLayout& layout = { {"Position", ShaderDataType::Float3} })
-		{
-			switch (Renderer::GetAPI())
-			{
-			case Renderer::API::None:
-				BE_ERROR("RendererAPI::None (headless) is not currently supported");
-				return nullptr;
-#if BE_PLATFORM_WINDOWS
-			case Renderer::API::DirectX11: return std::make_unique<class Dx11VertexBuffer>(
-				vertices, shader, layout);
-#endif
-			}
-			BE_ERROR("RenderAPI ({0}) is currently set to an unknown or unsupported API on the current platform",
-				Renderer::GetAPI());
-			return nullptr;
-		}
+		static std::shared_ptr<VertexBuffer> Create(const std::vector<T>& vertices, const std::shared_ptr<Shader>& shader, const BufferLayout& layout = { {"Position", ShaderDataType::Float3} });
 	};
 
 	class IndexBuffer
@@ -96,7 +81,7 @@ namespace Basalt
 
 		virtual uint32 GetCount() const = 0;
 
-		static std::unique_ptr<IndexBuffer> Create(std::vector<uint32> indices);
+		static std::shared_ptr<IndexBuffer> Create(std::vector<uint32> indices);
 	};
 
 #if BE_PLATFORM_WINDOWS
@@ -119,9 +104,9 @@ namespace Basalt
 		virtual void Bind(ShaderType type) const = 0;
 		virtual void UpdateData(const T& data) = 0;
 
-		static std::unique_ptr<ConstantBuffer<T>> Create(const T& data);
+		static std::shared_ptr<ConstantBuffer<T>> Create(const T& data);
 
-		static std::unique_ptr<ConstantBuffer<T>> Create();
+		static std::shared_ptr<ConstantBuffer<T>> Create();
 	};
 }
 #include "BufferTemplates.tpp"

@@ -11,8 +11,7 @@ namespace Basalt
 	{
 	public:
 		template <typename T>
-		Dx11VertexBuffer(const std::vector<T>& vertices, const std::unique_ptr<Shader>& shader,
-		                 const BufferLayout& layout)
+		Dx11VertexBuffer(const std::vector<T>& vertices, const std::shared_ptr<Shader>& shader, const BufferLayout& layout)
 		{
 			Dx11VertexBuffer::SetLayout(layout, shader);
 			uint32 vertSize = sizeof(T);
@@ -48,7 +47,7 @@ namespace Basalt
 		void Bind() override;
 		void Unbind() override;
 
-		void SetLayout(const BufferLayout& layout, const std::unique_ptr<Shader>& shader) override;
+		void SetLayout(const BufferLayout& layout, const std::shared_ptr<Shader>& shader) override;
 		void SetData(const std::vector<char>& vertices);
 		const BufferLayout& GetLayout() const override;
 

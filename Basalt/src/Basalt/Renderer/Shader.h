@@ -55,7 +55,7 @@ namespace Basalt
 		virtual void Bind() const = 0;
 		virtual void Unbind() const = 0;
 
-		static std::unique_ptr<Shader> Create(const String& vertexSource, const String& fragmentSource);
+		static std::shared_ptr<Shader> Create(const String& vertexSource, const String& fragmentSource);
 
 		static constexpr uint32 ShaderDataTypeSize(const ShaderDataType type)
 		{

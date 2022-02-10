@@ -10,12 +10,13 @@
 
 namespace Basalt
 {
-	class Window;
 	class AppQuitEvent;
-	class WindowCloseEvent;
-	class Timer;
 	template<typename T>
 	class ConstantBuffer;
+	class Timer;
+	class VertexArray;
+	class Window;
+	class WindowCloseEvent;
 	
 	class Application
 	{
@@ -68,10 +69,11 @@ namespace Basalt
 			Vector4 faceColors[6];
 		};
 
-		std::unique_ptr<class Shader> firstShader;
-		std::unique_ptr<class IndexBuffer> indexBuffer;
-		std::unique_ptr<ConstantBuffer<VertexCBuffData>> vertexConstantBuffer;
-		std::unique_ptr<ConstantBuffer<PixelCBuffData>> pixelConstantBuffer;
+		std::shared_ptr<class Shader> firstShader;
+		std::shared_ptr<VertexArray> vertexArray;
+
+		std::shared_ptr<ConstantBuffer<VertexCBuffData>> vertexConstantBuffer;
+		std::shared_ptr<ConstantBuffer<PixelCBuffData>> pixelConstantBuffer;
 
 		static Application* instance;
 

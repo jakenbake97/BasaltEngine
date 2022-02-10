@@ -7,6 +7,8 @@ namespace Basalt
 	{
 	public:
 		void Clear(Color color) override;
-		void DrawIndexed(uint32 count) override;
+		void DrawIndexed(const std::shared_ptr<VertexArray>& vertexArray) override;
+
+		void SwapBuffers() override;
 	};
 }

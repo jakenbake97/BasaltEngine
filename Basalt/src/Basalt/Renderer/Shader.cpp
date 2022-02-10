@@ -9,7 +9,7 @@
 
 namespace Basalt
 {
-	std::unique_ptr<Shader> Shader::Create(const String& vertexSource,  const String& fragmentSource)
+	std::shared_ptr<Shader> Shader::Create(const String& vertexSource,  const String& fragmentSource)
 	{
 		switch (Renderer::GetAPI())
 		{

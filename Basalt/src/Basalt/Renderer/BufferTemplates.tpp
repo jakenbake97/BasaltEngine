@@ -8,7 +8,24 @@
 namespace Basalt
 {
 	template <typename T>
-	std::unique_ptr<ConstantBuffer<T>> ConstantBuffer<T>::Create(const T& data)
+	std::shared_ptr<VertexBuffer> VertexBuffer::Create(const std::vector<T>& vertices, const std::shared_ptr<Shader>& shader, const BufferLayout& layout)
+	{
+		switch (Renderer::GetAPI())
+		{
+		case Renderer::API::None:
+			BE_ERROR("RendererAPI::None (headless) is not currently supported");
+			return nullptr;
+#if BE_PLATFORM_WINDOWS
+		case Renderer::API::DirectX11: return std::make_shared<Dx11VertexBuffer>(vertices, shader, layout);
+#endif
+		}
+		BE_ERROR("RenderAPI ({0}) is currently set to an unknown or unsupported API on the current platform",
+		         Renderer::GetAPI());
+		return nullptr;
+	}
+
+	template <typename T>
+	std::shared_ptr<ConstantBuffer<T>> ConstantBuffer<T>::Create(const T& data)
 	{
 		switch (Renderer::GetAPI())
 		{
@@ -25,7 +42,7 @@ namespace Basalt
 	}
 
 	template <typename T>
-	std::unique_ptr<ConstantBuffer<T>> ConstantBuffer<T>::Create()
+	std::shared_ptr<ConstantBuffer<T>> ConstantBuffer<T>::Create()
 	{
 		switch (Renderer::GetAPI())
 		{

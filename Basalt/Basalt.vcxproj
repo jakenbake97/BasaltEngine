@@ -132,6 +132,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\Basalt\Renderer\OrthographicCamera.h" />
+    <ClInclude Include="src\Basalt\Renderer\VertexArray.h" />
     <ClInclude Include="src\BEpch.h" />
     <ClInclude Include="src\Basalt.h" />
     <ClInclude Include="src\Basalt\Application.h" />
@@ -587,6 +588,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Basalt\Renderer\OrthographicCamera.cpp" />
+    <ClCompile Include="src\Basalt\Renderer\VertexArray.cpp" />
     <ClCompile Include="src\BEpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>

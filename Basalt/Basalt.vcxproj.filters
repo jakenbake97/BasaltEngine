@@ -1414,6 +1414,7 @@
       <Filter>vendor\glm\glm</Filter>
     </ClInclude>
     <ClInclude Include="src\Basalt\Renderer\OrthographicCamera.h" />
+    <ClInclude Include="src\Basalt\Renderer\VertexArray.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\BEpch.cpp">
@@ -1480,6 +1481,7 @@
       <Filter>src\Platform\Windows</Filter>
     </ClCompile>
     <ClCompile Include="src\Basalt\Renderer\OrthographicCamera.cpp" />
+    <ClCompile Include="src\Basalt\Renderer\VertexArray.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="src\Platform\DirectX11\Shaders\FirstShader-p.hlsl">

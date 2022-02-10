@@ -4,7 +4,10 @@
 
 namespace Basalt
 {
+	class Shader;
+	class OrthographicCamera;
 	class Window;
+	class VertexArray;
 
 	class Renderer
 	{
@@ -16,10 +19,19 @@ namespace Basalt
 
 		static RenderContext& GetRenderContext();
 
-		static void BeginScene();
+		static void BeginScene(const OrthographicCamera& camera);
 		static void EndScene();
+
+		static void Submit(const std::shared_ptr<Shader>& shader, const std::shared_ptr<VertexArray>& vertexArray);
 
 	private:
 		static std::unique_ptr<RenderContext> context;
+
+		struct SceneData
+		{
+			Mat4x4 viewProjectionMatrix;
+		};
+
+		static std::unique_ptr<SceneData> sceneData;
 	};
 }

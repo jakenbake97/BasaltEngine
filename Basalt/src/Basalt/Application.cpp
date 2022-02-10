@@ -11,6 +11,7 @@
 #include "Renderer/OrthographicCamera.h"
 #include "Renderer/Renderer.h"
 #include "Renderer/Shader.h"
+#include "Renderer/VertexArray.h"
 
 namespace Basalt
 {
@@ -65,8 +66,7 @@ namespace Basalt
 		};
 
 		// Create and bind the index Buffer
-		indexBuffer = IndexBuffer::Create(indices);
-		indexBuffer->Bind();
+		auto indexBuffer = IndexBuffer::Create(indices);
 
 		// input vertex layout (2d positions only & Color)
 		const BufferLayout layout = {
@@ -74,8 +74,10 @@ namespace Basalt
 		};
 
 		// Create and bind the Vertex Buffer
-		const auto vertexBuffer(VertexBuffer::Create<Vertex>(vertices, firstShader, layout));
+		auto vertexBuffer(VertexBuffer::Create<Vertex>(vertices, firstShader, layout));
 		vertexBuffer->Bind();
+
+		vertexArray = std::make_shared<VertexArray>(vertexBuffer, indexBuffer);
 
 		vertexConstantBuffer = ConstantBuffer<VertexCBuffData>::Create();
 		vertexConstantBuffer->Bind(ShaderType::Vertex);
@@ -108,6 +110,9 @@ namespace Basalt
 		{
 			timer.Mark();
 
+			// Frame Update
+			RenderCommand::Clear();
+
 			Vector3 camPosition = cam.GetPosition();
 
 			// This should really be put on an input layer
@@ -127,11 +132,10 @@ namespace Basalt
 			{
 				camPosition.x += 1.0f * timer.GetDeltaTime();
 			}
-			
-			// Frame Update
-			RenderCommand::Clear({ 1.0f, 0.25f, 1.0f, 1.0f });
-
 			cam.SetPosition(camPosition);
+
+
+			Renderer::BeginScene(cam);
 
 			Vector3 position(0, 0, 1);
 
@@ -149,9 +153,9 @@ namespace Basalt
 					glm::transpose(transposedMVP)
 				}
 			};
-
 			vertexConstantBuffer->UpdateData(cb);
-			RenderCommand::DrawIndexed(indexBuffer->GetCount());
+
+			Renderer::Submit(firstShader, vertexArray);
 
 			position = Vector3(1,1,1);
 			model =
@@ -163,7 +167,9 @@ namespace Basalt
 			cb.transformation = glm::transpose(transposedMVP);
 			vertexConstantBuffer->UpdateData(cb);
 
-			RenderCommand::DrawIndexed(indexBuffer->GetCount());
+			Renderer::Submit(firstShader, vertexArray);
+
+			Renderer::EndScene();
 
 			// Update message loop
 			window->OnUpdate();
@@ -185,7 +191,7 @@ namespace Basalt
 			imGuiLayer->End();
 
 			// End Frame
-			Renderer::GetRenderContext().SwapBuffers();
+			RenderCommand::SwapBuffers();
 		}		
 	}
 
