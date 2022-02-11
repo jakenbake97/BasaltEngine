@@ -6,7 +6,6 @@
 #include "LayerStack.h"
 #include "Events/Event.h"
 #include "ImGui/ImGuiLayer.h"
-#include "Renderer/OrthographicCamera.h"
 
 namespace Basalt
 {
@@ -47,6 +46,8 @@ namespace Basalt
 
 		friend int ::WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine, _In_ int nShowCmd);
 
+	public:
+		static Timer Time;
 	private:
 		String applicationName;
 		std::queue<std::shared_ptr<Event>> eventBuffer;
@@ -54,30 +55,11 @@ namespace Basalt
 		std::unique_ptr<Window> window;
 
 		int exitCode = 0;
-		Timer timer;
 
 		LayerStack layerStack;
 		std::shared_ptr<ImGuiLayer> imGuiLayer;
 
-		struct VertexCBuffData
-		{
-			Mat4x4 transformation;
-		};
-
-		struct PixelCBuffData
-		{
-			Vector4 faceColors[6];
-		};
-
-		std::shared_ptr<class Shader> firstShader;
-		std::shared_ptr<VertexArray> vertexArray;
-
-		std::shared_ptr<ConstantBuffer<VertexCBuffData>> vertexConstantBuffer;
-		std::shared_ptr<ConstantBuffer<PixelCBuffData>> pixelConstantBuffer;
-
 		static Application* instance;
-
-		OrthographicCamera cam;
 	};
 
 	extern std::unique_ptr<Application> CreateApplication();
