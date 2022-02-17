@@ -20,7 +20,7 @@ namespace Basalt
 		//TODO: Eventually should pass in Mesh list
 		virtual void DrawIndexed(const std::shared_ptr<VertexArray>& vertexArray) = 0;
 
-		virtual void SwapBuffers() = 0;
+		virtual void SwapBuffers(bool isVsync) = 0;
 
 		static API GetAPI() { return api; }
 	private:

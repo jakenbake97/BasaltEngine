@@ -15,7 +15,7 @@ namespace Basalt
 		RenderContext& operator=(RenderContext&& other) noexcept = delete;
 		virtual ~RenderContext() = default;
 		
-		virtual void SwapBuffers() = 0;
+		virtual void SwapBuffers(bool isVsync) = 0;
 		virtual void ClearColor(Color color) = 0;
 		virtual void* GetDevice() = 0;
 		virtual void* GetDeviceContext() = 0;

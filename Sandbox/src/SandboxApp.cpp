@@ -74,6 +74,7 @@ public:
 
 	void OnUpdate(const float deltaTime) override
 	{
+		lastTime = deltaTime;
 		Basalt::Vector3 camPosition = cam.GetPosition();
 		float camRotation = cam.GetRotation();
 
@@ -151,10 +152,12 @@ public:
 		ImGui::Begin("Camera Transform");
 		ImGui::TextColored({ 0.8f, 0.2f, 0.2f, 1.0f }, "Camera Position: %f, %f, %f", cam.GetPosition().x, cam.GetPosition().y, cam.GetPosition().z);
 		ImGui::TextColored({ 0.2f, 0.8f, 0.2f, 1.0f }, "Camera Rotation: %f", cam.GetRotation());
+		ImGui::Text("Frame Time: %f | %f fps", lastTime * 1000.0, 1.0/lastTime);
 		ImGui::End();
 	}
 
 	Basalt::OrthographicCamera cam;
+	float lastTime;
 	struct VertexCBuffData
 	{
 		Basalt::Mat4x4 transformation;

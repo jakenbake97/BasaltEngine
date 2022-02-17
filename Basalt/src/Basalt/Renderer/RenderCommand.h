@@ -16,9 +16,9 @@ namespace Basalt
 			rendererApi->DrawIndexed(vertexArray);
 		}
 
-		static void SwapBuffers()
+		static void SwapBuffers(bool isVsync)
 		{
-			rendererApi->SwapBuffers();
+			rendererApi->SwapBuffers(isVsync);
 		}
 	private:
 		static RendererAPI* rendererApi;

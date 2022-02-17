@@ -173,9 +173,9 @@ namespace Basalt
 		context->RSSetViewports(1u, &viewport);
 	}
 
-	void Dx11Context::SwapBuffers()
+	void Dx11Context::SwapBuffers(bool isVsync)
 	{
-		DX_DEVICE_REMOVED_CHECK(swapChain->Present(1u, 0u));
+		DX_DEVICE_REMOVED_CHECK(swapChain->Present(isVsync, 0u));
 	}
 
 	void Dx11Context::ClearColor(const Color color)

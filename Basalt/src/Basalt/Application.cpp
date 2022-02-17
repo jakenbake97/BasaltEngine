@@ -29,6 +29,8 @@ namespace Basalt
 		window = Window::Create({windowName});
 		Renderer::Initialize(*window);
 
+		window->SetVSync(true);
+
 		imGuiLayer = std::make_shared<ImGuiLayer>();
 		PushOverlay(imGuiLayer);
 	}
@@ -63,7 +65,7 @@ namespace Basalt
 			imGuiLayer->End();
 
 			// End Frame
-			RenderCommand::SwapBuffers();
+			RenderCommand::SwapBuffers(window->IsVSync());
 		}		
 	}
 

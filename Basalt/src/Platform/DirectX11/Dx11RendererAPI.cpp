@@ -19,8 +19,8 @@ namespace Basalt
 		static_cast<ID3D11DeviceContext*>(Renderer::GetRenderContext().GetDeviceContext())->DrawIndexed(vertexArray->GetIndexBuffer()->GetCount(), 0u, 0u);
 	}
 
-	void Dx11RendererAPI::SwapBuffers()
+	void Dx11RendererAPI::SwapBuffers(const bool isVsync)
 	{
-		Renderer::GetRenderContext().SwapBuffers();
+		Renderer::GetRenderContext().SwapBuffers(isVsync);
 	}
 }

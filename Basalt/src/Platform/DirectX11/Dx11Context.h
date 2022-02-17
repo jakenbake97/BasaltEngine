@@ -41,7 +41,7 @@ namespace Basalt
 		Dx11Context& operator=(const Dx11Context& other) = delete;
 		Dx11Context& operator=(Dx11Context&& other) noexcept = delete;
 
-		void SwapBuffers() override;
+		void SwapBuffers(bool isVsync) override;
 		void ClearColor(Color color) override;
 		void* GetDevice() override;
 		void* GetDeviceContext() override;

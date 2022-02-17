@@ -9,6 +9,6 @@ namespace Basalt
 		void Clear(Color color) override;
 		void DrawIndexed(const std::shared_ptr<VertexArray>& vertexArray) override;
 
-		void SwapBuffers() override;
+		void SwapBuffers(bool isVsync) override;
 	};
 }
