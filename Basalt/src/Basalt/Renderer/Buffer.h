@@ -105,7 +105,7 @@ namespace Basalt
 		virtual void UpdateData(const T& data) = 0;
 
 		static std::shared_ptr<ConstantBuffer<T>> Create(const T& data);
-
+		
 		static std::shared_ptr<ConstantBuffer<T>> Create();
 	};
 }
