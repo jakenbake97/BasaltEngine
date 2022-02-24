@@ -19,7 +19,7 @@ namespace Basalt
 
 		static RenderContext& GetRenderContext();
 
-		static void BeginScene(const OrthographicCamera& camera);
+		static void BeginScene();
 		static void EndScene();
 
 		static void Submit(const std::shared_ptr<Shader>& shader, const std::shared_ptr<VertexArray>& vertexArray);
@@ -31,7 +31,5 @@ namespace Basalt
 		{
 			Mat4x4 viewProjectionMatrix;
 		};
-
-		static std::unique_ptr<SceneData> sceneData;
 	};
 }

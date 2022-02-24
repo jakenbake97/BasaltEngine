@@ -106,39 +106,33 @@ public:
 		cam.SetPosition(camPosition);
 		cam.SetRotation(camRotation);
 
-		Basalt::Renderer::BeginScene(cam);
+		Basalt::Renderer::BeginScene();
 
-		Basalt::Vector3 position(0, 0, 1);
+		const Basalt::Mat4x4 cubeScale = glm::scale(Basalt::Mat4x4(1.0f), Basalt::Vector3(0.1f));
 
-		Basalt::Mat4x4 model =
-			glm::translate(Basalt::Mat4x4(1.0f), position) *
-			glm::rotate(Basalt::Mat4x4(1.0f), Basalt::Application::Time.GetTime(), Basalt::Vector3(0, 0, 1)) *
-			glm::rotate(Basalt::Mat4x4(1.0f), Basalt::Application::Time.GetTime() / 2.0f, Basalt::Vector3(0.5f, 0.5f, 0)) *
-			glm::scale(Basalt::Mat4x4(1.0f), Basalt::Vector3(0.5f, 0.5f, 0.5f));
-
-		Basalt::Mat4x4 transposedMVP = cam.GetViewProjectionMatrix() * model;
-
-		VertexCBuffData cb =
+		for (int i = 0; i < 5; i++)
 		{
+			for (int j = 0; j < 5; j++)
 			{
-				glm::transpose(transposedMVP)
+				Basalt::Vector3 cubePos(i * 0.25f, j * 0.25f, 1.0f);
+				const Basalt::Mat4x4 model = glm::translate(Basalt::Mat4x4(1.0f), cubePos) *
+					glm::rotate(Basalt::Mat4x4(1.0f), i * Basalt::Application::Time.GetTime(), Basalt::Vector3(0,1,0)) *
+					glm::rotate(Basalt::Mat4x4(1.0f), j * Basalt::Application::Time.GetTime(), Basalt::Vector3(0,0,1))*
+					cubeScale;
+
+				const Basalt::Mat4x4 transposedMVP = cam.GetViewProjectionMatrix() * model;
+
+				const VertexCBuffData cb =
+				{
+					{
+						glm::transpose(transposedMVP)
+					}
+				};
+				vertexConstantBuffer->UpdateData(cb);
+
+				Basalt::Renderer::Submit(cubeShader, vertexArray);
 			}
-		};
-		vertexConstantBuffer->UpdateData(cb);
-
-		Basalt::Renderer::Submit(cubeShader, vertexArray);
-
-		position = Basalt::Vector3(1, 1, 1);
-		model =
-			glm::translate(Basalt::Mat4x4(1.0f), position) *
-			glm::rotate(Basalt::Mat4x4(1.0f), Basalt::Application::Time.GetTime() * 4.0f, Basalt::Vector3(0, 0, 1)) *
-			glm::rotate(Basalt::Mat4x4(1.0f), -Basalt::Application::Time.GetTime() * 8.0f, Basalt::Vector3(0.5f, 0.5f, 0));
-
-		transposedMVP = cam.GetViewProjectionMatrix() * model;
-		cb.transformation = glm::transpose(transposedMVP);
-		vertexConstantBuffer->UpdateData(cb);
-
-		Basalt::Renderer::Submit(cubeShader, vertexArray);
+		}
 
 		Basalt::Renderer::EndScene();
 	}

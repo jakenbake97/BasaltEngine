@@ -21,7 +21,7 @@ namespace Basalt
 
 		void HandleMouseButtonDown(MouseCode mouseCode) override;
 		void HandleMouseButtonUp(MouseCode mouseCode) override;
-		void HandleMouseMoved(int xPos, int yPos) override;
+		void HandleMouseMoved(Vector2Int position) override;
 		void HandleMouseWheel(int delta) override;
 
 		void HandleMouseEnter() override;
@@ -31,8 +31,7 @@ namespace Basalt
 		std::unordered_map<KeyCode, bool> keyStates;
 		
 		std::unordered_map<MouseCode, bool> mouseButtonStates;
-		int x = 0;
-		int y = 0;
+		Vector2Int pos;
 		bool mouseInWindow = false;
 		int accumulatedWheelDelta = 0;
 	};

@@ -42,11 +42,10 @@ namespace Basalt
 		Application::OnEvent(mouseUp);
 	}
 
-	void WindowsInput::HandleMouseMoved(const int xPos, const int yPos)
+	void WindowsInput::HandleMouseMoved(const Vector2Int position)
 	{
-		x = xPos;
-		y = yPos;
-		const auto mouseMoved = std::make_shared<MouseMovedEvent>(xPos, yPos);
+		pos = position;
+		const auto mouseMoved = std::make_shared<MouseMovedEvent>(pos);
 		Application::OnEvent(mouseMoved);
 	}
 
@@ -71,14 +70,14 @@ namespace Basalt
 	void WindowsInput::HandleMouseEnter()
 	{
 		mouseInWindow = true;
-		const auto mouseEnter = std::make_shared<MouseEnterEvent>(x, y);
+		const auto mouseEnter = std::make_shared<MouseEnterEvent>(pos);
 		Application::OnEvent(mouseEnter);
 	}
 
 	void WindowsInput::HandleMouseLeave()
 	{
 		mouseInWindow = false;
-		const auto mouseLeave = std::make_shared<MouseLeaveEvent>(x, y);
+		const auto mouseLeave = std::make_shared<MouseLeaveEvent>(pos);
 		Application::OnEvent(mouseLeave);
 	}
 
@@ -94,7 +93,7 @@ namespace Basalt
 
 	Vector2Int WindowsInput::CheckMousePosition()
 	{
-		return { x,y };
+		return pos;
 	}
 
 	bool WindowsInput::CheckMouseInWindow()

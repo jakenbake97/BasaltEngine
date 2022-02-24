@@ -47,7 +47,7 @@ namespace Basalt
 		static void OnKeyUp(const KeyCode keyCode) { Input::OnKeyUp(keyCode); }
 		static void OnMouseButtonDown(const MouseCode mouseCode) { Input::OnMouseButtonDown(mouseCode); }
 		static void OnMouseButtonUp(const MouseCode mouseCode) { Input::OnMouseButtonUp(mouseCode); }
-		static void OnMouseMoved(const int xPos, const int yPos) { Input::OnMouseMoved(xPos, yPos); }
+		static void OnMouseMoved(const Vector2Int position) { Input::OnMouseMoved(position); }
 		static void OnMouseWheel(const int wheelDelta) { Input::OnMouseWheel(wheelDelta); }
 		static void OnMouseEnter() { Input::OnMouseEnter(); }
 		static void OnMouseLeave() { Input::OnMouseLeave(); }

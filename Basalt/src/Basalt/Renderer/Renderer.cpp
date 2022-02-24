@@ -10,7 +10,6 @@
 namespace Basalt
 {
 	std::unique_ptr<RenderContext> Renderer::context;
-	std::unique_ptr<Renderer::SceneData> Renderer::sceneData = std::make_unique<Renderer::SceneData>();
 
 	void Renderer::Initialize(const Window& window)
 	{
@@ -22,9 +21,8 @@ namespace Basalt
 		return *context;
 	}
 
-	void Renderer::BeginScene(const OrthographicCamera& camera)
+	void Renderer::BeginScene()
 	{
-		sceneData->viewProjectionMatrix = camera.GetViewProjectionMatrix();
 	}
 
 	void Renderer::EndScene()

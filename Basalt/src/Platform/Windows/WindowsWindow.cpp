@@ -261,7 +261,7 @@ namespace Basalt
 		case WM_MOVE:
 			{
 				const auto [x, y] = MAKEPOINTS(lParam);
-				const auto event = std::make_shared<WindowMovedEvent>(x, y);
+				const auto event = std::make_shared<WindowMovedEvent>(Vector2Int(x,y));
 				Application::OnEvent(event);
 
 				break;
@@ -315,7 +315,7 @@ namespace Basalt
 				// The mouse is over the client
 				if (x >= 0 && x < (short)properties.width && y >= 0 && y < (short)properties.height)
 				{
-					OnMouseMoved(x, y);
+					OnMouseMoved({x,y});
 					if (!Input::IsMouseInWindow())
 					{
 						SetCapture(hWnd);
@@ -327,7 +327,7 @@ namespace Basalt
 				{
 					if (wParam & (MK_LBUTTON | MK_RBUTTON | MK_MBUTTON | MK_XBUTTON1 | MK_XBUTTON2))
 					{
-						OnMouseMoved(x, y);
+						OnMouseMoved({x, y});
 					}
 						// no button pressed, release capture
 					else

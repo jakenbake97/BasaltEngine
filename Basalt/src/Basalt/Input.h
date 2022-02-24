@@ -30,7 +30,7 @@ namespace Basalt
 
 		static void OnMouseButtonDown(const MouseCode mouseCode) { return instance->HandleMouseButtonDown(mouseCode); }
 		static void OnMouseButtonUp(const MouseCode mouseCode) { return instance->HandleMouseButtonUp(mouseCode); }
-		static void OnMouseMoved(const int xPos, const int yPos) { return instance->HandleMouseMoved(xPos, yPos); }
+		static void OnMouseMoved(const Vector2Int position) { return instance->HandleMouseMoved(position); }
 		static void OnMouseWheel(const int wheelDelta) { return instance->HandleMouseWheel(wheelDelta); }
 
 		static void OnMouseEnter() { return instance->HandleMouseEnter(); }
@@ -48,7 +48,7 @@ namespace Basalt
 		
 		virtual void HandleMouseButtonDown(MouseCode mouseCode) = 0;
 		virtual void HandleMouseButtonUp(MouseCode mouseCode) = 0;
-		virtual void HandleMouseMoved(int x, int y) = 0;
+		virtual void HandleMouseMoved(Vector2Int position) = 0;
 		virtual void HandleMouseWheel(int delta) = 0;
 
 		virtual void HandleMouseEnter() = 0;
