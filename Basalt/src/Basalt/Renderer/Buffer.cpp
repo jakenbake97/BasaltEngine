@@ -9,7 +9,7 @@
 
 namespace Basalt
 {
-	BufferAttribute::BufferAttribute(String name, const ShaderDataType type, bool normalized)
+	BufferAttribute::BufferAttribute(String name, const ShaderDataType type, const bool normalized)
 		: name(std::move(name)), type(type), size(Shader::ShaderDataTypeSize(type)), offset(0), normalized(normalized)
 	{
 	}
@@ -32,11 +32,6 @@ namespace Basalt
 		}
 	}
 
-	/// <summary>
-	/// Creates an Index buffer for the currently selected API from the passed collection of <paramref name="indices"/>
-	/// </summary>
-	/// <param name="indices">A collection of index values to be used in the buffer</param>
-	/// <returns>a base class pointer to the API specific buffer that is created</returns>
 	std::shared_ptr<IndexBuffer> IndexBuffer::Create(std::vector<uint32> indices)
 	{
 		switch (Renderer::GetAPI())
