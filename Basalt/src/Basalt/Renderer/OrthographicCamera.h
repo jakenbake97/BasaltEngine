@@ -18,7 +18,7 @@ namespace Basalt
 		const Mat4x4& GetViewMatrix() const;
 		const Mat4x4& GetViewProjectionMatrix() const;
 	private:
-		void RecalculateViewMatrix();
+		void RecalculateViewProjectionMatrix();
 	private:
 		Mat4x4 projectionMatrix;
 		Mat4x4 viewMatrix;
