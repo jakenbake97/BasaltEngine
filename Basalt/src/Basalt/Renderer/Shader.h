@@ -2,6 +2,9 @@
 
 namespace Basalt
 {
+		/// <summary>
+		/// The type/stage of the shader
+		/// </summary>
 		enum class ShaderType
 		{
 			None = 0,
@@ -9,6 +12,9 @@ namespace Basalt
 			Fragment
 		};
 
+		/// <summary>
+		/// The data types supported in the shader. Used for filling a buffer layout
+		/// </summary>
 		enum class ShaderDataType
 		{
 			None = 0,
@@ -52,11 +58,29 @@ namespace Basalt
 		Shader& operator=(Shader&& other) noexcept = delete;
 		virtual ~Shader() = default;
 
+		/// <summary>
+		/// Binds the shader to the selected render pipeline
+		/// </summary>
 		virtual void Bind() const = 0;
+
+		/// <summary>
+		/// Removes the binding of the shader to the selected render pipeline
+		/// </summary>
 		virtual void Unbind() const = 0;
 
+		/// <summary>
+		/// Creates a shader for the selected renderer api from vertex and fragment/pixel shader programs
+		/// </summary>
+		/// <param name="vertexSource">The file to use as the vertex shader</param>
+		/// <param name="fragmentSource">The file to use as the fragment/pixel shader</param>
+		/// <returns>A pointer to the Basalt Shader that was created</returns>
 		static std::shared_ptr<Shader> Create(const String& vertexSource, const String& fragmentSource);
 
+		/// <summary>
+		/// Returns the size of a shader data type. This is useful for calculating the stride and offset of buffer layouts
+		/// </summary>
+		/// <param name="type">The data type to get the size of</param>
+		/// <returns>The size of <paramref name="type"/></returns>
 		static constexpr uint32 ShaderDataTypeSize(const ShaderDataType type)
 		{
 			switch (type)
@@ -93,6 +117,11 @@ namespace Basalt
 			}
 		}
 
+		/// <summary>
+		/// Returns the number of components in the <paramref name="type"/> shader data type
+		/// </summary>
+		/// <param name="type">The data type to get the number of components of</param>
+		/// <returns>The number of components that make up <paramref name="type"/></returns>
 		static constexpr uint32 GetShaderDataTypeComponentCount(const ShaderDataType type)
 		{
 			switch (type)

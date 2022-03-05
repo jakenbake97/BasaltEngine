@@ -34,7 +34,7 @@ const std::shared_ptr<Basalt::VertexBuffer>& Basalt::VertexArray::GetVertexBuffe
 	return vertBuffer;
 }
 
-const std::shared_ptr<Basalt::IndexBuffer>& Basalt::VertexArray::GetIndexBuffer()
+const std::shared_ptr<Basalt::IndexBuffer>& Basalt::VertexArray::GetIndexBuffer() const
 {
 	return idxBuffer;
 }
