@@ -17,11 +17,29 @@ namespace Basalt
 		Input(Input&& other) noexcept = delete;
 		Input& operator=(Input&& other) noexcept = delete;
 		virtual ~Input() = default;
-	
+
+		/// <summary>
+		/// Returns a bool indicating if the key <paramref name="keycode"/> is pressed or not
+		/// </summary>
+		/// <param name="keycode">The key to check the status of</param>
+		/// <returns>True if the key is pressed. False if it is not</returns>
 		static bool GetKey(const KeyCode keycode) { return instance->CheckKey(keycode); }
 
+		/// <summary>
+		/// Returns a bool indicating if the mouse <paramref name="button"/> is pressed or not
+		/// </summary>
+		/// <param name="button">The button to check the status of</param>
+		/// <returns>True if they button is pressed. False if it is not</returns>
 		static bool GetMouseButton(const KeyCode button) { return instance->CheckMouseButton(button); }
+		/// <summary>
+		/// Returns the current position of the mouse on the window
+		/// </summary>
+		/// <returns>The position of the mouse relative to the window</returns>
 		static Vector2Int GetMousePosition() { return instance->CheckMousePosition(); }
+		/// <summary>
+		/// Returns a bool indicating if the mouse cursor is inside or outside of the window
+		/// </summary>
+		/// <returns>True if the mouse is inside the window. False if the mouse is outside of the window</returns>
 		static bool IsMouseInWindow() { return instance->CheckMouseInWindow(); }
 
 	protected:

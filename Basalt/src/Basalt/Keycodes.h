@@ -147,6 +147,9 @@ namespace Basalt
 			Menu = 348
 		};
 
+		/// <summary>
+		/// Converts a Windows keycode into the named Basalt keycodes
+		/// </summary>
 		const std::unordered_map<unsigned char, KeyCode> WindowsToBasaltKeyCode
 		{
 			{VK_SPACE, Space},
@@ -273,6 +276,9 @@ namespace Basalt
 			{VK_APPS, Menu}
 		};
 
+		/// <summary>
+		/// Converts a keycode into a string for the name of that key
+		/// </summary>
 		const std::unordered_map<KeyCode, String> GetKeyName
 		{
 			{32, "Space"},

@@ -11,11 +11,20 @@ namespace Basalt
 		uint32 width;
 		uint32 height;
 
+		/// <summary>
+		/// Creates properties for the window to use when it is created
+		/// </summary>
+		/// <param name="title">[Optional] The title to display on the window</param>
+		/// <param name="width">[Optional] The width in pixels of the window</param>
+		/// <param name="height">[Optional] The height in pixels of the window</param>
 		WindowProperties(String title = "Basalt Engine", const uint32 width = 1280, const uint32 height = 720)
 			: title(std::move(title)), width(width), height(height)
 		{}
 	};
 
+	/// <summary>
+	/// An operating system agnostic interface to the window
+	/// </summary>
 	class Window
 	{
 	protected:
@@ -26,19 +35,47 @@ namespace Basalt
 		Window& operator=(const Window& other) = delete;
 		Window& operator=(Window&& other) noexcept = delete;
 
+		/// <summary>
+		/// Creates a window based on the current operating system
+		/// </summary>
+		/// <param name="properties">The properties to use to create the window</param>
+		/// <returns>A unique pointer to the window that was created</returns>
 		static std::unique_ptr<Window> Create(const WindowProperties& properties = WindowProperties());
 
 		virtual ~Window() = default;
 
+		/// <summary>
+		/// Runs the window's message loop to process inputs and events.
+		/// </summary>
 		virtual void OnUpdate() = 0;
 
 		// Window attributes
+		/// <summary>
+		/// Returns the width of the window
+		/// </summary>
+		/// <returns>The width of the window in pixels</returns>
 		virtual uint32 GetWidth() const = 0;
+		/// <summary>
+		/// Returns the height of the window
+		/// </summary>
+		/// <returns>The height of the window in pixels</returns>
 		virtual uint32 GetHeight() const = 0;
 
+		/// <summary>
+		/// Sets the window to either enable or disable Vsync when rendering
+		/// </summary>
+		/// <param name="enabled">Indicates whether the window should update immediately or wait until a vblank</param>
 		virtual void SetVSync(bool enabled) = 0;
+		/// <summary>
+		/// Returns a bool indicating if Vsync is enabled for this window
+		/// </summary>
+		/// <returns>True if vsync is enabled, false if vsync is disabled</returns>
 		virtual bool IsVSync() const = 0;
 
+		/// <summary>
+		/// Returns the pointer to the window handle
+		/// </summary>
+		/// <returns>a void pointer to the window which can be cast to the specific operating system window</returns>
 		virtual void* GetWindowHandle() const = 0;
 
 	protected:

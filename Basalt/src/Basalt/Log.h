@@ -14,23 +14,48 @@ namespace Basalt
 	class Log
 	{
 	public:
+		/// <summary>
+		/// Initializes both the core engine and client side loggers
+		/// </summary>
+		/// <param name="clientName">The name of the client application to name the logger</param>
 		static void Init(const class String& clientName);
+		/// <summary>
+		/// Initializes just the core engine logger
+		/// </summary>
 		static void InitCoreLog();
+		/// <summary>
+		/// Initializes the client logger and also initializes the core engine logger if it isn't already
+		/// </summary>
+		/// <param name="clientName">The name of the client application to name the logger</param>
 		static void InitClientLog(const class String& clientName);
 
+		/// <summary>
+		/// Returns the core engine logger
+		/// </summary>
+		/// <returns>A pointer to the core engine logger</returns>
 		static std::shared_ptr<spdlog::logger>& GetCoreLogger() { return coreLogger; }
+		/// <summary>
+		/// Returns the client logger
+		/// </summary>
+		/// <returns>A pointer to the client logger</returns>
 		static std::shared_ptr<spdlog::logger>& GetClientLogger() { return clientLogger; }
 	private:
 		static std::shared_ptr<spdlog::logger> coreLogger;
 		static std::shared_ptr<spdlog::logger> clientLogger;
 	};
 
+	/// <summary>
+	/// Identifies which logger is being used
+	/// </summary>
 	enum class ELogger
 	{
 		Core,
 		Client
 	};
 
+	/// <summary>
+	/// Identifies the severity of the log message
+	/// </summary>
 	enum class ELogSeverity
 	{
 		Trace,
