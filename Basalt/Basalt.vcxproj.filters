@@ -114,6 +114,9 @@
     <ClInclude Include="src\Basalt\Renderer\Buffer.h">
       <Filter>src\Basalt\Renderer</Filter>
     </ClInclude>
+    <ClInclude Include="src\Basalt\Renderer\OrthographicCamera.h">
+      <Filter>src\Basalt\Renderer</Filter>
+    </ClInclude>
     <ClInclude Include="src\Basalt\Renderer\RenderCommand.h">
       <Filter>src\Basalt\Renderer</Filter>
     </ClInclude>
@@ -127,6 +130,9 @@
       <Filter>src\Basalt\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Basalt\Renderer\Shader.h">
+      <Filter>src\Basalt\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Basalt\Renderer\VertexArray.h">
       <Filter>src\Basalt\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Basalt\Timer.h">
@@ -1413,8 +1419,6 @@
     <ClInclude Include="vendor\glm\glm\vector_relational.hpp">
       <Filter>vendor\glm\glm</Filter>
     </ClInclude>
-    <ClInclude Include="src\Basalt\Renderer\OrthographicCamera.h" />
-    <ClInclude Include="src\Basalt\Renderer\VertexArray.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\BEpch.cpp">
@@ -1441,6 +1445,9 @@
     <ClCompile Include="src\Basalt\Renderer\Buffer.cpp">
       <Filter>src\Basalt\Renderer</Filter>
     </ClCompile>
+    <ClCompile Include="src\Basalt\Renderer\OrthographicCamera.cpp">
+      <Filter>src\Basalt\Renderer</Filter>
+    </ClCompile>
     <ClCompile Include="src\Basalt\Renderer\RenderCommand.cpp">
       <Filter>src\Basalt\Renderer</Filter>
     </ClCompile>
@@ -1451,6 +1458,9 @@
       <Filter>src\Basalt\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Basalt\Renderer\Shader.cpp">
+      <Filter>src\Basalt\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Basalt\Renderer\VertexArray.cpp">
       <Filter>src\Basalt\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Basalt\Timer.cpp">
@@ -1480,8 +1490,6 @@
     <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp">
       <Filter>src\Platform\Windows</Filter>
     </ClCompile>
-    <ClCompile Include="src\Basalt\Renderer\OrthographicCamera.cpp" />
-    <ClCompile Include="src\Basalt\Renderer\VertexArray.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="src\Platform\DirectX11\Shaders\FirstShader-p.hlsl">

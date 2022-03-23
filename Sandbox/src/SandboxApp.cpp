@@ -55,17 +55,8 @@ public:
 		vertexConstantBuffer = Basalt::ConstantBuffer<VertexCBuffData>::Create();
 		vertexConstantBuffer->Bind(Basalt::ShaderType::Vertex);
 
-		const PixelCBuffData pixelCB =
-		{
-			{
-				{0.8f, 0.2f, 0.3f, 1.0f},
-				{0.3f, 0.8f, 0.2f, 1.0f},
-				{0.2f, 0.3f, 0.8f, 1.0f},
-				{0.8f, 0.8f, 0.2f, 1.0f},
-				{0.8f, 0.2f, 0.8f, 1.0f},
-				{0.2f, 0.8f, 0.8f, 1.0f}
-			}
-		};
+		const PixelCBuffData pixelCB{};
+
 		pixelConstantBuffer = Basalt::ConstantBuffer<PixelCBuffData>::Create(pixelCB);
 		pixelConstantBuffer->Bind(Basalt::ShaderType::Fragment);
 
@@ -110,14 +101,15 @@ public:
 
 		const Basalt::Mat4x4 cubeScale = glm::scale(Basalt::Mat4x4(1.0f), Basalt::Vector3(0.1f));
 
+		Basalt::Vector4 redColor(0.8f, 0.2f, 0.3f, 1.0f);
+		Basalt::Vector4 blueColor(0.2f, 0.3f, 0.8f, 1.0f);
+
 		for (int i = 0; i < 5; i++)
 		{
 			for (int j = 0; j < 5; j++)
 			{
 				Basalt::Vector3 cubePos(i * 0.25f, j * 0.25f, 1.0f);
 				const Basalt::Mat4x4 model = glm::translate(Basalt::Mat4x4(1.0f), cubePos) *
-					glm::rotate(Basalt::Mat4x4(1.0f), i * Basalt::Application::Time.GetTime(), Basalt::Vector3(0,1,0)) *
-					glm::rotate(Basalt::Mat4x4(1.0f), j * Basalt::Application::Time.GetTime(), Basalt::Vector3(0,0,1))*
 					cubeScale;
 
 				const Basalt::Mat4x4 transposedMVP = cam.GetViewProjectionMatrix() * model;
@@ -128,7 +120,16 @@ public:
 						glm::transpose(transposedMVP)
 					}
 				};
+
 				vertexConstantBuffer->UpdateData(cb);
+
+				PixelCBuffData pixelCBuff
+				{
+					{squareColor}
+				};
+
+
+				pixelConstantBuffer->UpdateData(pixelCBuff);
 
 				Basalt::Renderer::Submit(cubeShader, vertexArray);
 			}
@@ -143,10 +144,9 @@ public:
 
 	void OnImGuiRender() override
 	{
-		ImGui::Begin("Camera Transform");
-		ImGui::TextColored({ 0.8f, 0.2f, 0.2f, 1.0f }, "Camera Position: %f, %f, %f", cam.GetPosition().x, cam.GetPosition().y, cam.GetPosition().z);
-		ImGui::TextColored({ 0.2f, 0.8f, 0.2f, 1.0f }, "Camera Rotation: %f", cam.GetRotation());
+		ImGui::Begin("Settings");
 		ImGui::Text("Frame Time: %f | %f fps", lastTime * 1000.0, 1.0/lastTime);
+		ImGui::ColorEdit4("Square Color", glm::value_ptr(squareColor));
 		ImGui::End();
 	}
 
@@ -159,11 +159,13 @@ public:
 
 	struct PixelCBuffData
 	{
-		Basalt::Vector4 faceColors[6];
+		Basalt::Vector4 faceColor;
 	};
 
 	std::shared_ptr<Basalt::Shader> cubeShader;
 	std::shared_ptr<Basalt::VertexArray> vertexArray;
+
+	Basalt::Vector4 squareColor;
 
 	std::shared_ptr<Basalt::ConstantBuffer<VertexCBuffData>> vertexConstantBuffer;
 	std::shared_ptr<Basalt::ConstantBuffer<PixelCBuffData>> pixelConstantBuffer;

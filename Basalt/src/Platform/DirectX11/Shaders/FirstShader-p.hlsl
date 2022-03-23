@@ -1,9 +1,9 @@
 cbuffer CBuf
 {
-	float4 faceColors[6];
+	float4 faceColors;
 }
 
-float4 main(uint tId : SV_PRIMITIVEID) : SV_TARGET
+float4 main() : SV_TARGET
 {
-	return faceColors[tId / 2];
+	return faceColors;
 }

@@ -10,7 +10,7 @@ namespace Basalt
 		/// Commands the selected rendering api to clear the frame buffer
 		/// </summary>
 		/// <param name="color">option color to clear the buffer to</param>
-		static void Clear(const Color color = { 0.25f, 0.25f, 0.5f, 1.0f })
+		static void Clear(const Color color = { 0.11f, 0.1f, 0.11f, 1.0f })
 		{
 			rendererApi->Clear(color);
 		}

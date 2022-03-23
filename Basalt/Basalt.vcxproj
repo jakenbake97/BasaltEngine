@@ -131,8 +131,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\Basalt\Renderer\OrthographicCamera.h" />
-    <ClInclude Include="src\Basalt\Renderer\VertexArray.h" />
     <ClInclude Include="src\BEpch.h" />
     <ClInclude Include="src\Basalt.h" />
     <ClInclude Include="src\Basalt\Application.h" />
@@ -152,11 +150,13 @@
     <ClInclude Include="src\Basalt\Log.h" />
     <ClInclude Include="src\Basalt\MouseCodes.h" />
     <ClInclude Include="src\Basalt\Renderer\Buffer.h" />
+    <ClInclude Include="src\Basalt\Renderer\OrthographicCamera.h" />
     <ClInclude Include="src\Basalt\Renderer\RenderCommand.h" />
     <ClInclude Include="src\Basalt\Renderer\RenderContext.h" />
     <ClInclude Include="src\Basalt\Renderer\Renderer.h" />
     <ClInclude Include="src\Basalt\Renderer\RendererAPI.h" />
     <ClInclude Include="src\Basalt\Renderer\Shader.h" />
+    <ClInclude Include="src\Basalt\Renderer\VertexArray.h" />
     <ClInclude Include="src\Basalt\Timer.h" />
     <ClInclude Include="src\Basalt\Utility\Math.h" />
     <ClInclude Include="src\Basalt\Utility\String.h" />
@@ -587,8 +587,6 @@
     <ClInclude Include="vendor\glm\glm\vector_relational.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Basalt\Renderer\OrthographicCamera.cpp" />
-    <ClCompile Include="src\Basalt\Renderer\VertexArray.cpp" />
     <ClCompile Include="src\BEpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
@@ -599,10 +597,12 @@
     <ClCompile Include="src\Basalt\LayerStack.cpp" />
     <ClCompile Include="src\Basalt\Log.cpp" />
     <ClCompile Include="src\Basalt\Renderer\Buffer.cpp" />
+    <ClCompile Include="src\Basalt\Renderer\OrthographicCamera.cpp" />
     <ClCompile Include="src\Basalt\Renderer\RenderCommand.cpp" />
     <ClCompile Include="src\Basalt\Renderer\Renderer.cpp" />
     <ClCompile Include="src\Basalt\Renderer\RendererAPI.cpp" />
     <ClCompile Include="src\Basalt\Renderer\Shader.cpp" />
+    <ClCompile Include="src\Basalt\Renderer\VertexArray.cpp" />
     <ClCompile Include="src\Basalt\Timer.cpp" />
     <ClCompile Include="src\Platform\DirectX11\Dx11Buffer.cpp" />
     <ClCompile Include="src\Platform\DirectX11\Dx11Context.cpp" />
