@@ -138,7 +138,7 @@ public:
 		Basalt::Renderer::EndScene();
 	}
 
-	void OnEvent(std::shared_ptr<Basalt::Event>& event) override
+	void OnEvent(Basalt::Ref<Basalt::Event>& event) override
 	{
 	}
 
@@ -162,13 +162,13 @@ public:
 		Basalt::Vector4 faceColor;
 	};
 
-	std::shared_ptr<Basalt::Shader> cubeShader;
-	std::shared_ptr<Basalt::VertexArray> vertexArray;
+	Basalt::Ref<Basalt::Shader> cubeShader;
+	Basalt::Ref<Basalt::VertexArray> vertexArray;
 
 	Basalt::Vector4 squareColor;
 
-	std::shared_ptr<Basalt::ConstantBuffer<VertexCBuffData>> vertexConstantBuffer;
-	std::shared_ptr<Basalt::ConstantBuffer<PixelCBuffData>> pixelConstantBuffer;
+	Basalt::Ref<Basalt::ConstantBuffer<VertexCBuffData>> vertexConstantBuffer;
+	Basalt::Ref<Basalt::ConstantBuffer<PixelCBuffData>> pixelConstantBuffer;
 };
 
 class Sandbox : public Basalt::Application
@@ -183,7 +183,7 @@ public:
 	~Sandbox() override = default;
 };
 
-std::unique_ptr<Basalt::Application> Basalt::CreateApplication()
+Basalt::Scope<Basalt::Application> Basalt::CreateApplication()
 {
 	return std::make_unique<Sandbox>();
 }

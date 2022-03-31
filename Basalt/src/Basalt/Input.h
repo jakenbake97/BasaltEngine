@@ -75,6 +75,6 @@ namespace Basalt
 		virtual void ClearInputStates() = 0;
 		
 	private:
-		static std::unique_ptr<Input> instance;
+		static Scope<Input> instance;
 	};
 }

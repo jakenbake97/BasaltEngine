@@ -47,6 +47,6 @@ namespace Basalt
 		/// </summary>
 		/// <param name="window">a const reference to the window which will be rendered to, this is used to get the window handle</param>
 		/// <returns>a unique pointer to the RenderContext base class</returns>
-		static std::unique_ptr<RenderContext> CreateRenderContext(const Window& window);
+		static Scope<RenderContext> CreateRenderContext(const Window& window);
 	};
 }

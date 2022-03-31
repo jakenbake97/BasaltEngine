@@ -19,7 +19,7 @@ namespace Basalt
 		/// Commands the selected rendering api to draw the mesh in the vertex array
 		/// </summary>
 		/// <param name="vertexArray">the vertex data for the mesh (vertex buffer and index buffer)</param>
-		static void DrawIndexed(const std::shared_ptr<VertexArray>& vertexArray)
+		static void DrawIndexed(const Ref<VertexArray>& vertexArray)
 		{
 			rendererApi->DrawIndexed(vertexArray);
 		}

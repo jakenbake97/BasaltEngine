@@ -14,7 +14,7 @@ namespace Basalt
 		Renderer::GetRenderContext().ClearColor(color);
 	}
 
-	void Dx11RendererAPI::DrawIndexed(const std::shared_ptr<VertexArray>& vertexArray)
+	void Dx11RendererAPI::DrawIndexed(const Ref<VertexArray>& vertexArray)
 	{
 		static_cast<ID3D11DeviceContext*>(Renderer::GetRenderContext().GetDeviceContext())->DrawIndexed(vertexArray->GetIndexBuffer()->GetCount(), 0u, 0u);
 	}

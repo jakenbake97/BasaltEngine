@@ -29,7 +29,7 @@ namespace Basalt
 		/// Draws the mesh described in the <paramref name="vertexArray"/>
 		/// </summary>
 		/// <param name="vertexArray">The vertex and index data to draw based on the bound shader</param>
-		virtual void DrawIndexed(const std::shared_ptr<VertexArray>& vertexArray) = 0; //TODO: Eventually should pass in Mesh list
+		virtual void DrawIndexed(const Ref<VertexArray>& vertexArray) = 0; //TODO: Eventually should pass in Mesh list
 
 		/// <summary>
 		/// Swaps the frame buffers in the selected render api. If vsync is off this happens immediately, otherwise the api waits for the next vblank

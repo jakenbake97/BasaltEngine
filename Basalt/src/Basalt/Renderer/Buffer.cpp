@@ -32,7 +32,7 @@ namespace Basalt
 		}
 	}
 
-	std::shared_ptr<IndexBuffer> IndexBuffer::Create(std::vector<uint32> indices)
+	Ref<IndexBuffer> IndexBuffer::Create(std::vector<uint32> indices)
 	{
 		switch (Renderer::GetAPI())
 		{

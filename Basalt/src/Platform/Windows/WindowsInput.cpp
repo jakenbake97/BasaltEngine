@@ -7,7 +7,7 @@
 
 namespace Basalt
 {
-	std::unique_ptr<Input> Input::instance = std::make_unique<WindowsInput>();
+	Scope<Input> Input::instance = std::make_unique<WindowsInput>();
 
 	void WindowsInput::HandleKeyDown(const KeyCode keycode)
 	{

@@ -9,7 +9,7 @@
 
 namespace Basalt
 {
-	std::unique_ptr<RenderContext> Renderer::context;
+	Scope<RenderContext> Renderer::context;
 
 	void Renderer::Initialize(const Window& window)
 	{
@@ -29,7 +29,7 @@ namespace Basalt
 	{
 	}
 
-	void Renderer::Submit(const std::shared_ptr<Shader>& shader, const std::shared_ptr<VertexArray>& vertexArray)
+	void Renderer::Submit(const Ref<Shader>& shader, const Ref<VertexArray>& vertexArray)
 	{
 		shader->Bind();
 		vertexArray->Bind();

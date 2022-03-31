@@ -27,7 +27,7 @@ namespace Basalt
 		static_cast<ID3D11DeviceContext*>(Renderer::GetRenderContext().GetDeviceContext())->IASetVertexBuffers(0u, 0u, nullptr, nullptr, nullptr);
 	}
 
-	void Dx11VertexBuffer::SetLayout(const BufferLayout& layout, const std::shared_ptr<Shader>& shader)
+	void Dx11VertexBuffer::SetLayout(const BufferLayout& layout, const Ref<Shader>& shader)
 	{
 		bufLayout = layout;
 		auto blob = dynamic_cast<Dx11Shader*>(shader.get())->GetVertexBytecode();

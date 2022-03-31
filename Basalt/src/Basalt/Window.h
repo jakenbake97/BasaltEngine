@@ -40,7 +40,7 @@ namespace Basalt
 		/// </summary>
 		/// <param name="properties">The properties to use to create the window</param>
 		/// <returns>A unique pointer to the window that was created</returns>
-		static std::unique_ptr<Window> Create(const WindowProperties& properties = WindowProperties());
+		static Scope<Window> Create(const WindowProperties& properties = WindowProperties());
 
 		virtual ~Window() = default;
 

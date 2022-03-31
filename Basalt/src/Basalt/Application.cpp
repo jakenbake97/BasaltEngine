@@ -82,7 +82,7 @@ namespace Basalt
 			
 			EventDispatcher dispatcher(event);
 			dispatcher.Dispatch<WindowCloseEvent>([this](WindowCloseEvent& closeEvent)->bool {return this->OnWindowClose(closeEvent); });
-			dispatcher.Dispatch<AppQuitEvent>([this](AppQuitEvent& quitEvent)->bool {return this->Quit(quitEvent); });
+			dispatcher.Dispatch<AppQuitEvent>([this](const AppQuitEvent& quitEvent)->bool {return this->Quit(quitEvent); });
 
 			for (auto iterator = layerStack.rbegin(); iterator != layerStack.rend(); ++iterator)
 			{
@@ -100,19 +100,19 @@ namespace Basalt
 		return exitCode;
 	}
 
-	void Application::PushLayer(const std::shared_ptr<Layer>& layer)
+	void Application::PushLayer(const Ref<Layer>& layer)
 	{
 		layerStack.PushLayer(layer);
 		layer->OnAttach();
 	}
 
-	void Application::PushOverlay(const std::shared_ptr<Layer>& overlay)
+	void Application::PushOverlay(const Ref<Layer>& overlay)
 	{
 		layerStack.PushOverlay(overlay);
 		overlay->OnAttach();
 	}
 
-	void Application::OnEvent(const std::shared_ptr<Event>& event)
+	void Application::OnEvent(const Ref<Event>& event)
 	{	
 		instance->eventBuffer.push(event);
 	}

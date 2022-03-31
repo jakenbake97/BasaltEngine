@@ -16,7 +16,7 @@ namespace wrl = Microsoft::WRL;
 namespace Basalt
 {
 	
-	std::unique_ptr<RenderContext> RenderContext::CreateRenderContext(const Window& window)
+	Scope<RenderContext> RenderContext::CreateRenderContext(const Window& window)
 	{
 		return std::make_unique<Dx11Context>(window);
 	}

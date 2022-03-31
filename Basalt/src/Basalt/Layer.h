@@ -41,7 +41,7 @@ namespace Basalt
 		/// Event used to pass other events to this layer to be dispatched
 		/// </summary>
 		/// <param name="event"></param>
-		virtual void OnEvent(std::shared_ptr<Event>& event) {}
+		virtual void OnEvent(Ref<Event>& event) {}
 
 		/// <summary>
 		/// Returns the name of the layer

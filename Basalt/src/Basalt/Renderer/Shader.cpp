@@ -9,13 +9,13 @@
 
 namespace Basalt
 {
-	std::shared_ptr<Shader> Shader::Create(const String& vertexSource,  const String& fragmentSource)
+	Ref<Shader> Shader::Create(const String& vertexSource,  const String& fragmentSource)
 	{
 		switch (Renderer::GetAPI())
 		{
 		case Renderer::API::None: BE_ERROR("RendererAPI::None is not currently supported"); return nullptr;
 #ifdef BE_PLATFORM_WINDOWS
-		case Renderer::API::DirectX11: return std::make_unique<Dx11Shader>(vertexSource,
+		case Renderer::API::DirectX11: return std::make_shared<Dx11Shader>(vertexSource,
 			fragmentSource);
 #endif
 		}

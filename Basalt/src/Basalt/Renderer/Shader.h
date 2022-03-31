@@ -74,7 +74,7 @@ namespace Basalt
 		/// <param name="vertexSource">The file to use as the vertex shader</param>
 		/// <param name="fragmentSource">The file to use as the fragment/pixel shader</param>
 		/// <returns>A pointer to the Basalt Shader that was created</returns>
-		static std::shared_ptr<Shader> Create(const String& vertexSource, const String& fragmentSource);
+		static Ref<Shader> Create(const String& vertexSource, const String& fragmentSource);
 
 		/// <summary>
 		/// Returns the size of a shader data type. This is useful for calculating the stride and offset of buffer layouts

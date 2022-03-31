@@ -18,7 +18,7 @@ extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg
 
 namespace Basalt
 {
-	std::unique_ptr<Window> Window::Create(const WindowProperties& properties)
+	Scope<Window> Window::Create(const WindowProperties& properties)
 	{
 		return std::make_unique<WindowsWindow>(properties);
 	}

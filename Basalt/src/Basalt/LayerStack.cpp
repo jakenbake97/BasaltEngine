@@ -9,18 +9,18 @@ Basalt::LayerStack::~LayerStack()
 	}
 }
 
-void Basalt::LayerStack::PushLayer(const std::shared_ptr<Layer>& layer)
+void Basalt::LayerStack::PushLayer(const Ref<Layer>& layer)
 {
 	layers.emplace(layers.begin() + layerInsertionIndex, layer);
 	layerInsertionIndex++;
 }
 
-void Basalt::LayerStack::PushOverlay(const std::shared_ptr<Layer>& overlay)
+void Basalt::LayerStack::PushOverlay(const Ref<Layer>& overlay)
 {
 	layers.emplace_back(overlay);
 }
 
-void Basalt::LayerStack::PopLayer(const std::shared_ptr<Layer>& layer)
+void Basalt::LayerStack::PopLayer(const Ref<Layer>& layer)
 {
 	const auto iterator = std::find(layers.begin(), layers.begin() + layerInsertionIndex, layer);
 	if (iterator != layers.begin() + layerInsertionIndex)
@@ -31,7 +31,7 @@ void Basalt::LayerStack::PopLayer(const std::shared_ptr<Layer>& layer)
 	}
 }
 
-void Basalt::LayerStack::PopOverlay(const std::shared_ptr<Layer>& overlay)
+void Basalt::LayerStack::PopOverlay(const Ref<Layer>& overlay)
 {
 	const auto iterator = std::find(layers.begin() + layerInsertionIndex, layers.end(), overlay);
 	if (iterator != layers.end())

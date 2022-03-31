@@ -133,7 +133,7 @@ namespace Basalt
 		/// </summary>
 		/// <param name="layout">The new layout for the buffer</param>
 		/// <param name="shader">The shader to associate this buffer with</param>
-		virtual void SetLayout(const BufferLayout& layout, const std::shared_ptr<Shader>& shader) = 0;
+		virtual void SetLayout(const BufferLayout& layout, const Ref<Shader>& shader) = 0;
 
 		/// <summary>
 		/// Returns the current buffer layout
@@ -151,7 +151,7 @@ namespace Basalt
 		/// <returns> A base class pointer to the API specific vertex buffer that was created</returns>
 		template <typename T>
 		static std::shared_ptr<VertexBuffer> Create(const std::vector<T>& vertices,
-		                                            const std::shared_ptr<Shader>& shader,
+		                                            const Ref<Shader>& shader,
 		                                            const BufferLayout& layout = {
 			                                            {"Position", ShaderDataType::Float3}
 		                                            });
@@ -192,7 +192,7 @@ namespace Basalt
 		/// </summary>
 		/// <param name="indices">A collection of index values to be used in the buffer</param>
 		/// <returns>a base class pointer to the API specific buffer that is created</returns>
-		static std::shared_ptr<IndexBuffer> Create(std::vector<uint32> indices);
+		static Ref<IndexBuffer> Create(std::vector<uint32> indices);
 	};
 
 	/// <summary>
@@ -228,13 +228,13 @@ namespace Basalt
 		/// </summary>
 		/// <param name="data">an item of the constant buffer template type to fill the buffer</param>
 		/// <returns>A base class pointer to the API specific constant buffer that was created</returns>
-		static std::shared_ptr<ConstantBuffer<T>> Create(const T& data);
+		static Ref<ConstantBuffer<T>> Create(const T& data);
 
 		/// <summary>
 		/// Creates an empty buffer ready to accept data of the templated type T
 		/// </summary>
 		/// <returns>A base class pointer to the API specific constant buffer that was created</returns>
-		static std::shared_ptr<ConstantBuffer<T>> Create();
+		static Ref<ConstantBuffer<T>> Create();
 	};
 }
 

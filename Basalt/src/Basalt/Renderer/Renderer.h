@@ -47,10 +47,10 @@ namespace Basalt
 		/// </summary>
 		/// <param name="shader">The shader to use when rendering</param>
 		/// <param name="vertexArray">The vertex and index data to render</param>
-		static void Submit(const std::shared_ptr<Shader>& shader, const std::shared_ptr<VertexArray>& vertexArray);
+		static void Submit(const Ref<Shader>& shader, const Ref<VertexArray>& vertexArray);
 
 	private:
-		static std::unique_ptr<RenderContext> context;
+		static Scope<RenderContext> context;
 
 		struct SceneData
 		{

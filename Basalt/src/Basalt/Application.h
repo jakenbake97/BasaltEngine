@@ -55,17 +55,17 @@ namespace Basalt
 		/// Pushes events onto the event queue as they occur
 		/// </summary>
 		/// <param name="event">The event to add to the queue</param>
-		static void OnEvent(const std::shared_ptr<Event>& event);
+		static void OnEvent(const Ref<Event>& event);
 		/// <summary>
 		/// Pushes a layer onto the layer stack
 		/// </summary>
 		/// <param name="layer">The layer to push onto the stack</param>
-		void PushLayer(const std::shared_ptr<Layer>& layer);
+		void PushLayer(const Ref<Layer>& layer);
 		/// <summary>
 		/// Pushes an overlay onto the layer stack. Overlays are placed after normal layers
 		/// </summary>
 		/// <param name="overlay">The overlay layer to push onto the stack</param>
-		void PushOverlay(const std::shared_ptr<Layer>& overlay);
+		void PushOverlay(const Ref<Layer>& overlay);
 
 		/// <summary>
 		/// Returns a reference to the window that the application runs in
@@ -85,17 +85,17 @@ namespace Basalt
 		static Timer Time;
 	private:
 		String applicationName;
-		std::queue<std::shared_ptr<Event>> eventBuffer;
+		std::queue<Ref<Event>> eventBuffer;
 		bool running = true;
-		std::unique_ptr<Window> window;
+		Scope<Window> window;
 
 		int exitCode = 0;
 
 		LayerStack layerStack;
-		std::shared_ptr<ImGuiLayer> imGuiLayer;
+		Ref<ImGuiLayer> imGuiLayer;
 
 		static Application* instance;
 	};
 
-	extern std::unique_ptr<Application> CreateApplication();
+	extern Scope<Application> CreateApplication();
 }

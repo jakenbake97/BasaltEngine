@@ -117,7 +117,7 @@ namespace Basalt
 		/// Constructs an event dispatcher to handle the event that is passed as a parameter
 		/// </summary>
 		/// <param name="event"></param>
-		EventDispatcher(std::shared_ptr<Event> event)
+		EventDispatcher(Ref<Event> event)
 			: event(std::move(event))
 		{
 		}
@@ -140,7 +140,7 @@ namespace Basalt
 		}
 
 	private:
-		std::shared_ptr<Event> event;
+		Ref<Event> event;
 	};
 
 	template <typename OStream>

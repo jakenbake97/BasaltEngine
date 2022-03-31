@@ -9,7 +9,7 @@ namespace Basalt
 {
 	
 	template <typename T>
-	std::shared_ptr<VertexBuffer> VertexBuffer::Create(const std::vector<T>& vertices, const std::shared_ptr<Shader>& shader, const BufferLayout& layout)
+	Ref<VertexBuffer> VertexBuffer::Create(const std::vector<T>& vertices, const Ref<Shader>& shader, const BufferLayout& layout)
 	{
 		switch (Renderer::GetAPI())
 		{
@@ -27,7 +27,7 @@ namespace Basalt
 
 	
 	template <typename T>
-	std::shared_ptr<ConstantBuffer<T>> ConstantBuffer<T>::Create(const T& data)
+	Ref<ConstantBuffer<T>> ConstantBuffer<T>::Create(const T& data)
 	{
 		switch (Renderer::GetAPI())
 		{
@@ -45,7 +45,7 @@ namespace Basalt
 
 	
 	template <typename T>
-	std::shared_ptr<ConstantBuffer<T>> ConstantBuffer<T>::Create()
+	Ref<ConstantBuffer<T>> ConstantBuffer<T>::Create()
 	{
 		switch (Renderer::GetAPI())
 		{

@@ -11,7 +11,7 @@ namespace Basalt
 	{
 	public:
 		template <typename T>
-		Dx11VertexBuffer(const std::vector<T>& vertices, const std::shared_ptr<Shader>& shader, const BufferLayout& layout)
+		Dx11VertexBuffer(const std::vector<T>& vertices, const Ref<Shader>& shader, const BufferLayout& layout)
 		{
 			Dx11VertexBuffer::SetLayout(layout, shader);
 			uint32 vertSize = sizeof(T);
@@ -22,7 +22,7 @@ namespace Basalt
 			}
 
 			std::vector<char> byteBuffer(vertices.size() * vertSize);
-			for (int i = 0; i < vertices.size(); i++)
+			for (int32 i = 0; i < vertices.size(); i++)
 			{
 				char* currentElement = &byteBuffer[vertSize * i];
 				*reinterpret_cast<T*>(currentElement) = vertices[i];
@@ -47,7 +47,7 @@ namespace Basalt
 		void Bind() override;
 		void Unbind() override;
 
-		void SetLayout(const BufferLayout& layout, const std::shared_ptr<Shader>& shader) override;
+		void SetLayout(const BufferLayout& layout, const Ref<Shader>& shader) override;
 		void SetData(const std::vector<char>& vertices);
 		const BufferLayout& GetLayout() const override;
 
