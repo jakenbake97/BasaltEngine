@@ -49,10 +49,6 @@ namespace Basalt
 			// Frame Update
 			RenderCommand::Clear();
 
-			// Update message loop
-			window->OnUpdate();
-			EventUpdate();
-
 			for (const auto& layer : layerStack)
 				layer->OnUpdate(Time.GetDeltaTime());
 
@@ -66,6 +62,10 @@ namespace Basalt
 
 			// End Frame
 			RenderCommand::SwapBuffers(window->IsVSync());
+
+			// Update message loop
+			window->OnUpdate();
+			EventUpdate();
 		}		
 	}
 

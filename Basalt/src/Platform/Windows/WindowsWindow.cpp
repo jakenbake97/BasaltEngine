@@ -81,7 +81,7 @@ namespace Basalt
 		wc.hInstance = GetInstance();
 		wc.hIcon = nullptr;
 		wc.hCursor = nullptr;
-		wc.hbrBackground = (HBRUSH)COLOR_WINDOW;
+		wc.hbrBackground = reinterpret_cast<HBRUSH>(COLOR_WINDOW);
 		wc.lpszMenuName = nullptr;
 		wc.lpszClassName = GetName();
 		wc.hIconSm = nullptr;
@@ -113,7 +113,7 @@ namespace Basalt
 		windowRect.top = 0;
 		windowRect.bottom = properties.height;
 
-		const auto styles = WS_OVERLAPPEDWINDOW;
+		constexpr auto styles = WS_OVERLAPPEDWINDOW;
 
 		if (!AdjustWindowRect(&windowRect, styles, false))
 		{
@@ -146,14 +146,14 @@ namespace Basalt
 		}
 	}
 
-	LRESULT WINAPI WindowsWindow::HandleMsgSetup(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
+	LRESULT WINAPI WindowsWindow::HandleMsgSetup(HWND hWnd, const UINT msg, const WPARAM wParam, const LPARAM lParam)
 	{
 		// use the create parameter passed in from CreateWindow() to store window class pointer
 		if (msg == WM_NCCREATE)
 		{
 			// extract ptr to window class from creation data
 			const CREATESTRUCTW* const pCreate = reinterpret_cast<CREATESTRUCTW*>(lParam);
-			WindowsWindow* const pWindow = static_cast<WindowsWindow*>(pCreate->lpCreateParams);
+			const auto pWindow = static_cast<WindowsWindow*>(pCreate->lpCreateParams);
 			// set WinAPI-managed user data to store ptr to window class
 			SetWindowLongPtr(hWnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(pWindow));
 			// set message proc to normal (non-setup) handler now that setup is finished
@@ -165,7 +165,7 @@ namespace Basalt
 		return DefWindowProc(hWnd, msg, wParam, lParam);
 	}
 
-	LRESULT WINAPI WindowsWindow::HandleMsgAdapter(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
+	LRESULT WINAPI WindowsWindow::HandleMsgAdapter(HWND hWnd, const UINT msg, const WPARAM wParam, const LPARAM lParam)
 	{
 		// retrieve ptr to window class
 		auto* const pWindow = reinterpret_cast<WindowsWindow*>(GetWindowLongPtr(hWnd, GWLP_USERDATA));
@@ -249,6 +249,7 @@ namespace Basalt
 		case WM_DESTROY:
 			{
 				PostQuitMessage(0);
+				break;
 			}
 		case WM_SIZE:
 			{

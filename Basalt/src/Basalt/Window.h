@@ -8,8 +8,8 @@ namespace Basalt
 	struct WindowProperties
 	{
 		String title;
-		uint32 width;
-		uint32 height;
+		uint16 width;
+		uint16 height;
 
 		/// <summary>
 		/// Creates properties for the window to use when it is created
@@ -17,7 +17,7 @@ namespace Basalt
 		/// <param name="title">[Optional] The title to display on the window</param>
 		/// <param name="width">[Optional] The width in pixels of the window</param>
 		/// <param name="height">[Optional] The height in pixels of the window</param>
-		WindowProperties(String title = "Basalt Engine", const uint32 width = 1280, const uint32 height = 720)
+		WindowProperties(String title = "Basalt Engine", const uint16 width = 1280, const uint16 height = 720)
 			: title(std::move(title)), width(width), height(height)
 		{}
 	};
